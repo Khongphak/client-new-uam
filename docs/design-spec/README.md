@@ -6,7 +6,7 @@
 
 - สถานะ: ผู้ใช้ยืนยันว่าดีไซน์เสร็จแล้ว (2026-11-10)
 - ต้นฉบับ: Design canvas (private) https://claude.ai/artifact/MetSkdiAtHMczBcj5szk26 (ซิงก์ล่าสุดจากเวอร์ชัน `1794328238-7487`)
-- Source code เดิมที่ดีไซน์นี้อ้างอิง: repo `client-uam-develop` (Angular 17.2, PrimeNG 17.18, PrimeFlex 3.3, PrimeIcons 7, NgRx) path ด้านล่างเป็น path ใต้ `src/app/` ของ repo นั้น
+- ระบบเดิมที่ดีไซน์นี้ใช้เป็นที่มาของ requirement: repo `client-uam-develop` — **อ้างอิงที่มาเท่านั้น ห้ามอ่าน/อิงโค้ดนั้น** (clean-room); path ด้านล่างคือชื่อโมดูลของระบบเดิม ไม่ใช่โครงสร้างของแอปใหม่
 
 ## ไฟล์ในโฟลเดอร์นี้
 

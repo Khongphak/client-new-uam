@@ -1,6 +1,6 @@
 # 🧪 กลยุทธ์และขั้นตอนการทดสอบ
 
-> สถานะ: แผน (ยังไม่มีโค้ดแอปใน repo — เครื่องมือด้านล่างยืนยันกับ source เดิมตอนทำ `UAM-FND-01`)
+> สถานะ: แผน (ยังไม่มีโค้ดแอปใน repo — เครื่องมือด้านล่างยืนยันกับ ADR-0001 และการสร้างแอปจริงตอนทำ `UAM-FND-01` — ไม่อิงโค้ดเก่า)
 
 ## 1. 🔺 ระดับของ test
 
@@ -59,4 +59,4 @@
 - **DDD** ใช้แบบเบา (tactical-lite): แยกโค้ดตาม bounded context ที่ตรงกับ epic — Access (auth/consent/guard), System Catalog (system/menu/S2S), Identity & Roles (user/role/permission), Reporting — แต่ละ context มี `domain/` (กติกาล้วน ไม่ผูก Angular), `application/` (store/facade), `infrastructure/` (HTTP + mapper), `ui/`
 - **ตัวเชื่อมสำคัญ:** DDD ให้ domain logic เป็น pure function/class ที่ไม่ผูก framework → TDD ทดสอบได้เร็วมาก; TDD ช่วยกันไม่ให้ model แตกเมื่อ payload ต้องคงเดิม (anti-corruption layer = mapper ที่มี contract test)
 - **ข้อควรระวัง:** อย่า over-engineer — ไม่ต้องมี aggregate/event sourcing เต็มรูป เพราะ domain จริงอยู่หลังบ้าน ฝั่งนี้เป็น UI + กติกาการนำเสนอ; ใช้ ubiquitous language ตามสเปก (Role, System Admin, Approver, Group menu) ในชื่อ class/ไฟล์; สำหรับ UI ใช้ TDD แบบ component test ที่ทดสอบพฤติกรรม ไม่ใช่ implementation และใช้ E2E แค่ flow หลัก
-- **ข้อเสนอ:** เริ่ม TDD ทันทีใน story ที่มี logic (SHL-02, ERR-02, USR-05, ROL-02, QA-01); จัดโครงโฟลเดอร์ตาม context ตั้งแต่ FND-01 แต่ migrate โค้ดเดิมทีละ context พร้อม story ที่แตะ ไม่ทำ big-bang refactor
+- **ข้อเสนอ:** เริ่ม TDD ทันทีใน story ที่มี logic (SHL-02, ERR-02, USR-05, ROL-02, QA-01); จัดโครงโฟลเดอร์ตาม context ตั้งแต่ FND-01 และสร้างโค้ดใหม่ทีละ context พร้อม story ที่แตะ (ไม่พอร์ตโค้ดเก่า)
