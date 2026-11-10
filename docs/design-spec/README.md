@@ -102,7 +102,7 @@ Role คือ `CONFIG_UAM_ROLE` = ADMIN, DEVELOPER, AUDIT, USER ส่วน Su
 
 ## ข้อกำหนดก่อนเริ่มทำ backlog
 
-- ให้ session ที่ทำ backlog มีสิทธิ์**อ่าน** source เดิมที่ `C:/Users/Admin/Desktop/Learning/client-uam-develop/client-uam-develop` (ทุก story ต้องอ้างไฟล์และโมเดลจากที่นั่น) ส่วนงานจริงทำใน repo นี้
+- **Clean-room (ผู้ใช้สั่ง 2026-11-10):** ห้ามให้ session/agent ใดเปิดอ่านหรืออิง source เดิม `client-uam-develop` — ส่วน "Source ใต้ `src/app/`" ในตารางด้านบนและในไฟล์ backlog เป็นเพียงที่มาของ requirement; งานจริงทำใน repo นี้จากสเปก+ดีไซน์+สัญญา API
 
 ## วิธีแตกเป็น backlog
 

@@ -10,6 +10,7 @@ description: รีวิวและ merge PR ของ UAM (senior-dev เท�
 - [ ] ใช้เฉพาะฟิลด์ใน `shared/interfaces/**`; **payload ไม่เปลี่ยน**; ไม่มี dependency ใหม่ที่ไม่ได้อนุมัติ
 - [ ] มี unit test ของ logic ใหม่ และ test พิสูจน์พฤติกรรมจริง (ไม่ใช่ test เปล่า); ไม่มี skip/disable test
 - [ ] a11y พื้นฐาน: ปุ่มไอคอนมี label, ใช้ปุ่ม/ลิงก์จริง, focus เห็นชัด
+- [ ] **Clean-room:** ไม่มีร่องรอยการคัดลอก/พอร์ต/เลียนโครงสร้างจากโค้ดเก่า (ชื่อไฟล์/คลาส/แพตเทิร์น) และไม่มีการอ้างถึง `client-uam-develop` ใน `src/`
 - [ ] CI เขียว (build + test) — ถ้าแดง ห้าม merge
 - [ ] commit สื่อความหมาย
 **ตัดสิน:** มีข้อไม่ผ่าน → request changes พร้อมเหตุผลเฉพาะเจาะจง/ตัวอย่างแก้; ผ่านหมด → approve แล้ว **squash merge** เข้า `develop`, เปลี่ยน issue เป็น `status:qa`, ลบ branch

@@ -5,7 +5,7 @@
 
 ## 1. กฎแข็ง (ห้ามฝ่าฝืน ทุกบทบาท)
 1. **ห้ามแก้หลังบ้าน**: ห้ามต้องการฟิลด์ใหม่ใน Model Response, ห้ามเปลี่ยน payload ที่ส่ง, ใช้ได้เฉพาะฟิลด์ใน `src/app/shared/interfaces/**`
-2. **ไม่ใช้โค้ดโปรเจกต์เก่า** (`client-uam-develop`) — แอปนี้เริ่มใหม่ด้วย `ng new`; ไฟล์ดีไซน์ใน `docs/design-spec/project/*.dc.html` เป็นแค่ต้นแบบ ห้ามคัดลอกไปใช้ตรงๆ
+2. **Clean-room — ห้ามอิงโค้ดโปรเจกต์เก่า (`client-uam-develop`) เด็ดขาด**: ห้ามเปิดอ่าน/คัดลอก/พอร์ต/แปลง/เลียนโครงสร้าง ชื่อไฟล์ ชื่อคลาส หรือแพตเทิร์นของโค้ดเดิม; ที่มาของ requirement มีเพียง **สเปก+ดีไซน์ใน `docs/`** และ **สัญญา backend** (ฟิลด์/payload/RESULT_CODE จาก API spec ที่ผู้ใช้ระบุ — ดู UAM-API-01) ชื่อ path เดิมที่เห็นในเอกสารเป็นแค่ "ที่มาของ requirement" ห้ามใช้เป็นแนวทาง implement ทุกชั้นต้อง **refactor/ออกแบบใหม่** (ไม่ใช่แค่เปลี่ยน state management): state ด้วย signals (ไม่ใช้ NgRx), routing/guard/interceptor แบบ functional, typed HTTP client + mapper, error model กลาง, message catalog แบบ typed, permission policy แบบ typed, ตาราง/ฟิลเตอร์/ฟอร์มใหม่, ตั้งชื่อตาม Angular style guide ล่าสุด — ไฟล์ดีไซน์ `docs/design-spec/project/*.dc.html` เป็นแค่ต้นแบบ ห้ามคัดลอกไปใช้ตรงๆ; ถ้าไม่แน่ใจว่าพฤติกรรมไหนมาจาก backend ให้ถาม PM/ผู้ใช้ **ห้ามไปดูโค้ดเก่า**
 3. **ทุกงานต้องมี backlog code** (`UAM-<EPIC>-<nn>`) และ branch ใหม่จาก `develop` ชื่อ `<type>/<CODE>-<slug>` ห้าม commit ตรงเข้า `develop`/`main`
 4. **ห้าม merge PR ของตัวเอง**; merge เข้า `develop` เฉพาะ Senior Dev; `develop → main` และ deploy production ต้องให้**ผู้ใช้อนุมัติ**
 5. **ห้ามข้าม/ปิด/แก้ test ให้ผ่าน** และห้ามรายงานว่าสำเร็จถ้ายังไม่ได้รันจริง — รายงานผลตามจริงพร้อมหลักฐาน

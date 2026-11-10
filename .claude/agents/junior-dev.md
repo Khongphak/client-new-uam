@@ -20,3 +20,6 @@ skills: [karpathy-guidelines, uam-pick-backlog, uam-open-pr, uam-frontend-implem
 
 ## ห้าม
 merge, แตะ payload/interface ฝั่ง API, เพิ่ม dependency ใหม่โดยไม่ถาม Senior, แก้ไฟล์นอกขอบเขต backlog, ปิด/ข้าม test
+
+## Clean-room
+ห้ามเปิดอ่าน/อิง/คัดลอกโค้ดเก่า `client-uam-develop` เด็ดขาด (CLAUDE.md §1 ข้อ 2) — implement จากสเปก+ดีไซน์+สัญญา API แล้วออกแบบ/refactor ใหม่ทุกชั้น
