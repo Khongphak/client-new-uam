@@ -2,6 +2,8 @@
 
 สร้างจาก `docs/design-spec/README.md` + `project/canvas.json` (42 รายการ) แต่ละรายการมีไฟล์รายละเอียดใน `items/<CODE>.md` ซึ่งพร้อมใช้เป็นเนื้อหา GitHub issue (มี front matter `title`/`labels`)
 
+> 🔢 แผนที่ code ↔ issue: [ISSUES.md](ISSUES.md)
+
 ## 📐 ข้อตกลง
 - **Code**: `UAM-<EPIC>-<nn>` — EPIC: FND (foundation), SHL (shell), ERR (error/state), AUT (login/consent), HOM (home), SYS (system setting), USR (users/roles list/view/edit user), ROL (role editor), RPT (report), RSP (responsive), A11Y, QA, DSN (design)
 - **ชื่อ branch**: แตกใหม่ทุก backlog จาก `develop` เป็น `<type>/<CODE>-<slug>` เช่น `feature/UAM-SYS-02-system-drawer-deeplink` (ชื่อที่แนะนำอยู่ในแต่ละไฟล์) แล้ว PR กลับ `develop`; ใส่ code ใน title ของ commit/PR และ `Closes #<issue>`

@@ -41,7 +41,7 @@ QA: uam-qa-run บน develop → ผ่าน = status:done ; ไม่ผ่�
 PM + ผู้ใช้: ตัดสิน "ตีกลับ issue เดิม" หรือ "issue ใหม่" ; ผู้ใช้เปิด session ใหม่ → PM สรุปสถานะและถามเอง (ไม่มี schedule อัตโนมัติ)
 ผู้ใช้: อนุมัติ develop → main → deploy
 ```
-Label: `status:ready|in-progress|in-review|qa|done|blocked` · `role:junior|senior|qa|pm` · `type:feature|bug|chore|design|test` · `P0..P3` · `wave-N` · `qa:failed`
+Label: `status:backlog|ready|in-progress|in-review|qa|done|blocked` (`backlog` = เปิดแล้วแต่ dependency ยังไม่ครบ/ยังไม่ผ่านรีวิว Senior) · `epic:<epic>` · `role:junior|senior|qa|pm` · `type:feature|bug|chore|design|test` · `P0..P3` · `wave-N` · `qa:failed`
 เริ่มงานได้เมื่อ **dependency ทุกตัวเป็น `status:done`** (ดู `Depends on` ใน item) และไม่ติด `status:blocked`
 
 ## 5. Git / commit / PR
