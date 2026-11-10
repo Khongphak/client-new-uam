@@ -1,6 +1,6 @@
 ---
 title: "[UAM-DSN-01] ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301"
-labels: ["design", "dsn", "P2", "wave-1"]
+labels: ["design", "dsn", "P2", "wave-0"]
 ---
 
 # 🖌️ UAM-DSN-01 — ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301
@@ -11,7 +11,7 @@ labels: ["design", "dsn", "P2", "wave-1"]
 | ประเภท | 🎨 design |
 | Priority | 🟡 **P2** (score 67) |
 | ⭐ Value / 🔓 Unblocks / 💪 Effort | 3 / 4 / 3 pts |
-| 🌊 Wave (ลำดับการทำ) | 1 |
+| 🌊 Wave (ลำดับการทำ) | 0 |
 | 🌿 Branch | `design/UAM-DSN-01-design-gaps` (แตกจาก `develop`) |
 | ⛓️ Depends on | — (เริ่มได้เลย) |
 | 🚧 Blocks | [UAM-ERR-06](UAM-ERR-06.md), [UAM-RSP-02](UAM-RSP-02.md) |

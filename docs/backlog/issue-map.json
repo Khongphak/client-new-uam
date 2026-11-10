@@ -40,5 +40,7 @@
   "UAM-ERR-06": 40,
   "UAM-RSP-01": 41,
   "UAM-A11Y-01": 42,
-  "UAM-QA-02": 43
+  "UAM-QA-02": 43,
+  "UAM-ARC-01": 45,
+  "UAM-API-01": 46
 }

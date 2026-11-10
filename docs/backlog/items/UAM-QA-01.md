@@ -1,9 +1,9 @@
 ---
-title: "[UAM-QA-01] ชุดทดสอบ contract: payload/response ต้องไม่เปลี่ยน"
+title: "[UAM-QA-01] ชุดทดสอบ contract: golden fixtures + helper (payload/response ต้องไม่เปลี่ยน)"
 labels: ["test", "qa", "P0", "wave-2"]
 ---
 
-# ✅ UAM-QA-01 — ชุดทดสอบ contract: payload/response ต้องไม่เปลี่ยน
+# ✅ UAM-QA-01 — ชุดทดสอบ contract: golden fixtures + helper (payload/response ต้องไม่เปลี่ยน)
 
 | ฟิลด์ | ค่า |
 |---|---|
@@ -17,25 +17,25 @@ labels: ["test", "qa", "P0", "wave-2"]
 | 🚧 Blocks | [UAM-SYS-02](UAM-SYS-02.md), [UAM-USR-04](UAM-USR-04.md), [UAM-ROL-01](UAM-ROL-01.md), [UAM-ROL-04](UAM-ROL-04.md) |
 
 ## 📝 Description
-สร้าง snapshot/contract test ของ payload ที่ส่งหลังบ้านและ interface ของ response ก่อนเริ่ม redesign เพื่อใช้ตรวจรับทุก story ตามเกณฑ์ "payload เดิมไม่เปลี่ยน"
+สร้างโครง contract test: helper บน `HttpTestingController` + golden JSON fixtures + รูปแบบ snapshot ที่แต่ละ story ที่สร้าง service ใช้เขียน contract test ของตัวเอง (SYS-02, USR-04, ROL-04, RPT-01) ไม่สร้าง service/interface เองในงานนี้
 
 ## 🎯 Design reference
 - Artboard: กติกา "ไม่แก้หลังบ้าน"
-- Source เดิม (`client-uam-develop`, path ใต้ `src/app/`): `shared/interfaces/**`, services ที่เรียก API
+- Source เดิม (`client-uam-develop`, path ใต้ `src/app/`): `src/testing/**` (ใหม่)
 
 ## 🐞 Actual result (ปัจจุบัน)
 ไม่มีการทดสอบที่ยืนยันว่า payload คงเดิม
 
 ## ✅ Expected result
-ทุก PR ที่แตะ service/form รันชุด contract test อัตโนมัติ; ถ้า payload เปลี่ยนจะ fail
+มี helper + ตัวอย่าง contract test + กฎใน CI (รันผ่าน `test:ci` อยู่แล้ว) ที่ story อื่นนำไปใช้ได้
 
 ## 🛠️ แนวทางการแก้ไข
-- เก็บ payload จริงของ create/update System, Menu, S2S, Role, User, Report export
-- เทียบ JSON snapshot ใน unit test (HttpTestingController)
-- เพิ่มเป็นขั้นตอน CI
+- ขอบเขตแคบลงตามข้อเสนอของ Senior (issue #5): fixtures + helper เท่านั้น
+- แหล่งความจริงของ payload ยังรอผู้ใช้ตัดสินใจ (ดู UAM-API-01) — ถ้ายังไม่ได้ ใช้ fixture สมมติที่ติดป้าย `TODO(source)` อย่างชัดเจน
+- ตัดเกณฑ์ artboard ออก (ไม่เกี่ยวกับงานนี้)
 
 ## ☑️ Acceptance criteria
-- ☑️ CI fail เมื่อ payload เปลี่ยน
+- ☑️ CI fail เมื่อ payload เปลี่ยน (เมื่อมี service จริง)
 - ☑️ ตรงกับ artboard ที่อ้างถึง (desktop และ phone ถ้ามี)
 - ☑️ ใช้เฉพาะฟิลด์ใน `shared/interfaces/**` ปัจจุบัน
 - ☑️ Payload ที่ส่งหลังบ้านไม่เปลี่ยน (ผ่าน UAM-QA-01)
