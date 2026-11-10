@@ -29,7 +29,7 @@
 - Skill ของ workflow (ใน `.claude/skills/`): `uam-pick-backlog`, `uam-open-pr`, `uam-review-pr`, `uam-qa-run`, `uam-daily-standup`, `uam-backlog-sync`, `uam-frontend-implement`
 - `karpathy-guidelines` ในโปรเจกต์เป็นสรุปหลักการ 4 ข้อฉบับย่อ — ถ้าในเครื่องมี skill Karpathy ตัวจริงติดตั้งอยู่ให้เรียกตัวนั้นด้วย
 
-> **หมายเหตุ branch protection:** protect เฉพาะ `main` — `develop` ไม่ protect (ตัดสินใจแล้ว) กฎใน §1 ข้อ 3–4 สำหรับ `develop` จึงเป็นข้อตกลงที่ต้องทำตามเอง: ห้าม push ตรง, merge ผ่าน PR เมื่อ CI เขียวเท่านั้น, ถ้า `develop` แดงให้แก้/revert ก่อนทำงานอื่น
+> **หมายเหตุ branch protection:** repo นี้เป็น private บนแผนที่ GitHub **ไม่บังคับ** branch protection/ruleset (ต้องใช้ Team org) → ทั้ง `main` และ `develop` ไม่มีระบบกั้น กฎใน §1 ข้อ 3–4 เป็น**ข้อตกลงที่ต้องทำตามเอง**: ห้าม push ตรงเข้า `develop`/`main`, merge ผ่าน PR เมื่อ CI เขียวเท่านั้น, ห้าม merge `main` โดยไม่ได้รับอนุมัติจากผู้ใช้, ถ้า `develop` แดงให้แก้/revert ก่อนทำงานอื่น
 
 ## 4. Workflow และ label
 ```text

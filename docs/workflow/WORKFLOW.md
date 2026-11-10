@@ -55,7 +55,8 @@
 | `uam-daily-standup` · `uam-backlog-sync` | PM | รายงานประจำวัน / ซิงก์ backlog |
 
 ## 6. ที่ยังต้องทำโดยคนที่เป็นเจ้าของ repo
-- ตั้ง **branch protection เฉพาะ `main`** (ห้าม push ตรง, ต้องผ่าน CI `build-test`, ผู้ใช้เป็นคน merge) — **`develop` ไม่ protect โดยตั้งใจ** เพราะ agent ทุกตัวใช้ GitHub account เดียวกัน GitHub จึงไม่ให้ approve PR ของตัวเอง และกฎ "ต้องมี review" จะทำให้ Senior merge ไม่ได้ งานถัดไปที่ต้องพึ่ง PR ก่อนหน้าจึงค้างทั้งสาย → กฎบน `develop` (ห้าม push ตรง, CI ต้องเขียวก่อน merge, Senior ≠ ผู้เขียน) เป็น**ข้อตกลงใน CLAUDE.md** ไม่ได้ถูกบังคับด้วยระบบ ดูข้อดี-ข้อเสียที่ [REVIEW.md](REVIEW.md)
+- ⚠️ **branch protection ใช้บังคับไม่ได้ตอนนี้**: GitHub แจ้งว่า ruleset ของ repo private จะไม่ถูกบังคับจนกว่าจะอัปเกรด (Team org) — กฎทุกข้อเป็นข้อตกลงใน CLAUDE.md ทางเลือก: อัปเกรดแผน, ทำ repo เป็น public, หรือยอมรับความเสี่ยงและพึ่ง CI + การตรวจของ PM/QA ดู [REVIEW.md](REVIEW.md) ข้อ 1
+- (ข้อความเดิมที่ตั้งใจจะตั้งเมื่อบังคับได้) ตั้ง **branch protection เฉพาะ `main`** (ห้าม push ตรง, ต้องผ่าน CI `build-test`, ผู้ใช้เป็นคน merge) — **`develop` ไม่ protect โดยตั้งใจ** เพราะ agent ทุกตัวใช้ GitHub account เดียวกัน GitHub จึงไม่ให้ approve PR ของตัวเอง และกฎ "ต้องมี review" จะทำให้ Senior merge ไม่ได้ งานถัดไปที่ต้องพึ่ง PR ก่อนหน้าจึงค้างทั้งสาย → กฎบน `develop` (ห้าม push ตรง, CI ต้องเขียวก่อน merge, Senior ≠ ผู้เขียน) เป็น**ข้อตกลงใน CLAUDE.md** ไม่ได้ถูกบังคับด้วยระบบ ดูข้อดี-ข้อเสียที่ [REVIEW.md](REVIEW.md)
 - สร้าง label ทั้งหมดใน §4 ของ CLAUDE.md
 - ตัดสินใจเรื่อง deploy (ที่ไหน/กี่ environment) → จะเพิ่ม pipeline deploy เป็น backlog ต่อไป
 - ยืนยัน `UAM-SHL-03` และ `UAM-DSN-01`

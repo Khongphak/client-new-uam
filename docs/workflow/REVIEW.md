@@ -17,7 +17,7 @@
 ## ⚠️ ข้อเสีย / ความเสี่ยง และข้อเสนอแก้
 | # | ปัญหา | ผลกระทบ | ข้อเสนอ |
 |---|---|---|---|
-| 1 | **`develop` ไม่ protect** → กฎ "ห้าม push ตรง / CI ต้องเขียว / Senior ≠ ผู้เขียน" เป็นแค่ข้อตกลง | agent พลาดหรือข้ามกฎได้โดยไม่มีอะไรกั้น; develop อาจแดง | ใส่ CI บน push `develop` (มีแล้ว) + กฎ "develop แดง = แก้/revert ก่อนทำอย่างอื่น"; ให้ QA/PM ตรวจ log `git log develop` เป็นระยะ; พิจารณา protect แบบเบา (บังคับแค่ CI, ไม่บังคับ review) เมื่อพร้อม |
+| 1 | **ไม่มี branch protection ที่บังคับได้เลย (ทั้ง `main` และ `develop`)** — private repo บนแผนปัจจุบัน GitHub ไม่บังคับ ruleset →  กฎ "ห้าม push ตรง / CI ต้องเขียว / Senior ≠ ผู้เขียน" เป็นแค่ข้อตกลง | agent พลาดหรือข้ามกฎได้โดยไม่มีอะไรกั้น; develop อาจแดง | ทางเลือกถาวร: (ก) อัปเกรดแผน (GitHub แจ้งว่าต้อง Team org; ตรวจหน้า pricing ว่าแผนส่วนบุคคลพอไหม) (ข) ทำ repo เป็น public (ไม่แนะนำถ้ามีข้อมูลภายใน) (ค) อยู่กับข้อตกลง: ใส่ CI บน push `develop` (มีแล้ว) + กฎ "develop แดง = แก้/revert ก่อนทำอย่างอื่น"; ให้ QA/PM ตรวจ log `git log develop` เป็นระยะ; พิจารณา protect แบบเบา (บังคับแค่ CI, ไม่บังคับ review) เมื่อพร้อม |
 | 2 | **ทุก agent ใช้ GitHub account เดียวกัน** → ใครเป็น "Senior ≠ ผู้เขียน" พิสูจน์ด้วยระบบไม่ได้ และ GitHub ไม่ให้ approve PR ตัวเอง | review เป็นแค่คอมเมนต์ ไม่ใช่ approval จริง; ช่องว่างความเชื่อถือ | ระบุ role ใน PR template (ทำแล้ว); ถ้าต้องการจริง: สร้าง GitHub App/bot account แยกสำหรับ Senior |
 | 3 | **Review ด้วย LLM ตัวเดียวกัน/โมเดลคล้ายกัน** → อคติเดียวกันเห็นปัญหาซ้ำๆ ไม่ครบ | บั๊กหลุดแม้ผ่านรีวิว | ใช้ CI + contract test + QA เป็นตาข่ายหลัก; ให้คนสุ่มอ่าน PR สำคัญ (routing/guard/payload) |
 | 4 | **คอขวดที่ Senior** (รีวิว+merge+จ่ายงาน) | งาน Junior ค้างรอ; dependency chain ยาว (critical path ~48 pts) | จำกัด WIP; แยก PR ให้เล็ก; Senior รีวิวก่อนทำงานตัวเอง |
