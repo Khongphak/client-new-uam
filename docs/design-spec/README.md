@@ -43,7 +43,7 @@ Backend ไม่เปลี่ยน ดังนั้น:
 | 1 | `Main` Login | `auth/auth-login` |
 | 2 | `Consent` PDPA | `consent/consent-form`, `shared/service/auth-guard/consent.guard.ts` |
 | 3 | `Home` | `main/home/home` + `component/system-card` |
-| 4 | `Systems` System Setting (แท็บ System / Menu / System to System + drawer) | `main/setting-page/setting-sub-page/setting-system`; หน้า action `setting-action-page/system-action`, `menu-screen-action`, `system-to-system-action-page` |
+| 4 | `Systems` System Setting (แท็บ System / Menu / System to System + drawer) | `main/setting-page/setting-sub-page/setting-system`; หน้า action `setting-action-page/system-action`, `menu-screen-action`, `system-to-system-action-page` (ตัดสินใจแล้ว: ใช้ drawer แทน) |
 | 5 | `Users` (แท็บ Roles, Users) | `setting-sub-page/setting-users`; คอลัมน์ใน `shared/constants/table/setting-menu/users-column.ts/users-column.ts` และ `setting-system-column.ts` |
 | 6 | `UserEditor` (3 แท็บ) | `setting-action-page/users-action` (+ `component/system-role-form`), preview = `shared/component/table-preview` |
 | 7 | `RoleEditor` (3 ขั้น) | `setting-action-page/user-roles-action`, `shared/component/tree-group-menu`, `role-permission` |
@@ -51,7 +51,23 @@ Backend ไม่เปลี่ยน ดังนั้น:
 | 9, 10 | `UserView`, `RoleView` | หน้า action เดียวกันในโหมด view |
 | 11-28 | `Err404`, `Err403`, `Dlg*`, `Home*`/`Users*`/`Edit*`/`ReportFail` | `shared/service/webapi.interceptor.ts`, `interceptor/http-error-handler.service.ts`, `auth-guard/role.guard.ts`, `main/notfound`, `shared/constants/modal.data.ts`, `http/http.data.ts` |
 
-สิทธิ์ตาม route ที่ตรวจแล้ว: System Setting = ADMIN, DEVELOPER; User & Permission = ADMIN; สิทธิ์ของ Report ยังไม่ได้ตรวจ
+## สิทธิ์ตาม route (ตรวจจากโค้ดแล้ว 2026-11-10)
+
+Role คือ `CONFIG_UAM_ROLE` = ADMIN, DEVELOPER, AUDIT, USER ส่วน Super admin คือ `systemAdmin` ของโปรไฟล์ล็อกอิน (ฟิลด์โมเดล `isSuperAdmin`, แสดงเป็น "System Admin")
+`roleGuard` = `allowedRoles.includes(uamRole) || systemAdmin` ดังนั้น **super admin ผ่านทุก roleGuard** แม้เป็น route ของ ADMIN อย่างเดียว ผู้ไม่มีสิทธิ์ถูกส่งไป `/notfound` (ตอนนี้; ดู "การตัดสินใจ" ข้อ 3)
+
+| Route | ADMIN | DEVELOPER | AUDIT | USER | Super admin |
+|---|---|---|---|---|---|
+| `/login`, `/notfound`, `**` | สาธารณะ | สาธารณะ | สาธารณะ | สาธารณะ | สาธารณะ |
+| `/pdpaconsent` | ล็อกอิน | ล็อกอิน | ล็อกอิน | ล็อกอิน | ล็อกอิน |
+| `/home` (ต้องล็อกอิน + ยอมรับ consent) | ได้ | ได้ | ได้ | ได้ | ได้ |
+| `/setting` และ `/setting/system-setting` (+ `action-system*`, `action-menu-screen*`, `action-system-to-system*`) | ได้ | ได้ | ไม่ได้ | ไม่ได้ | ได้ |
+| `/setting/users-setting` (+ `action-role*`, `action-users*`) | ได้ | **ไม่ได้** | ไม่ได้ | ไม่ได้ | ได้ |
+| `/report` | ได้ | ไม่ได้ | ได้ | ไม่ได้ | ได้ |
+
+เมนูซ้าย (`layout/components/app.menu.ts`): ADMIN หรือ super admin = Home, Setting, Report; DEVELOPER = Home, Setting; AUDIT = Home, Report; USER = Home อย่างเดียว
+การ์ดหน้า Setting เดิม (`setting-page.component.ts`): DEVELOPER เห็น System Setting อย่างเดียว; ADMIN เห็น System Setting + User & Permissions; super admin เห็นทั้งหมด (fragment: system-setup, menu, system-to-system, roles, users)
+ผลต่อดีไซน์: เมนูซ้ายและเมนูย่อยของ Setting ต้องกรองตาม role (ต้นแบบแสดงมุมมอง ADMIN อย่างเดียว) และเพราะดีไซน์ตัดหน้าการ์ด Setting ออก route `/setting` ต้องมีกติกา (เด้งไปหน้าลูกแรกที่มีสิทธิ์ หรือคงหน้าเดิม) ยังไม่ได้ตัดสินใจ ให้ยืนยันตอนทำ backlog
 
 ## กติกาดีไซน์ที่ตกลงกัน
 
@@ -68,15 +84,23 @@ Backend ไม่เปลี่ยน ดังนั้น:
 
 `u-status`, `u-role`, `u-num`, `u-section-title`, `u-subtitle`, `u-tile`, `u-row` (+`is-stack`, `is-cols`), `u-perm-row`, `u-chip(s)`, `u-count`, `u-group-head`, `u-switch-row`, `u-accordion`, `u-sys-grid` + `u-sys-card`, `u-approvers`, `u-stats`, `u-facts` (+`is-cols`, `is-prose`), `u-meta-ico`, `u-dialog*`, `u-state`, `u-skel`, `u-toast`, `u-errpage`, `u-filters` + `bar__end`, `u-card-foot`, `u-back`; ตัวแปร `--uam-*` และสเกลระยะ `--sp-1..6`
 
-## ช่องว่างและเรื่องที่ต้องตัดสินใจก่อนเริ่ม
+## การตัดสินใจที่ผู้ใช้ยืนยันแล้ว (2026-11-10)
 
-1. System Setting: ดีไซน์ใช้ drawer ด้านขวา แต่ source ใช้หน้า action แยก ต้องตัดสินใจ
-2. ปุ่มกลับจาก User details/Edit user ต้องกลับไปแท็บ Users (tabMenu จริงใช้ fragment `roles`/`users`) ต้นแบบทำได้แค่กลับไปแท็บ Roles
-3. หน้า 403: source ส่งผู้ไม่มีสิทธิ์ไป `/notfound` ดีไซน์เสนอหน้า 403 แยก (ต้องแก้ `role.guard.ts` ฝั่งหน้าบ้าน)
-4. ยังไม่ได้ออกแบบ: หน้า phone ของหน้าสถานะ, สถานะผิดพลาดของ drawer ใน System Setting, ข้อผิดพลาดชื่อซ้ำ 40301 (ALREADY_EXISTED) ในฟอร์ม System/Role, สิทธิ์ของ Report
-5. ข้อความตัวอย่างใน dialog (เช่น "used by 42 users") เป็นตัวแทนของข้อความจากเซิร์ฟเวอร์ ไม่ใช่ข้อความจริง
-6. ระยะห่างยังเป็นการป้องกันด้วย CSS ต้องตรวจกับหน้าจอจริงตอน implement; inline style เหลือราว 85 จุด (จัดวางอย่างเดียว)
-7. Accessibility: ใช้ปุ่ม/ลิงก์จริง, label บนปุ่มไอคอน, focus ring `#2854a7`, ปุ่มบนมือถือสูง 44px แต่ยังไม่ได้ audit บน Angular จริง
+1. System Setting ใช้ **drawer** ตามดีไซน์ (ดู/เพิ่ม/แก้ไข ของ System, Menu, System to System) แทน 10 route `action-system`, `-edit`, `-view`, `-setup`, `action-menu-screen`, `-edit`, `-view`, `action-system-to-system`, `-view`, `-edit` ส่วน User & Permission ยังเป็นหน้าแยกเหมือนเดิม (`action-role*`, `action-users*`) ใน story ต้องกำหนดรูปแบบ URL เพื่อให้ deep link และ fragment ของแท็บยังใช้ได้
+2. ปุ่มกลับจาก User details / Edit user ต้องกลับไป **แท็บ Users ผ่าน fragment** (`#users`; role ใช้ `#roles`) ตาม tabMenu จริง
+3. ทำ **หน้า 403 แยก** `roleGuard` ส่งผู้ไม่มีสิทธิ์ไปหน้านี้แทน `/notfound` ส่วน URL ที่ไม่รู้จักยังไป `/notfound`
+
+## ช่องว่างที่ยังเปิดอยู่
+
+1. ยังไม่ได้ออกแบบ: หน้า phone ของหน้าสถานะ, สถานะผิดพลาดของ drawer ใน System Setting, ข้อผิดพลาดชื่อซ้ำ 40301 (ALREADY_EXISTED) ในฟอร์ม System/Role
+2. `/setting` เทียบกับเมนูย่อยในเมนูซ้าย และการกรองเมนูซ้ายตาม role (ดูหัวข้อสิทธิ์ตาม route)
+3. ข้อความตัวอย่างใน dialog (เช่น "used by 42 users") เป็นตัวแทนของข้อความจากเซิร์ฟเวอร์ ไม่ใช่ข้อความจริง
+4. ระยะห่างยังเป็นการป้องกันด้วย CSS ต้องตรวจกับหน้าจอจริงตอน implement; inline style เหลือราว 85 จุด (จัดวางอย่างเดียว)
+5. Accessibility: ใช้ปุ่ม/ลิงก์จริง, label บนปุ่มไอคอน, focus ring `#2854a7`, ปุ่มบนมือถือสูง 44px แต่ยังไม่ได้ audit บน Angular จริง
+
+## ข้อกำหนดก่อนเริ่มทำ backlog
+
+- ให้ session ที่ทำ backlog มีสิทธิ์**อ่าน** source เดิมที่ `C:/Users/Admin/Desktop/Learning/client-uam-develop/client-uam-develop` (ทุก story ต้องอ้างไฟล์และโมเดลจากที่นั่น) ส่วนงานจริงทำใน repo นี้
 
 ## วิธีแตกเป็น backlog
 
