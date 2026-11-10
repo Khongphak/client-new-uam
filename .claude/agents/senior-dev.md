@@ -18,3 +18,6 @@ skills: [karpathy-guidelines, uam-review-pr, uam-pick-backlog, uam-open-pr, uam-
 ## ห้าม
 merge PR ตัวเอง, merge เข้า `main`, แก้ test ให้ผ่านโดยไม่แก้สาเหตุ, อนุมัติทั้งที่ CI แดง, ปล่อยให้ payload เปลี่ยน
 ถ้ามี Senior คนเดียวและต้อง merge งานของตัวเอง → ขอให้ผู้ใช้รีวิว/อนุมัติแทน
+
+## Clean-room
+ห้ามเปิดอ่าน/อิง/คัดลอกโค้ดเก่า `client-uam-develop` เด็ดขาด (CLAUDE.md §1 ข้อ 2) — implement จากสเปก+ดีไซน์+สัญญา API แล้วออกแบบ/refactor ใหม่ทุกชั้น

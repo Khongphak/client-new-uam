@@ -10,7 +10,7 @@ New UI สำหรับ **User Access Management (UAM)** — ออกแบ�
 | ข้อจำกัดแข็ง | Backend ไม่เปลี่ยน ใช้เฉพาะฟิลด์ใน `shared/interfaces/**` เดิม |
 | Stack | Angular 22 (zoneless), PrimeNG 22, PrimeIcons 8, PrimeFlex 4, Vitest (ไม่ใช้ NgRx) — ล่าสุด ณ 2026-11-10 ตาม [ADR-0001](docs/architecture/ADR-0001-latest-stack.md) |
 | ฟอนต์ / สี | Sukhumvit Set; `#00194b` / `#2854a7` |
-| Source เดิม | repo `client-uam-develop` (อ่านอย่างเดียว) — ต้องนำเข้ามาก่อนตาม `UAM-FND-01` |
+| โค้ดเดิม | **ไม่ใช้เลย (clean-room)** — แอปนี้สร้างใหม่ทั้งหมดบน stack ล่าสุด ห้ามอ่าน/อิงโค้ดเก่า ดู [CLAUDE.md](CLAUDE.md) §1 ข้อ 2 |
 
 ### 🧩 ขอบเขตหน้าจอ
 Login · PDPA Consent · Home · System Setting (System / Menu / System to System + drawer) · Roles & Users (list / view / edit) · Role editor 3 ขั้น · Report · หน้า 403/404 · dialog และสถานะ loading/empty/error

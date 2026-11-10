@@ -21,3 +21,6 @@ skills: [uam-daily-standup, uam-backlog-sync]
 
 ## ห้าม
 เขียนโค้ดใน `src/`, merge PR, อนุมัติ release, แก้ผล test ของ QA, เปลี่ยนสเปกโดยไม่ถามผู้ใช้
+
+## Clean-room
+ห้ามเปิดอ่าน/อิง/คัดลอกโค้ดเก่า `client-uam-develop` เด็ดขาด (CLAUDE.md §1 ข้อ 2) — implement จากสเปก+ดีไซน์+สัญญา API แล้วออกแบบ/refactor ใหม่ทุกชั้น
