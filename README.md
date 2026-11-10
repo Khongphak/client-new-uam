@@ -26,7 +26,9 @@ ADMIN · DEVELOPER · AUDIT · USER · Super admin (`systemAdmin`) — ตาร
 | [docs/backlog/BACKLOG.md](docs/backlog/BACKLOG.md) | Backlog 42 รายการ (code `UAM-<EPIC>-<nn>`) |
 | [docs/backlog/EXECUTION-PLAN.md](docs/backlog/EXECUTION-PLAN.md) | ลำดับ/คู่ขนานของงาน |
 | [docs/testing/TESTING.md](docs/testing/TESTING.md) | กลยุทธ์และขั้นตอน unit test, E2E, TDD/DDD |
-| [e2e-bot/README.md](e2e-bot/README.md) | 🤖 บอท E2E (Python) รันเทส + screenshot + รายงาน + ร่าง issue + ร่างคู่มือ |
+| [docs/testing/test-cases/README.md](docs/testing/test-cases/README.md) | 📋 Test case จริง 59 รายการ (.md) + traceability กับ backlog |
+| [docs/testing/PHASES.md](docs/testing/PHASES.md) | 🪜 Phase การ build และเวลาที่เริ่มเขียนบอท E2E |
+| [e2e-bot/README.md](e2e-bot/README.md) | 🤖 บอท E2E (Python) — ⏸️ ร่างโครง รอ build Phase 1 |
 
 ## 🌿 วิธีทำงาน (Git flow)
 
@@ -47,6 +49,6 @@ main ← develop ← <type>/<CODE>-<slug>   เช่น feature/UAM-SYS-02-syst
 docs/
   design-spec/   สเปก + ไฟล์ดีไซน์ (.dc.html, uam.css, canvas.json)
   backlog/       BACKLOG, EXECUTION-PLAN, items/
-  testing/       TESTING.md
+  testing/       TESTING.md, PHASES.md, test-cases/
 e2e-bot/        บอท E2E (Python/Playwright) + case YAML
 ```

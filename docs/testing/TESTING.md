@@ -31,6 +31,9 @@
 
 ## 3. 📋 Test ที่ต้องมี (map กับ backlog)
 
+รายละเอียดเป็น test case จริงที่ [test-cases/](test-cases/README.md) และลำดับ phase ที่ [PHASES.md](PHASES.md) — บอท E2E เขียนหลัง build Phase 1 เสร็จ
+
+
 | Flow E2E | Backlog |
 |---|---|
 | Login สำเร็จ/ผิด, consent ติ๊ก/Decline | AUT-01/02 |

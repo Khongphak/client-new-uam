@@ -1,5 +1,7 @@
 # 🤖 UAM E2E Bot (Python + Playwright)
 
+> ⏸️ **สถานะ: ร่างโครง — ยังไม่ใช้งานจริง** รอ build Phase 1 เสร็จก่อน (ดู [docs/testing/PHASES.md](../docs/testing/PHASES.md)) แล้วค่อยปรับ `cases/*.yaml` ให้ตรงกับ test case ใน `docs/testing/test-cases/` (ต้นฉบับ) และแอปที่รันได้จริง ตอนนี้เก็บไว้เป็นโครง/selftest เท่านั้น
+
 บอทรัน E2E **ของแอปใหม่ใน repo นี้** (ไม่ผูกกับโค้ดโปรเจกต์เก่า — ชี้ด้วย `--base-url`) แล้วสร้าง:
 - 📊 รายงาน `report.html` / `report.md` / `results.json`
 - 🧭 คัดแยกเคสที่ไม่ผ่าน (`triage.json`) ว่า **เปิด bug issue / เสนอ backlog ใหม่ / คาดว่ายังไม่ผ่านเพราะ backlog ยังไม่เสร็จ / flaky / ปัญหา env** + ร่าง issue พร้อมหลักฐานใน `issues/`
