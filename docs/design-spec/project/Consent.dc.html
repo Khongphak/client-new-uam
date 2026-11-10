@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · PDPA Consent</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+.consent{min-height:100vh;display:flex;flex-direction:column;background:var(--surface-ground)}
+.c-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:4.375rem;padding:0 2rem;background:#fff;border-bottom:1px solid var(--line)}
+.c-top img{width:7.5rem;height:auto}
+.c-body{flex:1;width:100%;max-width:56rem;margin:0 auto;padding:2.5rem 1.5rem 1.5rem;display:flex;flex-direction:column;gap:1.5rem}
+.c-text{display:flex;flex-direction:column;gap:1.5rem}
+.c-bar{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);padding:1rem 1.5rem}
+.c-bar>div{max-width:50rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.agree{display:flex;align-items:center;gap:.75rem;min-height:2.75rem;cursor:pointer}
+.confirm{max-width:50rem;margin:0 auto 1rem;width:calc(100% - 3rem)}
+@media (max-width:640px){
+.c-top{padding:0 1rem}
+.c-body{padding:1.25rem 1rem .5rem}
+.c-text{max-height:none;overflow:visible}
+.c-bar>div{flex-direction:column;align-items:stretch}
+.c-bar .actions{display:grid;grid-template-columns:1fr 1fr}
+}
+</style>
+</helmet>
+<div class="consent">
+  <header class="c-top"><img src="/_blob/689fe8019dedee5de4cc643af5bd8b4c" alt="Phillip Life"><span style="color: var(--uam-muted);">Somchai K. · ADMIN</span></header>
+  <main class="c-body">
+    <div class="page-title"><h1>Personal data consent</h1><p>Read how your data is used in UAM. You need to agree before you continue.</p></div>
+    <section class="p-card p-component" aria-label="Consent text"><div class="p-card-body"><div class="c-text">
+      <ul class="u-facts is-prose">
+        <li><i class="pi pi-database" aria-hidden="true"></i><span><span class="u-facts__k">What UAM keeps about you</span><span class="u-facts__v">Your name, username, email, department, manager and the systems you can open. UAM also records when you open a system.</span></span></li>
+        <li><i class="pi pi-question-circle" aria-hidden="true"></i><span><span class="u-facts__k">Why it is used</span><span class="u-facts__v">To decide which systems you can see, to let your managers approve access, and to keep an access history for audits.</span></span></li>
+        <li><i class="pi pi-users" aria-hidden="true"></i><span><span class="u-facts__k">Who can see it</span><span class="u-facts__v">UAM administrators and auditors at Phillip Life. Your data is not shared outside the company.</span></span></li>
+        <li><i class="pi pi-sliders-h" aria-hidden="true"></i><span><span class="u-facts__k">Your choices</span><span class="u-facts__v">If you decline, you are signed out and can’t use UAM. You can ask IT Support about your data at any time.</span></span></li>
+      </ul>
+      <p class="u-muted-sm">The final wording comes from the PDPA team.</p>
+    </div></div></section>
+    <sc-if value="{{asking}}" hint-placeholder-val="{{false}}">
+      <div class="p-message p-message-warn p-component confirm" role="alertdialog" aria-label="Confirm decline" style="margin: 0; width: 100%;"><div class="p-message-wrapper" style="flex-wrap: wrap; align-items: center; width: 100%;">
+        <span class="p-message-icon pi pi-exclamation-triangle" aria-hidden="true"></span>
+        <span class="p-message-text" style="flex: 1 1 14rem;">Decline and sign out? You can’t use UAM until you agree.</span>
+        <span class="actions"><button type="button" class="p-button p-component p-button-sm p-button-secondary" onClick="{{keep}}"><span class="p-button-label">Go back</span></button><a class="p-button p-component p-button-sm p-button-danger" href="Main.dc.html"><span class="p-button-label">Decline and sign out</span></a></span>
+      </div></div>
+    </sc-if>
+  </main>
+  <div class="c-bar"><div>
+    <label class="agree"><span class="p-checkbox p-component"><span class="p-hidden-accessible"><input type="checkbox" checked="{{agreed}}" onChange="{{toggle}}"></span><span class="{{boxCls}}"><span class="p-checkbox-icon pi pi-check"></span></span></span>I have read and agree to the consent text</label>
+    <div class="actions">
+      <button type="button" class="p-button p-component p-button-secondary" onClick="{{ask}}"><span class="p-button-label">Decline</span></button>
+      <sc-if value="{{agreed}}" hint-placeholder-val="{{false}}"><a class="p-button p-component" href="Home.dc.html"><span class="p-button-label">Agree and continue</span></a></sc-if>
+      <sc-if value="{{notAgreed}}" hint-placeholder-val="{{true}}"><button type="button" class="p-button p-component" disabled><span class="p-button-label">Agree and continue</span></button></sc-if>
+    </div>
+  </div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { agreed: false, asking: false }; }
+  renderVals() {
+    const a = this.state.agreed;
+    return {
+      agreed: a, notAgreed: !a, asking: this.state.asking,
+      boxCls: a ? 'p-checkbox-box p-highlight' : 'p-checkbox-box',
+      toggle: () => this.setState({ agreed: !this.state.agreed }),
+      ask: () => this.setState({ asking: true }), keep: () => this.setState({ asking: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

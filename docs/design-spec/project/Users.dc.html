@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · User &amp; Permission</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@media (max-width:767px){.bar .grow{max-width:none;flex-basis:100%}}
+</style>
+</helmet>
+<div class="app">
+  <header class="layout-topbar">
+    <div class="topbar-start">
+      <input type="checkbox" id="navchk" class="navchk" aria-label="Show or hide the menu">
+      <h6 class="full">User Access Management</h6>
+      <h6 class="code">UAM</h6>
+    </div>
+    <div class="topbar-end">
+      <details class="user-menu">
+        <summary aria-label="Account menu">
+          <span class="who"><b>Somchai</b><small>ADMIN</small></span>
+          <img src="/_blob/46b771ade22f8b37fc35a4cf1cd26db2" alt="">
+          <i class="pi pi-angle-down" aria-hidden="true"></i>
+        </summary>
+        <div class="p-menu p-component p-menu-overlay">
+          <ul class="p-menu-list p-reset">
+            <li class="p-menuitem"><div class="p-menuitem-content"><a class="p-menuitem-link" href="Main.dc.html"><span class="p-menuitem-icon pi pi-sign-out" aria-hidden="true"></span><span class="p-menuitem-text">Logout</span></a></div></li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </header>
+  <label class="navscrim" for="navchk" aria-hidden="true"></label>
+  <aside class="layout-sidebar">
+    <div class="sidebar-header"><a href="Home.dc.html" aria-label="UAM home"><img src="/_blob/689fe8019dedee5de4cc643af5bd8b4c" alt="Phillip Life"></a></div>
+    <nav class="layout-menu-container" aria-label="Main">
+      <ul class="layout-menu">
+        <li><a class="menu-link" href="Home.dc.html"><img class="layout-menuitem-icon" src="/_blob/34e2c5076ce2bd848a7d323276d2bc27" alt=""><span>Home</span></a></li>
+        <li>
+          <details open>
+            <summary class="menu-link"><img class="layout-menuitem-icon" src="/_blob/31fa7a9d69b81cd4fb2d6c7330aa3154" alt=""><span>Setting</span><i class="pi pi-angle-down layout-submenu-toggler" aria-hidden="true"></i></summary>
+            <ul>
+              <li><a class="menu-link" href="Systems.dc.html">System Setting</a></li>
+              <li><a class="menu-link active-route" href="Users.dc.html" aria-current="page">User &amp; Permission</a></li>
+            </ul>
+          </details>
+        </li>
+        <li><a class="menu-link" href="Report.dc.html"><img class="layout-menuitem-icon" src="/_blob/2660d15fafe7e5775fe27a6a37b1b20a" alt=""><span>Report</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+  <main class="layout-main"><div class="phead"><div class="phead-in">
+      <div class="phead-top"><div class="phead-title"><h1>User &amp; Permission</h1></div><div class="actions">
+        <button type="button" class="p-button p-component p-button-secondary"><i class="pi pi-download" aria-hidden="true"></i><span class="p-button-label">Export</span></button>
+        <sc-if value="{{onUsers}}" hint-placeholder-val="{{true}}"><a class="p-button p-component" href="UserEditor.dc.html"><i class="pi pi-plus" aria-hidden="true"></i><span class="p-button-label">Add user</span></a></sc-if>
+        <sc-if value="{{onRoles}}" hint-placeholder-val="{{false}}"><a class="p-button p-component" href="RoleEditor.dc.html"><i class="pi pi-plus" aria-hidden="true"></i><span class="p-button-label">Add role</span></a></sc-if>
+      </div></div>
+      <div class="tabs-wrap"><div class="p-tabmenu p-component"><div class="p-tabmenu-nav-container"><div class="p-tabmenu-nav-content"><ul class="p-tabmenu-nav p-reset" role="tablist">
+      <li class="{{rolesTabCls}}" role="presentation"><button type="button" role="tab" class="p-menuitem-link" aria-selected="{{rolesSel}}" onClick="{{showRoles}}"><span class="p-menuitem-text">Roles</span><span class="count">36</span></button></li>
+      <li class="{{usersTabCls}}" role="presentation"><button type="button" role="tab" class="p-menuitem-link" aria-selected="{{usersSel}}" onClick="{{showUsers}}"><span class="p-menuitem-text">Users</span><span class="count">248</span></button></li>
+    </ul></div></div></div></div>
+    </div></div><div class="layout-content-wrapper">
+
+    
+    <div class="tcard">
+    <div class="bar">
+      <span class="p-icon-field p-icon-field-left grow"><i class="p-input-icon pi pi-search" aria-hidden="true"></i><label class="sr" for="q">Search</label><input id="q" type="search" class="p-inputtext p-component" placeholder="{{searchPh}}" value="{{q}}" onInput="{{onSearch}}"></span>
+      <div class="bar__end">
+        <button type="button" class="{{filterBtnCls}}" aria-expanded="{{filtersOpenAttr}}" aria-controls="filters" onClick="{{toggleFilters}}"><i class="pi pi-filter" aria-hidden="true"></i><span class="p-button-label">Filters</span><sc-if value="{{hasFilterCount}}" hint-placeholder-val="{{false}}"><span class="u-count">{{filterCount}}</span></sc-if></button>
+        <sc-if value="{{hasFilters}}" hint-placeholder-val="{{false}}"><button type="button" class="p-button p-component p-button-text" onClick="{{resetFilters}}"><i class="pi pi-filter-slash" aria-hidden="true"></i><span class="p-button-label">Reset</span></button></sc-if>
+      </div>
+    </div>
+    <sc-if value="{{filtersOpen}}" hint-placeholder-val="{{false}}">
+      <div class="u-filters" id="filters" role="group" aria-label="Filters">
+        <sc-for list="{{filterDefs}}" as="fd" hint-placeholder-count="3"><div class="field"><label for="f-{{fd.id}}">{{fd.label}}</label><select id="f-{{fd.id}}" class="p-inputtext p-component" value="{{fd.value}}" onChange="{{fd.set}}"><sc-for list="{{fd.options}}" as="o" hint-placeholder-count="4"><option value="{{o.v}}">{{o.t}}</option></sc-for></select></div></sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isNormal}}" hint-placeholder-val="{{true}}">
+    <sc-if value="{{onUsers}}" hint-placeholder-val="{{true}}">
+      <div class="p-datatable p-component only-desk">
+        <div class="p-datatable-wrapper"><table class="p-datatable-table" style="min-width: 66rem;">
+          <thead class="p-datatable-thead"><tr><th scope="col">User</th><th scope="col">Email</th><th scope="col">Ext. number</th><th scope="col">Department</th><th scope="col">UAM role</th><th scope="col">Status</th><th scope="col">Updated</th><th scope="col"><span class="sr">Actions</span></th></tr></thead>
+          <tbody class="p-datatable-tbody">
+            <sc-for list="{{users}}" as="u" hint-placeholder-count="7">
+              <tr>
+                <td><div class="name-cell"><span class="p-avatar p-component p-avatar-circle">{{u.init}}</span><span><a href="UserView.dc.html">{{u.name}}</a><small>{{u.user}}</small></span></div></td>
+                <td>{{u.email}}</td>
+                <td>{{u.ext}}</td>
+                <td>{{u.dept}}</td>
+                <td><span class="u-role">{{u.role}}</span></td>
+                <td><span class="{{u.tagCls}}"><span class="p-tag-value">{{u.status}}</span></span></td>
+                <td style="white-space: nowrap;">{{u.updated}}<span class="u-muted-sm" style="display: block;">by {{u.by}}</span></td>
+                <td><div class="row-actions">
+                  <a class="p-button p-component p-button-text p-button-sm p-button-icon-only" href="UserView.dc.html" aria-label="View {{u.name}}"><i class="pi pi-eye" aria-hidden="true"></i></a>
+                  <a class="p-button p-component p-button-text p-button-sm p-button-icon-only" href="UserEditor.dc.html" aria-label="Edit {{u.name}}"><i class="pi pi-pencil" aria-hidden="true"></i></a>
+                </div></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table></div>
+        <sc-if value="{{empty}}" hint-placeholder-val="{{false}}"><div class="empty-state">No user matches. Change the search or reset the filters.</div></sc-if>
+        <div class="p-paginator p-component"><span class="p-paginator-current">Showing 1 to {{count}} of 248 entries</span><button type="button" class="p-paginator-prev p-paginator-element p-disabled" disabled aria-label="Previous page"><i class="pi pi-angle-left" aria-hidden="true"></i></button><span class="p-paginator-pages"><button type="button" class="p-paginator-page p-paginator-element p-highlight" aria-current="page">1</button><button type="button" class="p-paginator-page p-paginator-element">2</button><button type="button" class="p-paginator-page p-paginator-element">3</button></span><button type="button" class="p-paginator-next p-paginator-element" aria-label="Next page"><i class="pi pi-angle-right" aria-hidden="true"></i></button></div>
+      </div>
+      <div class="p-card p-component only-mob u-clip">
+        <sc-for list="{{users}}" as="u" hint-placeholder-count="7">
+          <a class="u-row" href="UserView.dc.html">
+            <span class="p-avatar p-component p-avatar-circle">{{u.init}}</span>
+            <span class="u-row__main"><b style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{u.name}}</b><span class="u-muted-sm">{{u.dept}}</span></span>
+            <span style="display: flex; flex-direction: column; align-items: flex-end; gap: .25rem;"><span class="u-role">{{u.role}}</span><span class="{{u.tagCls}}"><span class="p-tag-value">{{u.status}}</span></span></span>
+          </a>
+        </sc-for>
+        <sc-if value="{{empty}}" hint-placeholder-val="{{false}}"><div class="empty-state">No user matches. Change the search or reset the filters.</div></sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{onRoles}}" hint-placeholder-val="{{false}}">
+      <div class="p-datatable p-component only-desk">
+        <div class="p-datatable-wrapper"><table class="p-datatable-table" style="min-width: 52rem;">
+          <thead class="p-datatable-thead"><tr><th scope="col">Role</th><th scope="col">System</th><th scope="col">Description</th><th scope="col">Status</th><th scope="col">Updated</th><th scope="col"><span class="sr">Actions</span></th></tr></thead>
+          <tbody class="p-datatable-tbody">
+            <sc-for list="{{roles}}" as="r" hint-placeholder-count="5">
+              <tr>
+                <td><span class="name-cell"><span><a href="RoleView.dc.html">{{r.name}}</a></span></span></td>
+                <td>{{r.system}}</td>
+                <td class="u-muted">{{r.desc}}</td>
+                <td><span class="{{r.tagCls}}"><span class="p-tag-value">{{r.status}}</span></span></td>
+                <td style="white-space: nowrap;">{{r.updated}}<span class="u-muted-sm" style="display: block;">by {{r.by}}</span></td>
+                <td><div class="row-actions">
+                  <a class="p-button p-component p-button-text p-button-sm p-button-icon-only" href="RoleView.dc.html" aria-label="View {{r.name}}"><i class="pi pi-eye" aria-hidden="true"></i></a>
+                  <a class="p-button p-component p-button-text p-button-sm p-button-icon-only" href="RoleEditor.dc.html" aria-label="Edit {{r.name}}"><i class="pi pi-pencil" aria-hidden="true"></i></a>
+                </div></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table></div>
+        <sc-if value="{{rolesEmpty}}" hint-placeholder-val="{{false}}"><div class="empty-state">No role matches. Change the search or reset the filters.</div></sc-if>
+        <div class="p-paginator p-component"><span class="p-paginator-current">Showing 1 to {{count}} of 36 entries</span><button type="button" class="p-paginator-prev p-paginator-element p-disabled" disabled aria-label="Previous page"><i class="pi pi-angle-left" aria-hidden="true"></i></button><span class="p-paginator-pages"><button type="button" class="p-paginator-page p-paginator-element p-highlight" aria-current="page">1</button><button type="button" class="p-paginator-page p-paginator-element">2</button></span><button type="button" class="p-paginator-next p-paginator-element" aria-label="Next page"><i class="pi pi-angle-right" aria-hidden="true"></i></button></div>
+      </div>
+      <div class="p-card p-component only-mob u-clip">
+        <sc-for list="{{roles}}" as="r" hint-placeholder-count="5">
+          <a class="u-row" href="RoleView.dc.html">
+            <span class="u-row__main"><b>{{r.name}}</b><span class="u-muted-sm">{{r.system}}</span></span>
+            <span class="{{r.tagCls}}"><span class="p-tag-value">{{r.status}}</span></span>
+          </a>
+        </sc-for>
+        <sc-if value="{{rolesEmpty}}" hint-placeholder-val="{{false}}"><div class="empty-state">No role matches. Change the search or reset the filters.</div></sc-if>
+      </div>
+    </sc-if>
+    </sc-if>
+    <sc-if value="{{isLoading}}" hint-placeholder-val="{{false}}"><div role="status" aria-label="Loading"><div class="u-skel-row" aria-hidden="true"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: 50%;"></span><span style="flex: 1;"><span class="u-skel" style="width: 35%; height: 1rem; margin-bottom: .5rem;"></span><span class="u-skel" style="width: 55%; height: .75rem;"></span></span><span class="u-skel" style="width: 5rem; height: 1rem;"></span></div><div class="u-skel-row" aria-hidden="true"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: 50%;"></span><span style="flex: 1;"><span class="u-skel" style="width: 35%; height: 1rem; margin-bottom: .5rem;"></span><span class="u-skel" style="width: 55%; height: .75rem;"></span></span><span class="u-skel" style="width: 5rem; height: 1rem;"></span></div><div class="u-skel-row" aria-hidden="true"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: 50%;"></span><span style="flex: 1;"><span class="u-skel" style="width: 35%; height: 1rem; margin-bottom: .5rem;"></span><span class="u-skel" style="width: 55%; height: .75rem;"></span></span><span class="u-skel" style="width: 5rem; height: 1rem;"></span></div><div class="u-skel-row" aria-hidden="true"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: 50%;"></span><span style="flex: 1;"><span class="u-skel" style="width: 35%; height: 1rem; margin-bottom: .5rem;"></span><span class="u-skel" style="width: 55%; height: .75rem;"></span></span><span class="u-skel" style="width: 5rem; height: 1rem;"></span></div><div class="u-skel-row" aria-hidden="true"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: 50%;"></span><span style="flex: 1;"><span class="u-skel" style="width: 35%; height: 1rem; margin-bottom: .5rem;"></span><span class="u-skel" style="width: 55%; height: .75rem;"></span></span><span class="u-skel" style="width: 5rem; height: 1rem;"></span></div><div class="u-skel-row" aria-hidden="true"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: 50%;"></span><span style="flex: 1;"><span class="u-skel" style="width: 35%; height: 1rem; margin-bottom: .5rem;"></span><span class="u-skel" style="width: 55%; height: .75rem;"></span></span><span class="u-skel" style="width: 5rem; height: 1rem;"></span></div></div></sc-if>
+    <sc-if value="{{isError}}" hint-placeholder-val="{{false}}">
+      <div class="u-state"><span class="u-tile is-off"><i class="pi pi-exclamation-triangle" aria-hidden="true"></i></span><b>We couldn’t load {{what}}</b><p>The server didn’t answer. Try again. If it keeps happening, contact IT Support.</p><div class="actions"><a class="p-button p-component" href="Users.dc.html"><i class="pi pi-refresh" aria-hidden="true"></i><span class="p-button-label">Try again</span></a></div></div>
+    </sc-if>
+    <sc-if value="{{isNone}}" hint-placeholder-val="{{false}}">
+      <div class="u-state"><span class="u-tile"><i class="pi pi-users" aria-hidden="true"></i></span><b>No {{what}} yet</b><p>{{noneText}}</p><div class="actions"><a class="p-button p-component" href="{{addHref}}"><i class="pi pi-plus" aria-hidden="true"></i><span class="p-button-label">{{addLabel}}</span></a></div></div>
+    </sc-if>
+    </div>
+
+  </div></main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","options":["normal", "loading", "error", "empty"],"default":"normal","section":"Prototype"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { tab: 'roles', q: '', status: 'All', f: {}, filters: false }; }
+  renderVals() {
+    const s = this.state;
+    const st = this.props.state ?? 'normal';
+    const f = s.f || {};
+    const has = (a, b) => !b || a.toLowerCase().includes(b.trim().toLowerCase());
+    const tag = (on) => on ? 'u-status is-ok' : 'u-status is-off';
+    const data = [
+      ['Somchai Khemthong', 'somchai.k', 'Claims', 'ADMIN', '2201', 1],
+      ['Nattaya Prasert', 'nattaya.p', 'Claims', 'USER', '2241', 1],
+      ['Kittipong Srisuk', 'kittipong.s', 'IT', 'DEVELOPER', '3105', 1],
+      ['Ploy Chaiyaporn', 'ploy.c', 'Internal Audit', 'AUDIT', '4120', 1],
+      ['Anan Wongsa', 'anan.w', 'Agency', 'USER', '5033', 0],
+      ['Siriporn Thanakit', 'siriporn.t', 'Finance', 'USER', '6012', 1],
+      ['Wichai Boonmee', 'wichai.b', 'IT', 'ADMIN', '3110', 1]
+    ];
+    const stOk = (a) => !f.status || (f.status === 'Active') === !!a;
+    const users = data.filter(d => has(d[0] + ' ' + d[1], s.q) && (!f.dept || d[2] === f.dept) && (!f.role || d[3] === f.role) && stOk(d[5])).map(d => ({
+      name: d[0], user: d[1], email: d[1] + '@[company].com', dept: d[2], role: d[3], ext: d[4],
+      init: d[0].split(' ').map(x => x[0]).join(''),
+      status: d[5] ? 'Active' : 'Inactive', tagCls: tag(d[5]), updated: '28 Oct 2026', by: 'somchai.k'
+    }));
+    const roles = [
+      ['Claim Officer', 'Register and update claims', 'Claim System', '27 Oct 2026', 'somchai.k', 1],
+      ['Claim Approver', 'Approve claims up to limit', 'Claim System', '27 Oct 2026', 'somchai.k', 1],
+      ['Policy Viewer', 'Read-only policy search', 'Policy Admin', '21 Oct 2026', 'wichai.b', 1],
+      ['Agent Admin', 'Manage agents and licenses', 'Agent Portal', '19 Oct 2026', 'wichai.b', 1],
+      ['Old Claim Clerk', 'Replaced by Claim Officer', 'Claim System', '02 Sep 2026', 'somchai.k', 0]
+    ].filter(r => has(r[0], s.q) && (!f.system || r[2] === f.system) && stOk(r[5]))
+      .map(r => ({ name: r[0], desc: r[1], system: r[2], updated: r[3], by: r[4], status: r[5] ? 'Active' : 'Inactive', tagCls: tag(r[5]) }));
+    const onUsers = s.tab === 'users';
+    const nf = Object.values(f).filter(Boolean).length;
+    const opts = (arr) => [{ v: '', t: 'All' }].concat([...new Set(arr)].map(x => ({ v: x, t: x })));
+    const stOpts = [{ v: '', t: 'All' }, { v: 'Active', t: 'Active' }, { v: 'Inactive', t: 'Inactive' }];
+    const mk = (id, label, options) => ({ id, label, options, value: f[id] || '', set: (e) => this.setState({ f: { ...f, [id]: e.target.value } }) });
+    const filterDefs = onUsers ? [mk('dept', 'Department', opts(data.map(d => d[2]))), mk('role', 'UAM role', opts(data.map(d => d[3]))), mk('status', 'Status', stOpts)] : [mk('system', 'System', opts(['Claim System', 'Policy Admin', 'Agent Portal'])), mk('status', 'Status', stOpts)];
+    return {
+      onUsers, onRoles: !onUsers, usersSel: onUsers ? 'true' : 'false', rolesSel: onUsers ? 'false' : 'true',
+      usersTabCls: onUsers ? 'p-tabmenuitem p-highlight' : 'p-tabmenuitem', rolesTabCls: onUsers ? 'p-tabmenuitem' : 'p-tabmenuitem p-highlight',
+      showUsers: () => this.setState({ tab: 'users', status: 'All', f: {}, q: '' }), showRoles: () => this.setState({ tab: 'roles', status: 'All', f: {}, q: '' }),
+      searchPh: onUsers ? 'Search name, username or email' : 'Search role name',
+      q: s.q, onSearch: (e) => this.setState({ q: e.target.value }),
+      filterDefs, filtersOpen: !!s.filters, filtersOpenAttr: s.filters ? 'true' : 'false', hasFilterCount: nf > 0, filterCount: String(nf), hasFilters: nf > 0 || !!s.q,
+      filterBtnCls: 'p-button p-component p-button-secondary' + (s.filters || nf ? ' p-highlight' : ''), toggleFilters: () => this.setState({ filters: !s.filters }),
+      resetFilters: () => this.setState({ f: {}, q: '' }),
+      isNormal: st === 'normal', isLoading: st === 'loading', isError: st === 'error', isNone: st === 'empty',
+      what: onUsers ? 'users' : 'roles', addHref: onUsers ? 'UserEditor.dc.html' : 'RoleEditor.dc.html', addLabel: onUsers ? 'Add user' : 'Add role',
+      noneText: onUsers ? 'Add the first user to start giving people access to systems.' : 'Create a role first. A user can only get access to a system through a role.',
+      users, count: String(onUsers ? users.length : roles.length), empty: users.length === 0, roles, rolesEmpty: roles.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · Role editor</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+.mwrap{display:grid;grid-template-columns:minmax(0,1fr) 22rem;gap:1.5rem;align-items:start}
+.tree,.pool{padding:0}
+.pool{position:sticky;top:5.5rem;max-height:max(24rem,calc(100vh - 8rem));display:flex;flex-direction:column}
+.tree-h{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:1.25rem 1.5rem .75rem}
+.tree-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tree-body{display:flex;flex-direction:column;padding:0 .75rem 1rem}
+.tr{display:flex;align-items:center;gap:8px;min-height:3rem;padding-right:4px;border-radius:.625rem}
+.tr:hover{background:#f8fafc}
+.tr.into{background:var(--primary-100)}
+.tr.grp{margin-top:6px}
+.tr-name{flex:1;min-width:0;font-size:1rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr.grp .tr-name{font-weight:700;color:var(--uam-navy)}
+.tr.hole{min-height:2.5rem;color:var(--uam-muted);font-size:.9375rem;border:1px dashed #c4cad4;margin:2px 4px}
+.tr.endzone{min-height:2.75rem;justify-content:center;color:var(--uam-muted);font-size:.9375rem;border:1px dashed #c4cad4;margin-top:10px}
+.tr-edit{margin:2px 4px 8px;padding:14px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;display:flex;flex-direction:column;gap:12px}
+.tr-del{margin:2px 4px 8px;padding:12px 14px;border-radius:10px;background:#fdecec;color:#8a1c1c;line-height:1.5;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.more{position:relative;flex:none}
+.pop{position:absolute;right:0;top:calc(100% + 2px);z-index:40;width:15rem;max-height:340px;overflow:auto;background:#fff;border:1px solid #e5e5e5;border-radius:12px;box-shadow:0 10px 40px rgba(41,50,65,.2);padding:6px;display:flex;flex-direction:column}
+.pop-i{min-height:44px;padding:0 12px;border:0;border-radius:8px;background:transparent;font:inherit;text-align:left;color:#363636;cursor:pointer}
+.pop-i:hover{background:#f3f3f3}
+.pop-i:disabled{color:#8a8f99;cursor:default;background:transparent}
+.pop-i.danger{color:#b42318}
+.pop-h{margin:8px 12px 2px;font-size:.8125rem;font-weight:700;color:var(--uam-muted)}
+.scrim{position:fixed;top:0;right:0;bottom:0;left:0;z-index:30;background:transparent;border:0;padding:0;cursor:default}
+.pool-list{overflow:auto;padding:0 12px 12px;display:flex;flex-direction:column}
+.pitem{display:flex;align-items:center;gap:6px;min-height:3.25rem;padding:0 4px 0 6px;border-bottom:1px solid var(--uam-rule)}
+.pitem:last-child{border-bottom:0}
+.addsel{width:7.5rem;flex:none;font-size:.875rem;padding:0 .5rem}
+.empty{margin:8px 0;padding:16px;border:1px dashed #98a2b3;border-radius:10px;color:var(--uam-muted);text-align:center;line-height:1.5}
+.grip{display:inline-flex;align-items:center;justify-content:center;width:22px;height:44px;margin-left:-6px;color:#6b7280;cursor:grab;flex:none}
+.stepsbar{padding:.5rem 0}
+.mx{border-collapse:separate;border-spacing:0;width:100%}
+.mx th{font-size:.8125rem;font-weight:700;color:#4a5263;padding:.625rem .5rem;border-bottom:1px solid var(--hair);text-align:center;background:#fafbfc;white-space:nowrap;min-width:5rem}
+.mx td{padding:.625rem .5rem;border-bottom:1px solid var(--uam-rule);text-align:center;background:#fff}
+.mx th:first-child,.mx td:first-child{position:sticky;left:0;z-index:1;text-align:left;min-width:14rem;padding-left:1.25rem;box-shadow:inset -1px 0 0 #e5e7eb}
+.mx tr.gh th,.mx tr.gh td{background:#eef2ff;color:var(--uam-navy);text-align:left;font-weight:700;padding:.625rem 1.25rem}
+.mx tr.gh td{position:sticky;left:0}
+.mx tr:hover td{background:#f8fafc}
+.mx tr.gh:hover td{background:#eef2ff}
+.mx .na{color:#8a8f99}
+.mx label{display:inline-flex;flex-direction:column;align-items:center;gap:.375rem;cursor:pointer}
+.pgrp{overflow:hidden}
+.pgrp-h{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:#eef2ff;border-bottom:1px solid #e5e7eb;flex-wrap:wrap}
+.prow-fx{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+.fchip{min-height:2.75rem;padding:0 1rem;border-radius:1.5rem;border:1px solid #98a2b3;background:#fff;font:inherit;color:#363636;cursor:pointer;display:inline-flex;align-items:center;gap:.375rem}
+.fchip.on{background:var(--uam-navy);border-color:var(--uam-navy);color:#fff}
+.na-note{font-size:.8125rem;color:var(--uam-muted);margin-top:.5rem}
+@media (max-width:1100px){.mwrap{grid-template-columns:minmax(0,1fr) 19rem}}
+@media (max-width:991px){.mwrap{display:block}.pool{position:static;max-height:none;margin-top:1.25rem}}
+@media (max-width:767px){.tree-h{padding:1rem 1rem .5rem}.tree-body{padding:0 .5rem .75rem}.pop{width:min(280px,calc(100vw - 48px))}}
+</style>
+</helmet>
+<div class="app">
+  <header class="layout-topbar">
+    <div class="topbar-start">
+      <input type="checkbox" id="navchk" class="navchk" aria-label="Show or hide the menu">
+      <h6 class="full">User Access Management</h6>
+      <h6 class="code">UAM</h6>
+    </div>
+    <div class="topbar-end">
+      <details class="user-menu">
+        <summary aria-label="Account menu">
+          <span class="who"><b>Somchai</b><small>ADMIN</small></span>
+          <img src="/_blob/46b771ade22f8b37fc35a4cf1cd26db2" alt="">
+          <i class="pi pi-angle-down" aria-hidden="true"></i>
+        </summary>
+        <div class="p-menu p-component p-menu-overlay">
+          <ul class="p-menu-list p-reset">
+            <li class="p-menuitem"><div class="p-menuitem-content"><a class="p-menuitem-link" href="Main.dc.html"><span class="p-menuitem-icon pi pi-sign-out" aria-hidden="true"></span><span class="p-menuitem-text">Logout</span></a></div></li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </header>
+  <label class="navscrim" for="navchk" aria-hidden="true"></label>
+  <aside class="layout-sidebar">
+    <div class="sidebar-header"><a href="Home.dc.html" aria-label="UAM home"><img src="/_blob/689fe8019dedee5de4cc643af5bd8b4c" alt="Phillip Life"></a></div>
+    <nav class="layout-menu-container" aria-label="Main">
+      <ul class="layout-menu">
+        <li><a class="menu-link" href="Home.dc.html"><img class="layout-menuitem-icon" src="/_blob/34e2c5076ce2bd848a7d323276d2bc27" alt=""><span>Home</span></a></li>
+        <li>
+          <details open>
+            <summary class="menu-link"><img class="layout-menuitem-icon" src="/_blob/31fa7a9d69b81cd4fb2d6c7330aa3154" alt=""><span>Setting</span><i class="pi pi-angle-down layout-submenu-toggler" aria-hidden="true"></i></summary>
+            <ul>
+              <li><a class="menu-link" href="Systems.dc.html">System Setting</a></li>
+              <li><a class="menu-link active-route" href="Users.dc.html" aria-current="page">User &amp; Permission</a></li>
+            </ul>
+          </details>
+        </li>
+        <li><a class="menu-link" href="Report.dc.html"><img class="layout-menuitem-icon" src="/_blob/2660d15fafe7e5775fe27a6a37b1b20a" alt=""><span>Report</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+  <main class="layout-main"><div class="phead"><div class="phead-in">
+      <div class="phead-top has-back"><a class="u-back" href="Users.dc.html" aria-label="Back to User &amp; Permission" title="Back to User &amp; Permission"><i class="pi pi-arrow-left" aria-hidden="true"></i></a><div class="phead-title"><h1>Claim Officer</h1><p class="sub">Claim System</p></div></div>
+      <div class="p-steps p-component stepsbar only-desk"><ul role="list">
+      <sc-for list="{{steps}}" as="st" hint-placeholder-count="3"><li class="{{st.cls}}"><button type="button" class="p-menuitem-link" aria-current="{{st.current}}" onClick="{{st.go}}"><span class="p-steps-number">{{st.n}}</span><span class="p-steps-title">{{st.label}}</span></button></li></sc-for>
+    </ul></div>
+      <div class="mprog">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><b style="color: var(--uam-navy); font-size: 1.0625rem;">{{stepLabel}}</b><span class="hint">Step {{stepNum}} of 3</span></div>
+        <div style="height: 6px; border-radius: 3px; background: #e5e7eb; overflow: hidden;" aria-hidden="true"><span style="display: block; height: 100%; background: var(--uam-navy); border-radius: 3px; width: {{stepPct}};"></span></div>
+      </div>
+    </div></div><div class="layout-content-wrapper">
+
+    
+    <sc-if value="{{isInfo}}" hint-placeholder-val="{{false}}">
+      <section class="p-card p-component" aria-label="Role information"><div class="p-card-body">
+        <div class="form-grid" style="max-width: 46rem;">
+          <div class="field"><label for="sys">System <span class="req">*</span></label><select id="sys" class="p-inputtext p-component"><option>Claim System</option></select><span class="hint">Can’t be changed after the role is saved.</span></div>
+          <div class="field"><label for="rn">Role name <span class="req">*</span></label><input id="rn" class="p-inputtext p-component" value="Claim Officer"></div>
+          <div class="field wide"><label for="rd">Description</label><textarea id="rd" class="p-inputtext p-component" maxlength="250">Register and update claims</textarea></div>
+          <label class="wide u-switch-row">
+            <span class="u-switch-row__text"><b>Active</b><span class="hint">An inactive role can’t be given to users. People who have it lose its menus.</span></span>
+            <span class="{{activeCls}}"><span class="p-hidden-accessible"><input type="checkbox" role="switch" checked="{{roleActive}}" onChange="{{toggleRoleActive}}"></span><span class="p-inputswitch-slider"></span></span>
+          </label>
+        </div>
+      </div></section>
+    </sc-if>
+
+      <sc-if value="{{isMenus}}" hint-placeholder-val="{{true}}">
+        <sc-if value="{{anyOpen}}" hint-placeholder-val="{{false}}"><button type="button" class="scrim" aria-label="Close menu" tabindex="-1" onClick="{{closeMenu}}"></button></sc-if>
+        <div class="mwrap">
+          <section class="p-card p-component tree" aria-label="Menu structure">
+            <div class="tree-h">
+              <span class="tree-t"><h2 class="u-section-title">Menu structure</h2><span class="hint">How the menu looks to people with this role. <span class="only-desk">Drag rows to reorder them.</span></span></span>
+              <button type="button" class="p-button p-component p-button-sm p-button-secondary" onClick="{{addGroup}}">Add group</button>
+            </div>
+            <div class="tree-body">
+              <sc-if value="{{noRows}}" hint-placeholder-val="{{false}}"><p class="empty">No menus yet. Use “Add to…” on a menu in the list to place it here.</p></sc-if>
+              <sc-for list="{{treeRows}}" as="r" hint-placeholder-count="6">
+                <sc-if value="{{r.isItem}}" hint-placeholder-val="{{true}}">
+                  <div class="{{r.cls}}" style="padding-left: {{r.pad}}; box-shadow: {{r.ring}};" draggable="true" onDragStart="{{r.dragStart}}" onDragEnd="{{r.dragEnd}}" onDragOver="{{r.dragOver}}" onDragLeave="{{r.dragLeave}}" onDrop="{{r.drop}}">
+                    <span class="grip only-desk" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"></circle><circle cx="15" cy="6" r="1.6"></circle><circle cx="9" cy="12" r="1.6"></circle><circle cx="15" cy="12" r="1.6"></circle><circle cx="9" cy="18" r="1.6"></circle><circle cx="15" cy="18" r="1.6"></circle></svg></span>
+                    <sc-if value="{{r.isGroup}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00194b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none;"><path d="{{r.iconD}}"></path></svg></sc-if>
+                    <span class="tr-name">{{r.name}}</span>
+                    <sc-if value="{{r.isGroup}}" hint-placeholder-val="{{false}}"><span class="u-count" title="Menus in this group">{{r.n}}</span></sc-if>
+                    <span class="more">
+                      <button type="button" class="p-button p-component p-button-text p-button-icon-only p-button-sm" aria-label="Options for {{r.name}}" aria-expanded="{{r.openAttr}}" onClick="{{r.toggleMenu}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+                      <sc-if value="{{r.open}}" hint-placeholder-val="{{false}}">
+                        <div class="pop" role="group" aria-label="Options for {{r.name}}">
+                          <sc-if value="{{r.isGroup}}" hint-placeholder-val="{{false}}"><button type="button" class="pop-i" onClick="{{r.edit}}">Rename or change icon</button></sc-if>
+                          <sc-if value="{{r.canSub}}" hint-placeholder-val="{{false}}"><button type="button" class="pop-i" onClick="{{r.addSub}}">Add sub group</button></sc-if>
+                          <button type="button" class="pop-i" disabled="{{r.noUp}}" onClick="{{r.up}}">Move up</button>
+                          <button type="button" class="pop-i" disabled="{{r.noDown}}" onClick="{{r.down}}">Move down</button>
+                          <sc-if value="{{r.hasDests}}" hint-placeholder-val="{{true}}">
+                            <p class="pop-h">Move to</p>
+                            <sc-for list="{{r.dests}}" as="d" hint-placeholder-count="3"><button type="button" class="pop-i" onClick="{{d.go}}">{{d.label}}</button></sc-for>
+                          </sc-if>
+                          <sc-if value="{{r.isMenu}}" hint-placeholder-val="{{true}}"><button type="button" class="pop-i danger" onClick="{{r.remove}}">Remove from role</button></sc-if>
+                          <sc-if value="{{r.isGroup}}" hint-placeholder-val="{{false}}"><button type="button" class="pop-i danger" onClick="{{r.askDelete}}">Delete group</button></sc-if>
+                        </div>
+                      </sc-if>
+                    </span>
+                  </div>
+                  <sc-if value="{{r.editing}}" hint-placeholder-val="{{false}}">
+                    <div class="tr-edit" style="margin-left: {{r.pad}};">
+                      <div class="field"><label for="gn-{{r.id}}">Group name</label><input class="p-inputtext p-component" id="gn-{{r.id}}" value="{{r.name}}" onInput="{{r.rename}}"></div>
+                      <div class="icongrid" role="radiogroup" aria-label="Group icon">
+                        <sc-for list="{{r.icons}}" as="i" hint-placeholder-count="16">
+                          <button type="button" class="{{i.cls}}" role="radio" aria-checked="{{i.on}}" aria-label="{{i.name}}" title="{{i.name}}" onClick="{{i.pick}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{i.d}}"></path></svg></button>
+                        </sc-for>
+                      </div>
+                      <div><button type="button" class="p-button p-component p-button-sm" onClick="{{r.edit}}">Done</button></div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{r.deleting}}" hint-placeholder-val="{{false}}">
+                    <div class="tr-del" role="alert" style="margin-left: {{r.pad}};">
+                      <span>Delete “{{r.name}}”? Its {{r.n}} menus go back to the list. Sub groups are deleted too.</span>
+                      <span style="display: flex; gap: 8px;"><button type="button" class="p-button p-component p-button-sm p-button-secondary" onClick="{{r.cancelDelete}}">Keep</button><button type="button" class="p-button p-component p-button-sm p-button-danger" onClick="{{r.doDelete}}">Delete group</button></span>
+                    </div>
+                  </sc-if>
+                </sc-if>
+                <sc-if value="{{r.isEmpty}}" hint-placeholder-val="{{false}}">
+                  <div class="{{r.cls}}" style="padding-left: {{r.pad}};" onDragOver="{{r.dragOver}}" onDragLeave="{{r.dragLeave}}" onDrop="{{r.drop}}">No menus yet. Add one from the list.</div>
+                </sc-if>
+              </sc-for>
+              <div class="{{endCls}} only-desk" onDragOver="{{endDragOver}}" onDragLeave="{{endDragLeave}}" onDrop="{{endDrop}}">Drop here to put a menu at the top level</div>
+            </div>
+          </section>
+
+          <aside class="p-card p-component pool" aria-label="Menus to add">
+            <div class="tree-h" style="padding-bottom: 8px;">
+              <span class="tree-t"><h2 class="u-section-title">Menus to add</h2><span class="hint">{{poolText}}</span></span>
+            </div>
+            <label class="p-icon-field p-icon-field-left" style="margin: 0 12px 8px;">
+              <i class="p-input-icon pi pi-search" aria-hidden="true"></i>
+              <span class="sr">Search menus</span>
+              <input type="search" class="p-inputtext p-component p-inputtext-sm" placeholder="Search menus" value="{{q}}" onInput="{{onSearch}}">
+            </label>
+            <div class="pool-list">
+              <sc-for list="{{pool}}" as="p" hint-placeholder-count="5">
+                <div class="pitem" draggable="true" onDragStart="{{p.dragStart}}" onDragEnd="{{p.dragEnd}}">
+                  <span class="grip only-desk" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"></circle><circle cx="15" cy="6" r="1.6"></circle><circle cx="9" cy="12" r="1.6"></circle><circle cx="15" cy="12" r="1.6"></circle><circle cx="9" cy="18" r="1.6"></circle><circle cx="15" cy="18" r="1.6"></circle></svg></span>
+                  <span class="tr-name">{{p.name}}</span>
+                  <select class="p-inputtext p-component p-inputtext-sm addsel" aria-label="Add {{p.name}} to" value="" onChange="{{p.addTo}}"><option value="">Add to…</option><sc-for list="{{p.dests}}" as="d" hint-placeholder-count="3"><option value="{{d.value}}">{{d.label}}</option></sc-for></select>
+                </div>
+              </sc-for>
+              <sc-if value="{{noneLeft}}" hint-placeholder-val="{{false}}"><p class="empty">All {{menuTotal}} menus are placed. Remove one from the structure to use it again.</p></sc-if>
+              <sc-if value="{{noMatch}}" hint-placeholder-val="{{false}}"><p class="empty">No menu matches “{{q}}”.</p></sc-if>
+            </div>
+          </aside>
+        </div>
+      </sc-if>
+
+    <sc-if value="{{isPerms}}" hint-placeholder-val="{{false}}">
+      <div class="u-stack">
+        <div><h2 class="u-section-title">Permissions</h2><p class="hint">{{fnCount}} functions. A menu only offers the ones it has. Tick a header to give that function to every menu.</p></div>
+
+        <div class="p-datatable p-component only-desk"><div class="p-datatable-wrapper" style="overflow-x: auto;">
+          <table class="mx">
+            <thead><tr>
+              <th scope="col">Menu</th>
+              <sc-for list="{{cols}}" as="c" hint-placeholder-count="8"><th scope="col"><label>{{c.name}}<span class="p-checkbox p-component"><span class="p-hidden-accessible"><input type="checkbox" aria-label="All {{c.name}}" checked="{{c.all}}" onChange="{{c.toggleAll}}" disabled="{{c.none}}"></span><span class="{{c.boxCls}}"><span class="p-checkbox-icon pi pi-check"></span></span></span></label></th></sc-for>
+            </tr></thead>
+            <sc-for list="{{permGroups}}" as="g" hint-placeholder-count="3">
+              <tbody>
+                <tr class="gh"><td colspan="{{colSpan}}"><span style="display: inline-flex; align-items: center; gap: .625rem;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{g.iconD}}"></path></svg>{{g.path}}<span class="hint" style="font-weight: 400;">{{g.given}} of {{g.able}} given</span></span></td></tr>
+                <sc-for list="{{g.rows}}" as="r" hint-placeholder-count="2">
+                  <tr>
+                    <td>{{r.name}}</td>
+                    <sc-for list="{{r.cells}}" as="c" hint-placeholder-count="8">
+                      <td>
+                        <sc-if value="{{c.ok}}" hint-placeholder-val="{{true}}"><span class="p-checkbox p-component"><span class="p-hidden-accessible"><input type="checkbox" aria-label="{{c.label}}" checked="{{c.on}}" onChange="{{c.toggle}}"></span><span class="{{c.boxCls}}"><span class="p-checkbox-icon pi pi-check"></span></span></span></sc-if>
+                        <sc-if value="{{c.na}}" hint-placeholder-val="{{false}}"><span class="na" title="This menu has no such function">–</span></sc-if>
+                      </td>
+                    </sc-for>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </sc-for>
+          </table>
+        </div></div>
+
+        <div class="only-mob" style="display: flex; flex-direction: column; gap: .75rem;">
+          <sc-for list="{{permGroups}}" as="g" hint-placeholder-count="3">
+            <section class="p-card p-component pgrp" style="margin-left: {{g.indent}};" aria-label="{{g.path}}">
+              <div class="pgrp-h"><b style="flex: 1; min-width: 0;">{{g.path}}</b><label style="display: flex; align-items: center; gap: .5rem; min-height: 2.75rem; cursor: pointer;"><span class="p-checkbox p-component"><span class="p-hidden-accessible"><input type="checkbox" checked="{{g.all}}" onChange="{{g.toggleAll}}"></span><span class="{{g.boxCls}}"><span class="p-checkbox-icon pi pi-check"></span></span></span>Select all</label></div>
+              <sc-for list="{{g.rows}}" as="r" hint-placeholder-count="2">
+                <div class="u-row is-stack">
+                  <b>{{r.name}}</b> <span class="hint">{{r.given}} of {{r.able}}</span>
+                  <div class="prow-fx" role="group" aria-label="Functions for {{r.name}}">
+                    <sc-for list="{{r.okCells}}" as="c" hint-placeholder-count="4"><button type="button" class="{{c.cls}}" aria-pressed="{{c.onAttr}}" onClick="{{c.toggle}}"><sc-if value="{{c.on}}" hint-placeholder-val="{{true}}"><i class="pi pi-check" aria-hidden="true"></i></sc-if>{{c.f}}</button></sc-for>
+                  </div>
+                  <sc-if value="{{r.hasNa}}" hint-placeholder-val="{{false}}"><p class="na-note">Not on this menu: {{r.naText}}</p></sc-if>
+                </div>
+              </sc-for>
+            </section>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <div class="savebar">
+      <span class="only-desk hint">{{summary}}</span>
+      <div class="actions">
+        <sc-if value="{{hasBack}}" hint-placeholder-val="{{true}}"><button type="button" class="p-button p-component p-button-secondary" onClick="{{back}}"><i class="pi pi-arrow-left" aria-hidden="true"></i><span class="p-button-label">Back</span></button></sc-if>
+        <sc-if value="{{isFirst}}" hint-placeholder-val="{{false}}"><a class="p-button p-component p-button-secondary" href="Users.dc.html"><span class="p-button-label">Cancel</span></a></sc-if>
+        <sc-if value="{{hasNext}}" hint-placeholder-val="{{true}}"><button type="button" class="p-button p-component" onClick="{{next}}"><span class="p-button-label">Next: {{nextLabel}}</span><i class="pi pi-arrow-right" aria-hidden="true"></i></button></sc-if>
+        <sc-if value="{{isPerms}}" hint-placeholder-val="{{false}}"><a class="p-button p-component" href="Users.dc.html"><i class="pi pi-check" aria-hidden="true"></i><span class="p-button-label">Save role</span></a></sc-if>
+      </div>
+    </div>
+
+  </div></main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"functionCount":{"editor":"range","min":4,"max":12,"step":1,"default":8,"section":"Prototype"},"step":{"editor":"enum","options":["Role info","Menus & groups","Permissions"],"default":"Menus & groups","section":"Prototype"},"$preview":{"width":1440,"height":1200}}'>
+const ICONS = [{"id":"shield","name":"Shield","d":"M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"},{"id":"doc","name":"Document","d":"M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6"},{"id":"users","name":"People","d":"M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c0-4 3-6 7-6s7 2 7 6M17 3.5a4 4 0 0 1 0 7.5M22 21c0-3-1.5-5-4-5.7"},{"id":"card","name":"Payment","d":"M3 6h18v12H3zM3 10h18M7 15h3"},{"id":"chart","name":"Chart","d":"M4 20V10M10 20V4M16 20v-7M22 20H2"},{"id":"folder","name":"Folder","d":"M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"},{"id":"phone","name":"Mobile","d":"M8 2h8a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM11 18h2"},{"id":"headset","name":"Support","d":"M4 14v-2a8 8 0 0 1 16 0v2M4 14h3v6H4zM17 14h3v6h-3z"},{"id":"calendar","name":"Calendar","d":"M4 5h16v16H4zM4 9h16M8 3v4M16 3v4"},{"id":"search","name":"Search","d":"M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-3.5-3.5"},{"id":"gear","name":"Settings","d":"M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"},{"id":"briefcase","name":"Work","d":"M3 8h18v12H3zM8 8V5h8v3M3 13h18"},{"id":"home","name":"Home","d":"M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"},{"id":"upload","name":"Upload","d":"M12 16V4M7 9l5-5 5 5M4 20h16"},{"id":"check","name":"Approve","d":"M4 12l5 5L20 6"},{"id":"clipboard","name":"Checklist","d":"M9 3h6v3H9zM7 4.5H5V21h14V4.5h-2M9 12h6M9 16h4"}];
+const FUNCS = ["View","Add","Edit","Delete","Report","Export","Approve","Print","Upload","Download","Cancel","Reprint"];
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.catalog = [
+      { id: 'm1', name: 'Claim Register', f: ['View', 'Add', 'Edit', 'Delete', 'Print', 'Upload', 'Cancel'] },
+      { id: 'm2', name: 'Claim Search', f: ['View', 'Export', 'Print'] },
+      { id: 'm3', name: 'Claim Approval', f: ['View', 'Edit', 'Approve', 'Cancel'] },
+      { id: 'm4', name: 'Payment Request', f: ['View', 'Add', 'Approve', 'Export'] },
+      { id: 'm5', name: 'Daily Claims Report', f: ['View', 'Report', 'Export', 'Print', 'Download', 'Reprint'] },
+      { id: 'm6', name: 'Pending Approval Report', f: ['View', 'Report', 'Export'] },
+      { id: 'm7', name: 'Document Upload', f: ['View', 'Add', 'Delete', 'Upload', 'Download'] },
+      { id: 'm8', name: 'Claim Cancellation', f: ['View', 'Edit', 'Approve', 'Cancel'] },
+      { id: 'm9', name: 'Payment Status', f: ['View', 'Export'] },
+      { id: 'm10', name: 'Claim Audit Log', f: ['View', 'Export', 'Download'] }
+    ];
+    const stepIdx = { 'Role info': 0, 'Menus & groups': 1, 'Permissions': 2 }[p.step];
+    this.state = {
+      step: stepIdx === undefined ? 1 : stepIdx, view: 'group', menuOpen: null, editG: null, delG: null, q: '', seq: 4,
+      groups: { g1: { name: 'Claims', icon: 'shield' }, g2: { name: 'Approval', icon: 'check' }, g3: { name: 'Reports', icon: 'chart' } },
+      // Every place is one ordered list of menu ids and group ids. Max 2 levels of groups.
+      items: { root: ['m9', 'g1', 'g3', 'm10'], g1: ['m1', 'g2', 'm2'], g2: ['m3'], g3: ['m5'] },
+      perms: { m1: { View: 1, Add: 1, Edit: 1 }, m2: { View: 1 }, m3: { View: 1 }, m5: { View: 1, Report: 1 }, m9: { View: 1 }, m10: { View: 1 } }
+    };
+  }
+  setItems(fn, extra) {
+    const copy = {};
+    Object.keys(this.state.items).forEach(k => { copy[k] = [...this.state.items[k]]; });
+    this.setState({ items: fn(copy), ...(extra || {}) });
+  }
+  renderVals() {
+    const s = this.state;
+    const cat = this.catalog;
+    const byId = Object.fromEntries(cat.map(m => [m.id, m]));
+    const G = s.groups, items = s.items;
+    const isG = (id) => !!G[id];
+    const parentOf = (id) => Object.keys(items).find(k => items[k].includes(id)) || 'root';
+    const depthOf = (gid) => parentOf(gid) === 'root' ? 1 : 2;
+    const hasSubs = (gid) => (items[gid] || []).some(isG);
+    const pathOf = (key) => key === 'root' ? 'Top level' : (depthOf(key) === 2 ? G[parentOf(key)].name + ' › ' : '') + G[key].name;
+    const iconD = (id) => (ICONS.find(i => i.id === id) || ICONS[5]).d;
+    const menuCount = (key) => (items[key] || []).reduce((t, id) => t + (isG(id) ? menuCount(id) : 1), 0);
+
+    // Walk the tree in display order.
+    const order = [];
+    const walk = (key, depth) => (items[key] || []).forEach(id => { order.push({ id, key, depth }); if (isG(id)) walk(id, depth + 1); });
+    walk('root', 0);
+    const owner = {};
+    order.filter(o => !isG(o.id)).forEach(o => { owner[o.id] = o.key; });
+
+    const allGroups = order.filter(o => isG(o.id)).map(o => o.id);
+    const pDepth = (k) => k === 'root' ? 0 : depthOf(k);
+    // A group can sit at the top level, or inside a top-level group when it has no sub groups of its own (max 2 levels).
+    const fits = (id, parent) => { if (!isG(id)) return true; if (parent === id) return false; const d = pDepth(parent); return d === 0 || (d === 1 && !hasSubs(id)); };
+    const placeAt = (id, parent, index) => this.setItems(it => {
+      const from = Object.keys(it).find(k => it[k].includes(id));
+      let at = index;
+      if (from) { const old = it[from].indexOf(id); it[from].splice(old, 1); if (from === parent && old < at) at--; }
+      it[parent].splice(at, 0, id);
+      return it;
+    }, { menuOpen: null, over: null });
+    const places = [{ key: 'root', label: 'Top level' }, ...allGroups.map(g => ({ key: g, label: pathOf(g) }))];
+    const closeMenu = () => this.setState({ menuOpen: null });
+
+    // Drag and drop: top half of a row = before it; bottom half of a menu = after it; bottom half of a group = inside it.
+    const targetOf = (e, row, end) => {
+      if (end) return { pos: 'into', parent: 'root', index: items.root.length };
+      if (row.kind === 'empty') return { pos: 'into', parent: row.parent, index: 0 };
+      const r = e.currentTarget.getBoundingClientRect();
+      if (e.clientY - r.top < r.height / 2) return { pos: 'before', parent: row.parent, index: row.i };
+      if (row.g) return { pos: 'into', parent: row.id, index: items[row.id].length };
+      return { pos: 'after', parent: row.parent, index: row.i + 1 };
+    };
+    const dnd = (row, rowKey, end) => ({
+      dragOver: (e) => {
+        const d = this.dragId; if (!d || d === row.id) return;
+        const t = targetOf(e, row, end);
+        if (!fits(d, t.parent)) return;
+        e.preventDefault();
+        const k = rowKey + '|' + t.pos;
+        if (this.state.over !== k) this.setState({ over: k });
+      },
+      dragLeave: () => { if ((this.state.over || '').startsWith(rowKey + '|')) this.setState({ over: null }); },
+      drop: (e) => {
+        e.preventDefault();
+        const d = this.dragId; this.dragId = null; this.setState({ over: null });
+        if (!d || d === row.id) return;
+        const t = targetOf(e, row, end);
+        if (fits(d, t.parent)) placeAt(d, t.parent, t.index);
+      }
+    });
+    const dragHandlers = (id) => ({
+      dragStart: (e) => { this.dragId = id; if (e.dataTransfer) { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', id); } },
+      dragEnd: () => { this.dragId = null; this.setState({ over: null }); }
+    });
+    const overNow = s.over || '';
+    const ringFor = (k) => overNow === k + '|before' ? 'inset 0 3px 0 0 #2854a7' : overNow === k + '|after' ? 'inset 0 -3px 0 0 #2854a7' : 'none';
+
+    const rows = [];
+    const addRows = (key, depth) => items[key].forEach((id, i) => {
+      const g = isG(id);
+      rows.push({ kind: 'item', id, g, parent: key, i, n: items[key].length, depth });
+      if (g) { if (!items[id].length) rows.push({ kind: 'empty', id: id + ':empty', parent: id, depth: depth + 1 }); addRows(id, depth + 1); }
+    });
+    addRows('root', 0);
+    const swap = (parent, i, j) => this.setItems(it => { const a = it[parent]; [a[i], a[j]] = [a[j], a[i]]; return it; }, { menuOpen: null });
+    const treeRows = rows.map(r => {
+      const base = { key: r.id, id: r.id, pad: (12 + r.depth * 28) + 'px', ring: ringFor(r.id), ...dnd(r, r.id, false) };
+      const into = overNow === r.id + '|into';
+      if (r.kind === 'empty') return { ...base, isItem: false, isEmpty: true, cls: into ? 'tr hole into' : 'tr hole' };
+      const g = r.g;
+      const open = s.menuOpen === r.id;
+      const editing = g && s.editG === r.id;
+      const dests = places.filter(p => p.key !== r.parent && p.key !== r.id && fits(r.id, p.key)).map(p => ({ label: p.label, go: () => placeAt(r.id, p.key, items[p.key].length) }));
+      return { ...base, ...dragHandlers(r.id), isItem: true, isEmpty: false, isGroup: g, isMenu: !g,
+        name: g ? G[r.id].name : byId[r.id].name, iconD: g ? iconD(G[r.id].icon) : '', n: String(g ? menuCount(r.id) : 0),
+        cls: (into ? 'tr into' : 'tr') + (g ? ' grp' : ''),
+        open, openAttr: open ? 'true' : 'false', toggleMenu: () => this.setState({ menuOpen: open ? null : r.id }),
+        noUp: r.i === 0, noDown: r.i === r.n - 1, up: () => swap(r.parent, r.i, r.i - 1), down: () => swap(r.parent, r.i, r.i + 1),
+        dests, hasDests: dests.length > 0,
+        canSub: g && depthOf(r.id) === 1, addSub: () => newGroup(r.id),
+        editing, edit: () => this.setState({ editG: editing ? null : r.id, menuOpen: null }), rename: (e) => setG(r.id, { name: e.target.value }),
+        icons: editing ? ICONS.map(i => ({ ...i, on: G[r.id].icon === i.id ? 'true' : 'false', cls: G[r.id].icon === i.id ? 'ic-opt on' : 'ic-opt', pick: () => setG(r.id, { icon: i.id }) })) : [],
+        remove: () => this.setItems(it => { it[r.parent] = it[r.parent].filter(x => x !== r.id); return it; }, { menuOpen: null }),
+        askDelete: () => this.setState({ delG: r.id, menuOpen: null }), deleting: g && s.delG === r.id, cancelDelete: () => this.setState({ delG: null }),
+        doDelete: () => {
+          const gone = [r.id, ...(items[r.id] || []).filter(isG)];
+          const it = {}; Object.keys(items).forEach(k => { if (!gone.includes(k)) it[k] = items[k].filter(x => !gone.includes(x)); });
+          const gs = { ...G }; gone.forEach(x => { delete gs[x]; });
+          this.setState({ groups: gs, items: it, delG: null, editG: null });
+        } };
+    });
+    const endDnd = dnd({ id: 'end', kind: 'end' }, 'end', true);
+
+    const q = (s.q || '').trim().toLowerCase();
+    const poolAll = cat.filter(m => !owner[m.id]);
+    const pool = poolAll.filter(m => !q || m.name.toLowerCase().includes(q)).map(m => {
+      const k = 'pool:' + m.id; const open = s.menuOpen === k;
+      return { key: k, name: m.name, open, openAttr: open ? 'true' : 'false', toggle: () => this.setState({ menuOpen: open ? null : k }),
+        dests: places.map(p => ({ value: p.key, label: p.label })), addTo: (e) => { const k = e.target.value; if (k) placeAt(m.id, k, items[k].length); }, ...dragHandlers(m.id) };
+    });
+
+    // Permissions follow the same order as the menu tree.
+    const fnN = Math.max(1, Math.min(FUNCS.length, Number(this.props.functionCount ?? 8)));
+    const funcs = FUNCS.slice(0, fnN);
+    const has = (m, f) => funcs.includes(f) && byId[m].f.includes(f);
+    const isOn = (m, f) => !!(s.perms[m] || {})[f];
+    const setMany = (pairs, v) => { const p = { ...s.perms }; pairs.forEach(([m, f]) => { p[m] = { ...(p[m] || {}), [f]: v ? 1 : 0 }; }); this.setState({ perms: p }); };
+    const used = order.filter(o => !isG(o.id)).map(o => ({ m: o.id, key: o.key }));
+    const rowOf = (m, key) => {
+      const cells = funcs.map(f => {
+        const ok = has(m, f);
+        const on = ok && isOn(m, f);
+        return { f, ok, na: !ok, on, boxCls: on ? 'p-checkbox-box p-highlight' : 'p-checkbox-box', onAttr: on ? 'true' : 'false', cls: on ? 'fchip on' : 'fchip', label: f + ' ' + byId[m].name, toggle: () => setMany([[m, f]], !on) };
+      });
+      const okCells = cells.filter(c => c.ok);
+      const na = cells.filter(c => c.na).map(c => c.f);
+      return { name: byId[m].name, group: key === 'root' ? 'Top level' : pathOf(key), cells, okCells, able: String(okCells.length), given: String(okCells.filter(c => c.on).length), hasNa: na.length > 0, naText: na.join(', ') };
+    };
+    const matrix = used.map(u => rowOf(u.m, u.key));
+    // Blocks: consecutive menus in the same place form one block, so blocks keep the tree order.
+    const blocks = [];
+    used.forEach(u => {
+      const last = blocks[blocks.length - 1];
+      if (last && last.key === u.key) last.menus.push(u.m); else blocks.push({ key: u.key, menus: [u.m] });
+    });
+    const permGroups = blocks.map(b => {
+      const pairs = []; b.menus.forEach(m => funcs.forEach(f => { if (has(m, f)) pairs.push([m, f]); }));
+      const given = pairs.filter(([m, f]) => isOn(m, f)).length;
+      const all = pairs.length > 0 && given === pairs.length;
+      const root = b.key === 'root';
+      return { boxCls: all ? 'p-checkbox-box p-highlight' : 'p-checkbox-box', path: root ? 'Top level (no group)' : pathOf(b.key), indent: !root && depthOf(b.key) === 2 ? '28px' : '0px', iconD: iconD(root ? 'home' : G[b.key].icon), n: String(b.menus.length),
+        able: String(pairs.length), given: String(given), all, toggleAll: () => setMany(pairs, !all), rows: b.menus.map(m => rowOf(m, b.key)) };
+    });
+    const cols = funcs.map(f => {
+      const able = used.filter(u => has(u.m, f));
+      const all = able.length > 0 && able.every(u => isOn(u.m, f));
+      return { name: f, boxCls: all ? 'p-checkbox-box p-highlight' : 'p-checkbox-box', all, none: able.length === 0, title: able.length ? able.length + ' menus have ' + f : 'No menu in this role has ' + f,
+        allAttr: all ? 'true' : 'false', chipCls: all ? 'fchip on' : 'fchip', toggleAll: () => setMany(able.map(u => [u.m, f]), !all) };
+    });
+    const isTable = s.view === 'table';
+
+    const labels = ['Role info', 'Menus & groups', 'Permissions'];
+    const steps = labels.map((l, i) => ({ n: String(i + 1), label: l, cls: s.step === i ? 'p-steps-item p-highlight p-steps-current' : (i < s.step ? 'p-steps-item p-steps-done' : 'p-steps-item'), current: s.step === i ? 'step' : 'false', go: () => this.setState({ step: i }) }));
+    const setG = (id, patch) => this.setState({ groups: { ...G, [id]: { ...G[id], ...patch } } });
+    const newGroup = (into) => {
+      const id = 'g' + s.seq;
+      this.setState({ groups: { ...G, [id]: { name: into === 'root' ? 'New group' : 'New sub group', icon: 'folder' } }, items: { ...items, [into]: [...items[into], id], [id]: [] }, seq: s.seq + 1, editG: id, menuOpen: null });
+    };
+    return {
+      activeCls: s.roleActive !== false ? 'p-inputswitch p-component p-inputswitch-checked' : 'p-inputswitch p-component', colSpan: String(funcs.length + 1), roleActive: s.roleActive !== false, toggleRoleActive: () => this.setState({ roleActive: s.roleActive === false }),
+      steps, stepLabel: labels[s.step], stepNum: String(s.step + 1), stepPct: Math.round((s.step + 1) / 3 * 100) + '%',
+      isInfo: s.step === 0, isMenus: s.step === 1, isPerms: s.step === 2,
+      hasBack: s.step > 0, isFirst: s.step === 0, back: () => this.setState({ step: s.step - 1 }),
+      hasNext: s.step < 2, nextLabel: labels[Math.min(s.step + 1, 2)], next: () => this.setState({ step: s.step + 1 }),
+      matrix, cols, permGroups, fnCount: String(fnN),
+      isTable, groupViewCls: isTable ? 'only-mob' : '',
+      segGroupCls: isTable ? '' : 'on', segTableCls: isTable ? 'on' : '',
+      byGroupAttr: isTable ? 'false' : 'true', tableAttr: isTable ? 'true' : 'false',
+      showByGroup: () => this.setState({ view: 'group' }), showTable: () => this.setState({ view: 'table' }),
+      summary: allGroups.length + ' groups · ' + used.length + ' menus assigned (' + items.root.filter(id => !isG(id)).length + ' at top level)',
+      treeRows, noRows: rows.length === 0, addGroup: () => newGroup('root'),
+      endCls: overNow === 'end|into' ? 'tr endzone into' : 'tr endzone', endDragOver: endDnd.dragOver, endDragLeave: endDnd.dragLeave, endDrop: endDnd.drop,
+      pool, poolText: poolAll.length + ' of ' + cat.length + ' not used yet', noneLeft: poolAll.length === 0, noMatch: poolAll.length > 0 && pool.length === 0,
+      q: s.q || '', onSearch: (e) => this.setState({ q: e.target.value }), menuTotal: String(cat.length),
+      anyOpen: !!s.menuOpen, closeMenu
+    };
+  }
+}
+</script>
+</body>
+</html>

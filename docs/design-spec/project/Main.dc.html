@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · Sign in</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+.login{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);background:#fff}
+.hero{background:var(--gradient);color:#fff;padding:3.5rem 4rem;display:flex;flex-direction:column;justify-content:space-between;gap:2.5rem}
+.hero img{width:10.5rem;height:auto;filter:brightness(0) invert(1)}
+.hero h1{font-size:2.5rem;line-height:1.2;font-weight:700;max-width:30rem}
+.hero p{color:#d3def2;max-width:28rem;font-size:1.0625rem}
+.hero a{color:#fff}
+.formside{display:flex;align-items:center;justify-content:center;padding:3rem 1.5rem}
+.form{width:100%;max-width:25rem;display:flex;flex-direction:column;gap:1.25rem}
+.pwwrap{position:relative}
+.pwwrap .p-inputtext{padding-right:3.25rem}
+.pwtoggle{position:absolute;right:.25rem;top:50%;margin-top:-1.25rem;width:2.5rem;height:2.5rem;border:0;border-radius:.625rem;background:transparent;color:#4e4e4e;cursor:pointer}
+.pwtoggle:hover{background:#eef2ff}
+.form .p-button{width:100%;justify-content:center;font-size:1.0625rem;font-weight:700}
+.form .p-button.busy{opacity:.75;pointer-events:none}
+.remember{display:flex;align-items:center;gap:.625rem;min-height:2.75rem;cursor:pointer}
+@media (max-width:900px){
+.login{grid-template-columns:1fr}
+.hero{padding:1.5rem 1.25rem 2rem;gap:1.25rem}
+.hero img{width:7.5rem}
+.hero h1{font-size:1.5rem}
+.hero .more{display:none}
+.formside{align-items:flex-start;padding:1.75rem 1.25rem 2rem}
+}
+</style>
+</helmet>
+<div class="login">
+  <section class="hero">
+    <img src="/_blob/689fe8019dedee5de4cc643af5bd8b4c" alt="Phillip Life">
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <h1>One sign-in for every system you use at work.</h1>
+      <p class="more">Open your systems, manage who can access what, and review access history in one place.</p>
+    </div>
+    <p class="more" style="font-size: .9375rem;">Need help? <a href="mailto:ITSupport@philliplife.com">ITSupport@philliplife.com</a></p>
+  </section>
+  <section class="formside">
+    <form class="form" aria-labelledby="t">
+      <div style="display: flex; flex-direction: column; gap: .25rem;">
+        <h2 id="t" style="font-size: 1.75rem; font-weight: 700; color: var(--uam-navy);">Sign in</h2>
+        <p style="color: var(--uam-muted);">Use your company (AD) account.</p>
+      </div>
+      <sc-if value="{{isError}}" hint-placeholder-val="{{false}}">
+        <div class="p-message p-message-error p-component" role="alert"><div class="p-message-wrapper"><span class="p-message-icon pi pi-times-circle" aria-hidden="true"></span><span class="p-message-text">Username or password is incorrect. Check them and try again.</span></div></div>
+      </sc-if>
+      <div class="field">
+        <label for="u">Username</label>
+        <input id="u" class="p-inputtext p-component {{invalid}}" type="text" value="somchai.k" autocomplete="username" autocapitalize="none" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="p">Password</label>
+        <div class="pwwrap">
+          <input id="p" class="p-inputtext p-component {{invalid}}" type="{{pwType}}" value="password1" autocomplete="current-password">
+          <button type="button" class="pwtoggle" onClick="{{togglePw}}" aria-label="{{pwLabel}}" aria-pressed="{{pwShown}}"><i class="pi {{pwIcon}}" aria-hidden="true"></i></button>
+        </div>
+        <sc-if value="{{isError}}" hint-placeholder-val="{{false}}"><span class="err">Check the password, or reset it with IT Support.</span></sc-if>
+      </div>
+      <label class="remember">
+        <span class="p-checkbox p-component"><span class="p-hidden-accessible"><input type="checkbox" checked></span><span class="p-checkbox-box p-highlight"><span class="p-checkbox-icon pi pi-check"></span></span></span>
+        Remember my username on this device
+      </label>
+      <a class="p-button p-component {{goCls}}" href="Consent.dc.html">{{goLabel}}</a>
+      <p style="font-size: .875rem; color: var(--uam-muted); text-align: center;">Locked out or forgot your password? <a href="mailto:ITSupport@philliplife.com">Contact IT Support</a></p>
+    </form>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","options":["default","error","loading"],"default":"default","section":"Prototype"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { show: false }; }
+  renderVals() {
+    const st = this.props.state ?? 'default';
+    const err = st === 'error', busy = st === 'loading';
+    return {
+      pwType: this.state.show ? 'text' : 'password',
+      pwLabel: this.state.show ? 'Hide password' : 'Show password',
+      pwIcon: this.state.show ? 'pi-eye-slash' : 'pi-eye',
+      pwShown: this.state.show ? 'true' : 'false',
+      togglePw: () => this.setState({ show: !this.state.show }),
+      isError: err, invalid: err ? 'p-invalid' : '',
+      goCls: busy ? 'busy' : '',
+      goLabel: busy ? 'Signing in…' : 'Sign in'
+    };
+  }
+}
+</script>
+</body>
+</html>

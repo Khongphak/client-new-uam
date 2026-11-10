@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · Edit user</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:.75rem}
+.rc{display:flex;align-items:flex-start;gap:.75rem;padding:.875rem 1rem;border:1px solid var(--line-input);border-radius:.75rem;background:#fff;cursor:pointer;min-height:4.25rem}
+.rc.on{border-color:var(--uam-navy);background:#eef2ff;box-shadow:inset 0 0 0 1px var(--uam-navy)}
+.rc:has(input:focus-visible){outline:2px solid #2854a7;outline-offset:2px}
+.rc .p-radiobutton{position:relative;flex:none;margin-top:.125rem}
+.rc .p-radiobutton input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.rc small{display:block;color:var(--uam-muted)}
+.srow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:.75rem;align-items:end;padding:1rem 0;border-bottom:1px solid var(--uam-rule)}
+.srow:last-of-type{border-bottom:0}
+.srow .menus{grid-column:1 / -1}
+.stack{display:flex;flex-direction:column;gap:1.5rem}
+@media (max-width:767px){.srow{grid-template-columns:1fr}.srow .rm{justify-self:start}}
+</style>
+</helmet>
+<div class="app">
+  <header class="layout-topbar">
+    <div class="topbar-start">
+      <input type="checkbox" id="navchk" class="navchk" aria-label="Show or hide the menu">
+      <h6 class="full">User Access Management</h6>
+      <h6 class="code">UAM</h6>
+    </div>
+    <div class="topbar-end">
+      <details class="user-menu">
+        <summary aria-label="Account menu">
+          <span class="who"><b>Somchai</b><small>ADMIN</small></span>
+          <img src="/_blob/46b771ade22f8b37fc35a4cf1cd26db2" alt="">
+          <i class="pi pi-angle-down" aria-hidden="true"></i>
+        </summary>
+        <div class="p-menu p-component p-menu-overlay">
+          <ul class="p-menu-list p-reset">
+            <li class="p-menuitem"><div class="p-menuitem-content"><a class="p-menuitem-link" href="Main.dc.html"><span class="p-menuitem-icon pi pi-sign-out" aria-hidden="true"></span><span class="p-menuitem-text">Logout</span></a></div></li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </header>
+  <label class="navscrim" for="navchk" aria-hidden="true"></label>
+  <aside class="layout-sidebar">
+    <div class="sidebar-header"><a href="Home.dc.html" aria-label="UAM home"><img src="/_blob/689fe8019dedee5de4cc643af5bd8b4c" alt="Phillip Life"></a></div>
+    <nav class="layout-menu-container" aria-label="Main">
+      <ul class="layout-menu">
+        <li><a class="menu-link" href="Home.dc.html"><img class="layout-menuitem-icon" src="/_blob/34e2c5076ce2bd848a7d323276d2bc27" alt=""><span>Home</span></a></li>
+        <li>
+          <details open>
+            <summary class="menu-link"><img class="layout-menuitem-icon" src="/_blob/31fa7a9d69b81cd4fb2d6c7330aa3154" alt=""><span>Setting</span><i class="pi pi-angle-down layout-submenu-toggler" aria-hidden="true"></i></summary>
+            <ul>
+              <li><a class="menu-link" href="Systems.dc.html">System Setting</a></li>
+              <li><a class="menu-link active-route" href="Users.dc.html" aria-current="page">User &amp; Permission</a></li>
+            </ul>
+          </details>
+        </li>
+        <li><a class="menu-link" href="Report.dc.html"><img class="layout-menuitem-icon" src="/_blob/2660d15fafe7e5775fe27a6a37b1b20a" alt=""><span>Report</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+  <main class="layout-main"><div class="phead"><div class="phead-in">
+      <div class="phead-top has-back"><a class="u-back" href="Users.dc.html" aria-label="Back to User &amp; Permission" title="Back to User &amp; Permission"><i class="pi pi-arrow-left" aria-hidden="true"></i></a>
+        <div class="who-row"><span class="p-avatar p-component p-avatar-circle p-avatar-lg">NP</span>
+          <div class="phead-title"><h1>Nattaya Prasert</h1><div class="meta"><span class="{{statusCls}}"><span class="p-tag-value">{{statusText}}</span></span><span class="u-role">{{uamRole}}</span><span class="hint">nattaya.p · Claims</span></div></div>
+        </div>
+      </div>
+      <div class="tabs-wrap"><div class="p-tabmenu p-component"><div class="p-tabmenu-nav-container"><div class="p-tabmenu-nav-content"><ul class="p-tabmenu-nav p-reset" role="tablist">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3"><li class="{{t.cls}}" role="presentation"><button type="button" role="tab" class="p-menuitem-link" aria-selected="{{t.sel}}" onClick="{{t.pick}}"><span class="p-menuitem-text">{{t.label}}</span><sc-if value="{{t.hasN}}" hint-placeholder-val="{{false}}"><span class="count">{{t.n}}</span></sc-if></button></li></sc-for>
+    </ul></div></div></div></div>
+    </div></div><div class="layout-content-wrapper">
+
+    
+    <sc-if value="{{saved}}" hint-placeholder-val="{{false}}"><div class="p-message p-message-success p-component" role="status"><div class="p-message-wrapper"><span class="p-message-icon pi pi-check-circle" aria-hidden="true"></span><span class="p-message-text">Changes saved.</span></div></div></sc-if>
+
+    <sc-if value="{{hasErrors}}" hint-placeholder-val="{{false}}"><div class="p-message p-message-error p-component" role="alert"><div class="p-message-wrapper"><span class="p-message-icon pi pi-times-circle" aria-hidden="true"></span><span class="p-message-text"><b>{{errTitle}}</b><ul class="u-errlist"><sc-for list="{{errList}}" as="e" hint-placeholder-count="2"><li>{{e}}</li></sc-for></ul></span></div></div></sc-if>
+
+    <sc-if value="{{onProfile}}" hint-placeholder-val="{{true}}">
+      <div class="stack">
+        <section class="p-card p-component" aria-label="Profile"><div class="p-card-body">
+          <div class="p-card-title">Profile</div>
+          <p class="hint" style="margin-bottom: 1rem;">Filled from Active Directory. You only type the username.</p>
+          <div class="form-grid"><div class="field"><label for="un">Username <span class="req">*</span></label><input id="un" class="p-inputtext p-component" value="nattaya.p"></div>
+          <div class="u-grid-end"><button type="button" class="p-button p-component p-button-secondary"><i class="pi pi-search" aria-hidden="true"></i><span class="p-button-label">Look up in AD</span></button></div></div>
+          <sc-if value="{{adOk}}" hint-placeholder-val="{{true}}"><div class="p-message p-message-info p-component" style="margin: 1rem 0;"><div class="p-message-wrapper"><span class="p-message-icon pi pi-info-circle" aria-hidden="true"></span><span class="p-message-text">Found in AD · synced 31 Oct 2026 09:00</span></div></div></sc-if><sc-if value="{{adMissing}}" hint-placeholder-val="{{false}}"><div class="p-message p-message-error p-component" role="alert" style="margin: 1rem 0;"><div class="p-message-wrapper"><span class="p-message-icon pi pi-times-circle" aria-hidden="true"></span><span class="p-message-text">The user information retrieved from Active Directory is incomplete. Please update the required details in Active Directory before processing with user registration.</span></div></div></sc-if>
+          <div class="form-grid">
+            <div class="field"><label for="p1">Name</label><input id="p1" class="p-inputtext p-component" value="{{f.first}}" placeholder="{{f.ph}}" readonly></div>
+            <div class="field"><label for="p2">Surname</label><input id="p2" class="p-inputtext p-component" value="{{f.last}}" placeholder="{{f.ph}}" readonly></div>
+            <div class="field"><label for="p3">Position</label><input id="p3" class="p-inputtext p-component" value="{{f.pos}}" placeholder="{{f.ph}}" readonly></div>
+            <div class="field"><label for="p4">Department</label><input id="p4" class="p-inputtext p-component" value="{{f.dept}}" placeholder="{{f.ph}}" readonly></div>
+            <div class="field"><label for="p5">Email</label><input id="p5" class="p-inputtext p-component" value="{{f.mail}}" placeholder="{{f.ph}}" readonly></div>
+            <div class="field"><label for="p6">Ext. number</label><input id="p6" class="p-inputtext p-component" value="{{f.ext}}" placeholder="{{f.ph}}" readonly></div>
+          </div>
+          <div style="margin-top: 1.75rem;"><div class="u-subtitle">Approvers</div><p class="hint" style="margin: .125rem 0 .75rem;">From Active Directory, in approval order. To change them, update the manager in AD.</p>
+            <ol class="u-approvers" aria-label="Approvers">
+              <sc-for list="{{approvers}}" as="a" hint-placeholder-count="3"><li class="{{a.cls}}"><span class="u-approvers__n">{{a.n}}</span><sc-if value="{{a.isSet}}" hint-placeholder-val="{{true}}"><span class="u-row__main"><b>{{a.name}}</b></span></sc-if><sc-if value="{{a.unset}}" hint-placeholder-val="{{false}}"><span>Not set</span></sc-if></li></sc-for>
+            </ol></div>
+        </div></section>
+
+        <section class="p-card p-component" aria-label="Access to UAM"><div class="p-card-body" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="p-card-title">Access to UAM</div>
+          <div role="radiogroup" aria-label="UAM role" class="roles">
+            <sc-for list="{{uamRoles}}" as="r" hint-placeholder-count="4"><label class="{{r.cls}}"><span class="p-radiobutton p-component"><input type="radio" name="uam" checked="{{r.on}}" onChange="{{r.pick}}"><span class="{{r.boxCls}}"><span class="p-radiobutton-icon"></span></span></span><span><b>{{r.name}}</b><small>{{r.desc}}</small></span></label></sc-for>
+          </div>
+          <label class="u-switch-row"><span class="u-switch-row__text"><b>System Admin</b><span class="hint">Full access to every page. Give this to very few people.</span></span><span class="{{adminCls}}"><span class="p-hidden-accessible"><input type="checkbox" role="switch" checked="{{sysAdmin}}" onChange="{{toggleAdmin}}"></span><span class="p-inputswitch-slider"></span></span></label>
+          <sc-if value="{{sysAdmin}}" hint-placeholder-val="{{false}}"><div class="p-message p-message-warn p-component" role="alert"><div class="p-message-wrapper"><span class="p-message-icon pi pi-exclamation-triangle" aria-hidden="true"></span><span class="p-message-text">System Admin can change users, roles and every system setting. Make sure this person needs it.</span></div></div></sc-if>
+          <label class="u-switch-row"><span class="u-switch-row__text"><b>Active</b><span class="hint">Inactive users can’t sign in. Their history stays in reports.</span></span><span class="{{activeCls}}"><span class="p-hidden-accessible"><input type="checkbox" role="switch" checked="{{active}}" onChange="{{toggleActive}}"></span><span class="p-inputswitch-slider"></span></span></label>
+        </div></section>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{onSystems}}" hint-placeholder-val="{{false}}">
+      <section class="p-card p-component" aria-label="Systems and roles"><div class="p-card-body">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+          <div><div class="p-card-title">Systems and roles ({{rowCount}})</div></div>
+          <button type="button" class="p-button p-component p-button-sm" onClick="{{addRow}}"><i class="pi pi-plus" aria-hidden="true"></i><span class="p-button-label">Add system</span></button>
+        </div>
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="2">
+          <div class="srow">
+            <div class="field"><label for="s-{{r.i}}">System</label><select id="s-{{r.i}}" class="p-inputtext p-component {{r.sysInv}}" value="{{r.system}}" onChange="{{r.setSystem}}"><sc-for list="{{r.systemOpts}}" as="o" hint-placeholder-count="3"><option>{{o}}</option></sc-for></select></div>
+            <div class="field"><label for="r-{{r.i}}">Role</label><select id="r-{{r.i}}" class="p-inputtext p-component {{r.roleInv}}" value="{{r.role}}" onChange="{{r.setRole}}"><sc-for list="{{r.roleOpts}}" as="o" hint-placeholder-count="3"><option>{{o}}</option></sc-for></select></div>
+            <div class="actions rm"><button type="button" class="p-button p-component p-button-text p-button-sm" aria-expanded="{{r.openAttr}}" onClick="{{r.toggle}}"><span class="p-button-label">{{r.toggleLabel}}</span></button><button type="button" class="p-button p-component p-button-danger p-button-text p-button-sm p-button-icon-only" aria-label="Remove {{r.system}}" onClick="{{r.remove}}"><i class="pi pi-trash" aria-hidden="true"></i></button></div>
+            <sc-if value="{{r.open}}" hint-placeholder-val="{{false}}"><div class="menus"><sc-for list="{{r.menus}}" as="m" hint-placeholder-count="3"><div class="u-perm-row"><span class="u-perm-row__name"><small>{{m.group}} /</small> {{m.menu}}</span><span>{{m.perms}}</span></div></sc-for></div></sc-if>
+            <sc-if value="{{r.err}}" hint-placeholder-val="{{false}}"><span class="err rowerr" role="alert">{{r.errText}}</span></sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{noRows}}" hint-placeholder-val="{{false}}"><div class="empty-state">No system yet. Add a system to give this person access.</div></sc-if>
+      </div></section>
+    </sc-if>
+
+    <sc-if value="{{onPreview}}" hint-placeholder-val="{{false}}">
+      <div class="u-stack">
+        <div class="u-between"><div><h2 class="u-section-title">Permission preview</h2><p class="hint">Everything this person gets from the systems and roles above.</p></div><button type="button" class="p-button p-component p-button-secondary p-button-sm"><i class="pi pi-download" aria-hidden="true"></i><span class="p-button-label">Export</span></button></div>
+        <div class="p-datatable p-component"><div class="p-datatable-wrapper"><table class="p-datatable-table" style="min-width: 40rem;">
+          <thead class="p-datatable-thead"><tr><th scope="col">System</th><th scope="col">Role</th><th scope="col">Group / Menu</th><th scope="col">Functions</th></tr></thead>
+          <tbody class="p-datatable-tbody"><sc-for list="{{previewRows}}" as="p" hint-placeholder-count="6"><tr><td>{{p.system}}</td><td>{{p.role}}</td><td>{{p.group}} / {{p.menu}}</td><td>{{p.perms}}</td></tr></sc-for></tbody>
+        </table></div></div>
+      </div>
+    </sc-if>
+
+    <div class="savebar">
+      <span style="font-size: .9375rem; color: {{changesColor}};">{{changesText}}</span>
+      <div class="actions">
+        <a class="p-button p-component p-button-secondary" href="Users.dc.html"><span class="p-button-label">Cancel</span></a>
+        <button type="button" class="p-button p-component" disabled="{{clean}}" onClick="{{save}}"><span class="p-button-label">Save changes</span></button>
+      </div>
+    </div>
+
+  </div></main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","options":["normal", "ad-missing", "duplicate", "invalid"],"default":"normal","section":"Prototype"},"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const st = (p && p.state) || 'normal';
+    const rows0 = st === 'duplicate' ? [['Claim System', 'Claim Officer'], ['Claim System', 'Claim Approver']] : st === 'invalid' ? [['Claim System', 'Claim Officer'], ['Select a system', 'Select a role']] : [['Claim System', 'Claim Officer'], ['Document Center', 'Viewer']];
+    const bad = st === 'duplicate' || st === 'invalid';
+    this.state = { tab: bad ? 1 : 0, uam: 'USER', admin: false, active: true, open: {}, rows: rows0, changes: bad ? 1 : 0, saved: false, submitted: bad, st };
+  }
+  renderVals() {
+    const s = this.state;
+    const touch = (patch) => this.setState({ ...patch, changes: s.changes + 1, saved: false });
+    const defs = [['USER', 'Opens systems from Home'], ['AUDIT', 'Also sees Reports'], ['DEVELOPER', 'Also edits System Setting'], ['ADMIN', 'Everything, including users and roles']];
+    const uamRoles = defs.map(d => { const on = s.uam === d[0]; return { name: d[0], desc: d[1], on, cls: on ? 'rc on' : 'rc', boxCls: on ? 'p-radiobutton-box p-highlight' : 'p-radiobutton-box', pick: () => touch({ uam: d[0] }) }; });
+    const sample = [
+      { group: 'Claims', menu: 'Claim Register', perms: 'View · Add · Edit' },
+      { group: 'Claims', menu: 'Claim Search', perms: 'View' },
+      { group: 'Reports', menu: 'Daily Claims', perms: 'View · Report' }
+    ];
+    const systems = ['Claim System', 'Policy Admin', 'Agent Portal', 'Document Center', 'Underwriting'];
+    const roles = ['Claim Officer', 'Claim Approver', 'Policy Viewer', 'Viewer', 'Agent Admin'];
+    const first = (v, list, ph) => v && !v.startsWith('Select') ? [v, ...list.filter(x => x !== v)] : [ph, ...list];
+    const setRow = (i, k, v) => touch({ rows: s.rows.map((r, j) => j === i ? (k === 0 ? [v, r[1]] : [r[0], v]) : r) });
+    const seen = {};
+    const rowErr = s.rows.map((r) => { const noSys = r[0].startsWith('Select'); const noRole = r[1].startsWith('Select'); let dup = false; if (!noSys) { dup = !!seen[r[0]]; seen[r[0]] = true; } return { noSys: s.submitted && noSys, noRole: s.submitted && noRole, dup: s.submitted && dup }; });
+    const DUP = 'Duplicate system detected. Please check and select a different system.';
+    const errList = [];
+    rowErr.forEach((e, i) => { if (e.noSys) errList.push('Row ' + (i + 1) + ': select a system'); if (e.noRole) errList.push('Row ' + (i + 1) + ': select a role'); if (e.dup) errList.push('Row ' + (i + 1) + ': ' + DUP); });
+    const anyMissing = rowErr.some(e => e.noSys || e.noRole);
+    const adMissing = s.st === 'ad-missing';
+    const f = adMissing ? { first: '', last: '', pos: '', dept: '', mail: '', ext: '', ph: 'Missing in AD' } : { first: 'Nattaya', last: 'Prasert', pos: 'Claim Officer', dept: 'Claims', mail: 'nattaya.p@[company].com', ext: '2241', ph: '' };
+    const approvers = [['Somchai Khemthong', 'somchai.k'], ['Wichai Boonmee', 'wichai.b'], null].map((a, i) => (a && !adMissing) ? { n: String(i + 1), name: a[0], user: a[1], isSet: true, unset: false, cls: '' } : { n: String(i + 1), isSet: false, unset: true, cls: 'is-empty' });
+    const rows = s.rows.map((r, i) => ({
+      err: rowErr[i].noSys || rowErr[i].noRole || rowErr[i].dup, sysInv: (rowErr[i].noSys || rowErr[i].dup) ? 'p-invalid' : '', roleInv: rowErr[i].noRole ? 'p-invalid' : '',
+      errText: rowErr[i].dup ? DUP : (rowErr[i].noSys && rowErr[i].noRole ? 'Select a system and a role.' : rowErr[i].noSys ? 'Select a system.' : 'Select a role.'),
+      i: String(i), system: r[0], role: r[1], systemOpts: first(r[0], systems, 'Select a system'), roleOpts: first(r[1], roles, 'Select a role'),
+      setSystem: (e) => setRow(i, 0, e.target.value), setRole: (e) => setRow(i, 1, e.target.value),
+      open: !!s.open[i], openAttr: s.open[i] ? 'true' : 'false', toggleLabel: s.open[i] ? 'Hide menus' : 'Show menus', menus: sample,
+      toggle: () => this.setState({ open: { ...s.open, [i]: !s.open[i] } }),
+      remove: () => touch({ rows: s.rows.filter((_, j) => j !== i), open: {} })
+    }));
+    const previewRows = [];
+    s.rows.forEach(r => sample.forEach(m => previewRows.push({ system: r[0], role: r[1], ...m })));
+    const dirty = s.changes > 0;
+    const sw = (on) => on ? 'p-inputswitch p-component p-inputswitch-checked' : 'p-inputswitch p-component';
+    const tabLabels = ['Profile & access', 'Systems & roles', 'Permission preview'];
+    return {
+      tabs: tabLabels.map((l, i) => ({ label: l, sel: s.tab === i ? 'true' : 'false', cls: s.tab === i ? 'p-tabmenuitem p-highlight' : 'p-tabmenuitem', hasN: i === 1, n: String(rows.length), pick: () => this.setState({ tab: i }) })),
+      onProfile: s.tab === 0, onSystems: s.tab === 1, onPreview: s.tab === 2,
+      statusText: s.active ? 'Active' : 'Inactive', statusCls: s.active ? 'u-status is-ok' : 'u-status is-off',
+      uamRoles, uamRole: s.uam, rows, rowCount: String(rows.length), noRows: rows.length === 0, previewRows,
+      sysAdmin: s.admin, adminCls: sw(s.admin), toggleAdmin: () => touch({ admin: !s.admin }),
+      active: s.active, activeCls: sw(s.active), toggleActive: () => touch({ active: !s.active }),
+      f, approvers, adMissing, adOk: !adMissing, hasErrors: errList.length > 0, errList, errTitle: anyMissing ? 'Some required information is missing, please correct and try again.' : 'Invalid input',
+      clean: !dirty || errList.length > 0 || adMissing, saved: s.saved, save: () => this.setState({ changes: 0, saved: true, submitted: true }),
+      changesText: dirty ? s.changes + ' unsaved change' + (s.changes > 1 ? 's' : '') : 'No changes yet',
+      changesColor: dirty ? '#7a4b00' : '#5d5d5d',
+      addRow: () => touch({ rows: [...s.rows, ['Select a system', 'Select a role']] })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · Report</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+.exportbar{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);margin:0 -1.25rem -1.25rem;padding:.75rem 1.25rem}
+</style>
+</helmet>
+<div class="app">
+  <header class="layout-topbar">
+    <div class="topbar-start">
+      <input type="checkbox" id="navchk" class="navchk" aria-label="Show or hide the menu">
+      <h6 class="full">User Access Management</h6>
+      <h6 class="code">UAM</h6>
+    </div>
+    <div class="topbar-end">
+      <details class="user-menu">
+        <summary aria-label="Account menu">
+          <span class="who"><b>Somchai</b><small>ADMIN</small></span>
+          <img src="/_blob/46b771ade22f8b37fc35a4cf1cd26db2" alt="">
+          <i class="pi pi-angle-down" aria-hidden="true"></i>
+        </summary>
+        <div class="p-menu p-component p-menu-overlay">
+          <ul class="p-menu-list p-reset">
+            <li class="p-menuitem"><div class="p-menuitem-content"><a class="p-menuitem-link" href="Main.dc.html"><span class="p-menuitem-icon pi pi-sign-out" aria-hidden="true"></span><span class="p-menuitem-text">Logout</span></a></div></li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </header>
+  <label class="navscrim" for="navchk" aria-hidden="true"></label>
+  <aside class="layout-sidebar">
+    <div class="sidebar-header"><a href="Home.dc.html" aria-label="UAM home"><img src="/_blob/689fe8019dedee5de4cc643af5bd8b4c" alt="Phillip Life"></a></div>
+    <nav class="layout-menu-container" aria-label="Main">
+      <ul class="layout-menu">
+        <li><a class="menu-link" href="Home.dc.html"><img class="layout-menuitem-icon" src="/_blob/34e2c5076ce2bd848a7d323276d2bc27" alt=""><span>Home</span></a></li>
+        <li>
+          <details>
+            <summary class="menu-link"><img class="layout-menuitem-icon" src="/_blob/31fa7a9d69b81cd4fb2d6c7330aa3154" alt=""><span>Setting</span><i class="pi pi-angle-down layout-submenu-toggler" aria-hidden="true"></i></summary>
+            <ul>
+              <li><a class="menu-link" href="Systems.dc.html">System Setting</a></li>
+              <li><a class="menu-link" href="Users.dc.html">User &amp; Permission</a></li>
+            </ul>
+          </details>
+        </li>
+        <li><a class="menu-link active-route" href="Report.dc.html" aria-current="page"><img class="layout-menuitem-icon" src="/_blob/2660d15fafe7e5775fe27a6a37b1b20a" alt=""><span>Report</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+  <main class="layout-main"><div class="phead"><div class="phead-in">
+      <div class="phead-top"><div class="phead-title"><h1>Report</h1></div></div>
+      <div class="tabs-wrap"><div class="p-tabmenu p-component"><div class="p-tabmenu-nav-container"><div class="p-tabmenu-nav-content"><ul class="p-tabmenu-nav p-reset" role="tablist">
+      <sc-for list="{{types}}" as="t" hint-placeholder-count="2"><li class="{{t.cls}}" role="presentation"><button type="button" role="tab" class="p-menuitem-link" aria-selected="{{t.sel}}" onClick="{{t.pick}}"><span class="p-menuitem-text">{{t.name}}</span></button></li></sc-for>
+    </ul></div></div></div></div>
+    </div></div><div class="layout-content-wrapper">
+
+    <section class="p-card p-component" aria-label="Report options"><div class="p-card-body">
+      <div class="p-card-title">{{typeName}}</div>
+      <p class="hint">{{typeDesc}}</p>
+      <div class="form-grid is-4" style="margin-top: 1.25rem;">
+        <div class="field"><label for="sys">System Name <span class="req">*</span></label>
+          <select id="sys" class="p-inputtext p-component" value="{{system}}" onChange="{{pickSystem}}"><option value="">Select a system</option><option>Claim System</option><option>Policy Admin</option><option>Agent Portal</option></select></div>
+        <sc-if value="{{isMatrix}}" hint-placeholder-val="{{true}}">
+          <div class="field"><label for="dep">Department</label>
+            <select id="dep" class="p-inputtext p-component"><option>All departments</option><option>Claims</option><option>IT</option><option>Agency</option><option>Finance</option><option>Internal Audit</option></select></div>
+        </sc-if>
+        <sc-if value="{{isAudit}}" hint-placeholder-val="{{false}}">
+          <div class="field"><label for="rng">Date range</label>
+            <select id="rng" class="p-inputtext p-component" value="{{range}}" onChange="{{pickRange}}"><option>Custom</option><option>Last 7 days</option><option>This month</option><option>Last month</option></select></div>
+          <div class="field"><label for="d1">From <span class="req">*</span></label><input id="d1" type="date" class="p-inputtext p-component" value="{{from}}" onInput="{{setFrom}}"></div>
+          <div class="field"><label for="d2">To <span class="req">*</span></label><input id="d2" type="date" class="p-inputtext p-component" value="{{to}}" onInput="{{setTo}}"></div>
+        </sc-if>
+      </div>
+      <div class="u-card-foot">
+        <button type="button" class="p-button p-component p-button-text" onClick="{{reset}}"><i class="pi pi-refresh" aria-hidden="true"></i><span class="p-button-label">Reset</span></button>
+        <button type="button" class="p-button p-component" disabled="{{cannotExport}}"><i class="pi pi-download" aria-hidden="true"></i><span class="p-button-label">Export</span></button>
+      </div>
+    </div></section>
+
+    <sc-if value="{{dlFail}}" hint-placeholder-val="{{false}}"><div class="p-message p-message-error p-component u-toast" role="alert"><div class="p-message-wrapper"><span class="p-message-icon pi pi-times-circle" aria-hidden="true"></span><span class="p-message-text"><b>Couldn’t download the Excel file</b><br>Check your connection and try again.</span><a class="p-button p-component p-button-sm p-button-secondary" href="Report.dc.html">Try again</a></div></div></sc-if>
+
+  </div></main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","options":["normal","downloadfail"],"default":"normal","section":"Prototype"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { type: 'matrix', system: 'Claim System', range: 'This month', from: '2026-10-01', to: '2026-10-31' }; }
+  renderVals() {
+    const s = this.state;
+    const st = this.props.state ?? 'normal';
+    const defs = [
+      ['matrix', 'Authorization Matrix Report', 'Who has which role and menu rights in a system. Leave Department empty to include every department. Downloads an Excel file.'],
+      ['audit', 'Audit Trails Report', 'Who opened a system from UAM, and when, within the dates you pick. Downloads an Excel file.']
+    ];
+    const types = defs.map(d => ({ name: d[1], sel: s.type === d[0] ? 'true' : 'false', cls: s.type === d[0] ? 'p-tabmenuitem p-highlight' : 'p-tabmenuitem', pick: () => this.setState({ type: d[0] }) }));
+    const isMatrix = s.type === 'matrix';
+    const cur = defs.find(d => d[0] === s.type);
+    const spans = { 'Last 7 days': ['2026-10-25', '2026-10-31'], 'This month': ['2026-10-01', '2026-10-31'], 'Last month': ['2026-09-01', '2026-09-30'] };
+    const ok = !!s.system && (isMatrix || (!!s.from && !!s.to));
+    return {
+      types, typeName: cur[1], typeDesc: cur[2], isMatrix, isAudit: !isMatrix, range: s.range, from: s.from, to: s.to, system: s.system,
+      pickRange: (e) => { const v = e.target.value; const sp = spans[v]; this.setState(sp ? { range: v, from: sp[0], to: sp[1] } : { range: 'Custom' }); },
+      setFrom: (e) => this.setState({ from: e.target.value, range: 'Custom' }),
+      setTo: (e) => this.setState({ to: e.target.value, range: 'Custom' }),
+      cannotExport: !ok, dlFail: st === 'downloadfail',
+      pickSystem: (e) => this.setState({ system: e.target.value }),
+      reset: () => this.setState({ system: '', range: 'This month', from: '2026-10-01', to: '2026-10-31' })
+    };
+  }
+}
+</script>
+</body>
+</html>

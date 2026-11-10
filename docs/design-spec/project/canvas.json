@@ -1,0 +1,502 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-31T10:00:00Z"
+  },
+  "title": "UAM Redesign Prototype",
+  "launch": {
+    "view": "canvas"
+  },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "1 · Login",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Consent.dc.html": {
+      "x": 1520,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "2 · PDPA Consent",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Home.dc.html": {
+      "x": 3040,
+      "y": 0,
+      "w": 1440,
+      "h": 1000,
+      "title": "3 · Home",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Systems.dc.html": {
+      "x": 0,
+      "y": 1400,
+      "w": 1440,
+      "h": 1000,
+      "title": "4 · System Setting (table + drawer)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Users.dc.html": {
+      "x": 1520,
+      "y": 1400,
+      "w": 1440,
+      "h": 1000,
+      "title": "5 · Users list",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "UserEditor.dc.html": {
+      "x": 3040,
+      "y": 1400,
+      "w": 1440,
+      "h": 1500,
+      "title": "6 · Edit User",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "RoleEditor.dc.html": {
+      "x": 0,
+      "y": 3300,
+      "w": 1440,
+      "h": 1200,
+      "title": "7 · Role editor (Group menu + Permissions)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Report.dc.html": {
+      "x": 1520,
+      "y": 3300,
+      "w": 1440,
+      "h": 1000,
+      "title": "8 · Report",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "MainPhone.dc.html": {
+      "x": 0,
+      "y": 4900,
+      "w": 390,
+      "h": 844,
+      "title": "1 · Login · phone",
+      "is_interactive": true
+    },
+    "ConsentPhone.dc.html": {
+      "x": 470,
+      "y": 4900,
+      "w": 390,
+      "h": 1100,
+      "title": "2 · Consent · phone",
+      "is_interactive": true
+    },
+    "HomePhone.dc.html": {
+      "x": 940,
+      "y": 4900,
+      "w": 390,
+      "h": 1100,
+      "title": "3 · Home · phone",
+      "is_interactive": true
+    },
+    "SystemsPhone.dc.html": {
+      "x": 1410,
+      "y": 4900,
+      "w": 390,
+      "h": 1300,
+      "title": "4 · System Setting · phone",
+      "is_interactive": true
+    },
+    "UsersPhone.dc.html": {
+      "x": 1880,
+      "y": 4900,
+      "w": 390,
+      "h": 1300,
+      "title": "5 · Users · phone",
+      "is_interactive": true
+    },
+    "UserEditorPhone.dc.html": {
+      "x": 2350,
+      "y": 4900,
+      "w": 390,
+      "h": 1900,
+      "title": "6 · Edit User · phone",
+      "is_interactive": true
+    },
+    "RoleEditorPhone.dc.html": {
+      "x": 2820,
+      "y": 4900,
+      "w": 390,
+      "h": 1700,
+      "title": "7 · Role editor · phone",
+      "is_interactive": true
+    },
+    "ReportPhone.dc.html": {
+      "x": 3290,
+      "y": 4900,
+      "w": 390,
+      "h": 1500,
+      "title": "8 · Report · phone",
+      "is_interactive": true
+    },
+    "UserView.dc.html": {
+      "x": 3540,
+      "y": 3300,
+      "w": 1440,
+      "h": 1100,
+      "title": "9 · User details (View)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "RoleView.dc.html": {
+      "x": 5060,
+      "y": 3300,
+      "w": 1440,
+      "h": 1100,
+      "title": "10 · Role details (View)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "UserViewPhone.dc.html": {
+      "x": 3760,
+      "y": 4900,
+      "w": 390,
+      "h": 1500,
+      "title": "9 · User details · phone",
+      "is_interactive": true
+    },
+    "RoleViewPhone.dc.html": {
+      "x": 4230,
+      "y": 4900,
+      "w": 390,
+      "h": 1500,
+      "title": "10 · Role details · phone",
+      "is_interactive": true
+    },
+    "Err404.dc.html": {
+      "x": 0,
+      "y": 7300,
+      "w": 1440,
+      "h": 900,
+      "title": "11 · 404 Page not found",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Err403.dc.html": {
+      "x": 1520,
+      "y": 7300,
+      "w": 1440,
+      "h": 900,
+      "title": "12 · 403 No access",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "DlgSession.dc.html": {
+      "x": 3040,
+      "y": 7300,
+      "w": 1440,
+      "h": 900,
+      "title": "13 · Session expired",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "DlgNetwork.dc.html": {
+      "x": 4560,
+      "y": 7300,
+      "w": 1440,
+      "h": 900,
+      "title": "14 · Network error",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "DlgServer.dc.html": {
+      "x": 0,
+      "y": 8600,
+      "w": 1440,
+      "h": 900,
+      "title": "15 · Server error",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "DlgDeleteConfirm.dc.html": {
+      "x": 1520,
+      "y": 8600,
+      "w": 1440,
+      "h": 900,
+      "title": "16 · Delete confirm",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "DlgDeleteFail.dc.html": {
+      "x": 3040,
+      "y": 8600,
+      "w": 1440,
+      "h": 900,
+      "title": "17 · Delete refused",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "HomeLoading.dc.html": {
+      "x": 0,
+      "y": 9900,
+      "w": 1440,
+      "h": 900,
+      "title": "19 · Home · loading",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "HomeEmpty.dc.html": {
+      "x": 1520,
+      "y": 9900,
+      "w": 1440,
+      "h": 900,
+      "title": "20 · Home · no systems",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "HomeError.dc.html": {
+      "x": 3040,
+      "y": 9900,
+      "w": 1440,
+      "h": 900,
+      "title": "21 · Home · load failed",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "ReportFail.dc.html": {
+      "x": 4560,
+      "y": 9900,
+      "w": 1440,
+      "h": 900,
+      "title": "22 · Report · download failed",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "UsersLoading.dc.html": {
+      "x": 0,
+      "y": 11200,
+      "w": 1440,
+      "h": 900,
+      "title": "23 · List · loading",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "UsersError.dc.html": {
+      "x": 1520,
+      "y": 11200,
+      "w": 1440,
+      "h": 900,
+      "title": "24 · List · load failed",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "UsersEmpty.dc.html": {
+      "x": 3040,
+      "y": 11200,
+      "w": 1440,
+      "h": 900,
+      "title": "25 · List · empty",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "EditAdMissing.dc.html": {
+      "x": 4560,
+      "y": 11200,
+      "w": 1440,
+      "h": 1100,
+      "title": "26 · Edit user · AD incomplete",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "EditDuplicate.dc.html": {
+      "x": 0,
+      "y": 12500,
+      "w": 1440,
+      "h": 1100,
+      "title": "27 · Edit user · duplicate system",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "EditInvalid.dc.html": {
+      "x": 1520,
+      "y": 12500,
+      "w": 1440,
+      "h": 1100,
+      "title": "28 · Edit user · missing fields",
+      "expand": "fill",
+      "is_interactive": true
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Consent.dc.html",
+    "Home.dc.html",
+    "Systems.dc.html",
+    "Users.dc.html",
+    "UserEditor.dc.html",
+    "RoleEditor.dc.html",
+    "Report.dc.html",
+    "UserView.dc.html",
+    "RoleView.dc.html",
+    "MainPhone.dc.html",
+    "ConsentPhone.dc.html",
+    "HomePhone.dc.html",
+    "SystemsPhone.dc.html",
+    "UsersPhone.dc.html",
+    "UserEditorPhone.dc.html",
+    "RoleEditorPhone.dc.html",
+    "ReportPhone.dc.html",
+    "UserViewPhone.dc.html",
+    "RoleViewPhone.dc.html",
+    "Err404.dc.html",
+    "Err403.dc.html",
+    "DlgSession.dc.html",
+    "DlgNetwork.dc.html",
+    "DlgServer.dc.html",
+    "DlgDeleteConfirm.dc.html",
+    "DlgDeleteFail.dc.html",
+    "HomeLoading.dc.html",
+    "HomeEmpty.dc.html",
+    "HomeError.dc.html",
+    "ReportFail.dc.html",
+    "UsersLoading.dc.html",
+    "UsersError.dc.html",
+    "UsersEmpty.dc.html",
+    "EditAdMissing.dc.html",
+    "EditDuplicate.dc.html",
+    "EditInvalid.dc.html"
+  ],
+  "notes": {
+    "row1": {
+      "x": 0,
+      "y": -300,
+      "text": "Sign in & Home",
+      "kind": "title1",
+      "maxW": 4480
+    },
+    "row2": {
+      "x": 0,
+      "y": 1100,
+      "text": "Settings: one table pattern, one side drawer",
+      "kind": "title1",
+      "maxW": 4480
+    },
+    "row3": {
+      "x": 0,
+      "y": 3000,
+      "text": "Role editor, Report & View pages",
+      "kind": "title1",
+      "maxW": 6500
+    },
+    "row4": {
+      "x": 0,
+      "y": 4600,
+      "text": "Phone (390 px): same pages, mobile layout",
+      "kind": "title1",
+      "maxW": 4620
+    },
+    "n-layout": {
+      "x": 4560,
+      "y": 0,
+      "w": 420,
+      "size": "m",
+      "fill": "blue",
+      "text": "Topbar + sidebar (อิงโค้ดเดิม)\n• topbar สูง 70px: ปุ่มเมนู, ชื่อ USER ACCESS MANAGEMENT, ชื่อ+role, avatar, เมนู Logout\n• sidebar กว้าง 250px: โลโก้, Home / Setting (System Setting, User & Permission) / Report, เมนูที่เปิดอยู่ไล่สีน้ำเงินเหมือนเดิม\n• กดปุ่มเมนูเพื่อซ่อน sidebar; จอ <768px sidebar เป็น drawer\n• หน้าที่เหลือใช้ component ของ PrimeNG 17 (CSS จริงของ lara-light-blue)"
+    },
+    "n-login": {
+      "x": 4560,
+      "y": 560,
+      "w": 420,
+      "size": "m",
+      "fill": "gray",
+      "text": "Login / Consent\n• Login: Tweaks › state = default / error / loading; รหัสผ่านมีปุ่มแสดง/ซ่อน\n• Consent: ติ๊กยอมรับก่อนปุ่ม Agree and continue ใช้ได้; Decline ถามยืนยันก่อน sign out"
+    },
+    "n-list": {
+      "x": 4560,
+      "y": 1400,
+      "w": 420,
+      "size": "m",
+      "fill": "gray",
+      "text": "Table pattern (System Setting, Users, Roles)\n• p-tabmenu → แถบเครื่องมือ: ค้นหา (ซ้าย) + ปุ่ม Filters/Reset (ขวา) แบบเดียวกันทุกตาราง\n• กด Filters เปิดแผง dropdown มีป้ายชื่อใต้แถบ (หมวดหมู่เช่น Owner, Type, Department, UAM role, Status); ปุ่มแสดงจำนวนตัวกรองที่ใช้อยู่\n• ค้นหาใช้หาชื่อ ส่วน Filters ใช้แคบลงตามหมวด; System Setting: ดู/เพิ่ม/แก้ไขใน p-sidebar ด้านขวา\n• Users/Roles: ชื่อเป็นลิงก์ไปหน้า View; มือถือเป็นรายการแตะแล้วเปิด"
+    },
+    "n-edit": {
+      "x": 4560,
+      "y": 2050,
+      "w": 420,
+      "size": "m",
+      "fill": "gray",
+      "text": "Edit user\n• แบ่ง 3 แท็บ: Profile & access / Systems & roles / Permission preview\n• Manager 1–3 มาจาก AD แก้ไม่ได้\n• Save changes กดได้เมื่อมีการแก้ไข และบอกจำนวนที่ยังไม่บันทึก"
+    },
+    "n-role": {
+      "x": 3040,
+      "y": 3300,
+      "w": 420,
+      "size": "m",
+      "fill": "gray",
+      "text": "Role editor\n• p-steps 3 ขั้น (มือถือเป็น progress bar)\n• Menus & groups: โครงเมนูเดียว ลากวางหรือใช้เมนู ⋯ / Add to…; เมนูใช้ได้ครั้งเดียว\n• Permissions: ตารางเดียว ติ๊กหัวคอลัมน์เพื่อให้ทุกเมนู (Tweaks › functionCount 4–12); มือถือเป็นปุ่มต่อเมนู"
+    },
+    "n-report": {
+      "x": 3040,
+      "y": 3900,
+      "w": 420,
+      "size": "m",
+      "fill": "gray",
+      "text": "Report\n• เลือกชนิดรายงาน (แท็บ) → System Name → Department หรือช่วงวันที่ → Export (ดาวน์โหลด Excel)\n• ไม่มีตารางพรีวิว เพราะ API ไม่ส่งข้อมูลมาแสดง\n• ช่วงวันที่ลัด (Last 7 days ฯลฯ) แค่ตั้งค่าวันที่ เป็นฝั่งหน้าบ้าน"
+    },
+    "row5": {
+      "x": 0,
+      "y": 7000,
+      "text": "When something goes wrong (from the real app’s error handling)",
+      "kind": "title1",
+      "maxW": 6000
+    },
+    "n-err1": {
+      "x": 6080,
+      "y": 7300,
+      "w": 420,
+      "size": "m",
+      "fill": "blue",
+      "text": "อิงโค้ดจริง\n• ลิงก์ผิด → /notfound (“Looks like you are lost”)\n• ไม่มีสิทธิ์ (roleGuard) ในแอปจริงถูกส่งไป 404 เหมือนกัน; หน้า 403 เป็นข้อเสนอให้แยกให้ชัด\n• Session หมดอายุ: ข้อความ “Your session has expired. Please log in again to continue.” แล้ว logout ไปหน้า Login\n• Network (status 0): “Network Error!!!”"
+    },
+    "n-err2": {
+      "x": 6080,
+      "y": 8600,
+      "w": 420,
+      "size": "m",
+      "fill": "gray",
+      "text": "Server error: RESULT_CODE 50000 / 50001 / 50002 (system, DB, timeout) แสดงข้อความที่เซิร์ฟเวอร์ส่งมา\nลบไม่ได้: แอปจริงแสดง message + statusDescription จากเซิร์ฟเวอร์ (ข้อความตัวอย่างบนจอเป็นการสมมติ)\nรายงาน: ดาวน์โหลดไม่สำเร็จ แอปจริงแค่ console.error ไม่บอกผู้ใช้ จึงเสนอ toast (แก้ฝั่งหน้าบ้านอย่างเดียว)"
+    },
+    "n-err3": {
+      "x": 6080,
+      "y": 9900,
+      "w": 420,
+      "size": "m",
+      "fill": "gray",
+      "text": "Home: แอปจริงมี spinner + ข้อความ “Data not found” (หรือ message จากเซิร์ฟเวอร์) เมื่อไม่มีข้อมูล\nรายการ/ตาราง: “No Data Available”\nการ์ดระบบใช้เฉพาะฟิลด์ที่ response ส่งมา (ชื่อ ไอคอน คำอธิบาย ชนิด เจ้าของ) ไม่มีบทบาทหรือสถานะ Maintenance"
+    },
+    "n-err4": {
+      "x": 6080,
+      "y": 11200,
+      "w": 420,
+      "size": "m",
+      "fill": "blue",
+      "text": "Edit user\n• AD ไม่พบ/ข้อมูลไม่ครบ: MSG_INVALID_USER_AD แล้วล้างช่อง\n• ระบบซ้ำ: MSG_INVALID_DUPLICATED_SYSTEM\n• ข้อมูลไม่ครบ: MSG_REQUIRED; 422 แสดงรายการ ModelState\n• ยังไม่มี: 40301 ชื่อซ้ำ (ALREADY_EXISTED) ในฟอร์ม System/Role"
+    },
+    "n-contract": {
+      "x": 6080,
+      "y": 0,
+      "w": 420,
+      "size": "m",
+      "fill": "orange",
+      "text": "กติกา: ไม่แก้หลังบ้าน\nทุกหน้าจอใช้เฉพาะฟิลด์ใน Model Response ปัจจุบัน และไม่เปลี่ยน Payload ที่ส่งกลับ\n• Roles: Role / System / Description / Status / Updated (ไม่มีจำนวนเมนู จำนวนผู้ใช้)\n• Users: Username / Name / Email / Ext. / Department / UAM role / Status / Updated (ไม่มีจำนวนระบบ)\n• Approvers: มีแค่ชื่อ (มาจาก AD)\n• ที่ทำฝั่งหน้าบ้านล้วน: ค้นหา/กรองจากข้อมูลที่โหลดแล้ว, ตัวนับในแท็บ, ช่วงวันที่ลัด"
+    }
+  },
+  "designSystems": []
+}

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · Home</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="app">
+  <header class="layout-topbar">
+    <div class="topbar-start">
+      <input type="checkbox" id="navchk" class="navchk" aria-label="Show or hide the menu">
+      <h6 class="full">User Access Management</h6>
+      <h6 class="code">UAM</h6>
+    </div>
+    <div class="topbar-end">
+      <details class="user-menu">
+        <summary aria-label="Account menu">
+          <span class="who"><b>Somchai</b><small>ADMIN</small></span>
+          <img src="/_blob/46b771ade22f8b37fc35a4cf1cd26db2" alt="">
+          <i class="pi pi-angle-down" aria-hidden="true"></i>
+        </summary>
+        <div class="p-menu p-component p-menu-overlay">
+          <ul class="p-menu-list p-reset">
+            <li class="p-menuitem"><div class="p-menuitem-content"><a class="p-menuitem-link" href="Main.dc.html"><span class="p-menuitem-icon pi pi-sign-out" aria-hidden="true"></span><span class="p-menuitem-text">Logout</span></a></div></li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </header>
+  <label class="navscrim" for="navchk" aria-hidden="true"></label>
+  <aside class="layout-sidebar">
+    <div class="sidebar-header"><a href="Home.dc.html" aria-label="UAM home"><img src="/_blob/689fe8019dedee5de4cc643af5bd8b4c" alt="Phillip Life"></a></div>
+    <nav class="layout-menu-container" aria-label="Main">
+      <ul class="layout-menu">
+        <li><a class="menu-link active-route" href="Home.dc.html" aria-current="page"><img class="layout-menuitem-icon" src="/_blob/34e2c5076ce2bd848a7d323276d2bc27" alt=""><span>Home</span></a></li>
+        <li>
+          <details>
+            <summary class="menu-link"><img class="layout-menuitem-icon" src="/_blob/31fa7a9d69b81cd4fb2d6c7330aa3154" alt=""><span>Setting</span><i class="pi pi-angle-down layout-submenu-toggler" aria-hidden="true"></i></summary>
+            <ul>
+              <li><a class="menu-link" href="Systems.dc.html">System Setting</a></li>
+              <li><a class="menu-link" href="Users.dc.html">User &amp; Permission</a></li>
+            </ul>
+          </details>
+        </li>
+        <li><a class="menu-link" href="Report.dc.html"><img class="layout-menuitem-icon" src="/_blob/2660d15fafe7e5775fe27a6a37b1b20a" alt=""><span>Report</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+  <main class="layout-main"><div class="phead"><div class="phead-in flat">
+      <div class="phead-top"><div class="phead-title"><h1>Welcome back, Somchai</h1><p class="sub">{{summary}}</p></div></div>
+    </div></div><div class="layout-content-wrapper">
+
+    
+    <sc-if value="{{showList}}" hint-placeholder-val="{{true}}">
+    <div class="bar" style="justify-content: space-between;">
+      <span class="grow" style="flex: 1 1 15rem; max-width: 26rem;"><span class="p-icon-field p-icon-field-left" style="display: block;"><i class="p-input-icon pi pi-search" aria-hidden="true"></i><label class="sr" for="q">Search systems</label><input id="q" type="search" class="p-inputtext p-component" placeholder="Search systems" value="{{q}}" onInput="{{onSearch}}"></span></span>
+      <div class="p-selectbutton p-component" role="group" aria-label="System type">
+          <sc-for list="{{types}}" as="t" hint-placeholder-count="3"><button type="button" class="{{t.cls}}" aria-pressed="{{t.on}}" onClick="{{t.pick}}"><span class="p-button-label">{{t.label}}</span></button></sc-for>
+        </div>
+    </div>
+    <div class="u-sys-grid only-desk">
+      <sc-for list="{{systems}}" as="s" hint-placeholder-count="6">
+        <div style="display: contents;">
+          <sc-if value="{{s.up}}" hint-placeholder-val="{{true}}">
+            <a class="u-sys-card" href="#" target="_blank" rel="noopener" aria-label="Open {{s.name}} in a new tab">
+              <span class="u-sys-card__top"><span class="u-tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{s.iconD}}"></path></svg></span><i class="pi pi-external-link" aria-hidden="true"></i></span>
+              <span class="u-sys-card__body"><b>{{s.name}}</b><span class="u-muted">{{s.desc}}</span></span>
+              <span class="u-sys-card__foot"><span>{{s.owner}}</span><span>{{s.type}}</span></span>
+            </a>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <div class="p-card p-component only-mob u-clip"><div>
+      <sc-for list="{{systems}}" as="s" hint-placeholder-count="6">
+        <div style="display: contents;">
+          <sc-if value="{{s.up}}" hint-placeholder-val="{{true}}">
+            <a class="u-row" href="#" target="_blank" rel="noopener">
+              <span class="u-tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{s.iconD}}"></path></svg></span>
+              <span class="u-row__main"><b>{{s.name}}</b><span class="u-muted-sm">{{s.type}} · {{s.owner}}</span></span>
+              <i class="pi pi-external-link" style="color: var(--uam-muted);" aria-hidden="true"></i>
+            </a>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div></div>
+
+    <sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+      <div class="p-card p-component"><div class="p-card-body empty-state" style="display: flex; flex-direction: column; align-items: center; gap: .625rem;">
+        <b style="color: #363636;">No system matches “{{q}}”</b>
+        <span style="max-width: 26rem;">Only systems you have a role in show here. To get access, ask your manager or IT Support.</span>
+        <button type="button" class="p-button p-component p-button-sm p-button-secondary" onClick="{{clear}}"><span class="p-button-label">Clear search</span></button>
+      </div></div>
+    </sc-if>
+
+    </sc-if>
+    <sc-if value="{{isLoading}}" hint-placeholder-val="{{false}}">
+      <div class="u-sys-grid" role="status" aria-label="Loading your systems"><div class="u-sys-card" aria-hidden="true"><span class="u-sys-card__top"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: .75rem;"></span></span><span class="u-sys-card__body"><span class="u-skel" style="width: 55%; height: 1.125rem;"></span><span class="u-skel" style="width: 85%; height: .875rem;"></span></span><span class="u-sys-card__foot"><span class="u-skel" style="width: 30%; height: .875rem;"></span></span></div><div class="u-sys-card" aria-hidden="true"><span class="u-sys-card__top"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: .75rem;"></span></span><span class="u-sys-card__body"><span class="u-skel" style="width: 55%; height: 1.125rem;"></span><span class="u-skel" style="width: 85%; height: .875rem;"></span></span><span class="u-sys-card__foot"><span class="u-skel" style="width: 30%; height: .875rem;"></span></span></div><div class="u-sys-card" aria-hidden="true"><span class="u-sys-card__top"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: .75rem;"></span></span><span class="u-sys-card__body"><span class="u-skel" style="width: 55%; height: 1.125rem;"></span><span class="u-skel" style="width: 85%; height: .875rem;"></span></span><span class="u-sys-card__foot"><span class="u-skel" style="width: 30%; height: .875rem;"></span></span></div><div class="u-sys-card" aria-hidden="true"><span class="u-sys-card__top"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: .75rem;"></span></span><span class="u-sys-card__body"><span class="u-skel" style="width: 55%; height: 1.125rem;"></span><span class="u-skel" style="width: 85%; height: .875rem;"></span></span><span class="u-sys-card__foot"><span class="u-skel" style="width: 30%; height: .875rem;"></span></span></div><div class="u-sys-card" aria-hidden="true"><span class="u-sys-card__top"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: .75rem;"></span></span><span class="u-sys-card__body"><span class="u-skel" style="width: 55%; height: 1.125rem;"></span><span class="u-skel" style="width: 85%; height: .875rem;"></span></span><span class="u-sys-card__foot"><span class="u-skel" style="width: 30%; height: .875rem;"></span></span></div><div class="u-sys-card" aria-hidden="true"><span class="u-sys-card__top"><span class="u-skel" style="width: 2.5rem; height: 2.5rem; border-radius: .75rem;"></span></span><span class="u-sys-card__body"><span class="u-skel" style="width: 55%; height: 1.125rem;"></span><span class="u-skel" style="width: 85%; height: .875rem;"></span></span><span class="u-sys-card__foot"><span class="u-skel" style="width: 30%; height: .875rem;"></span></span></div></div>
+    </sc-if>
+    <sc-if value="{{isEmpty}}" hint-placeholder-val="{{false}}">
+      <div class="p-card p-component"><div class="u-state"><span class="u-tile"><i class="pi pi-folder-open" aria-hidden="true"></i></span><b>No systems yet</b><p>You don’t have a role in any system. Ask your manager or IT Support to request access for you.</p><div class="actions"><a class="p-button p-component p-button-secondary" href="mailto:ITSupport@philliplife.com">Contact IT Support</a></div></div></div>
+    </sc-if>
+    <sc-if value="{{isError}}" hint-placeholder-val="{{false}}">
+      <div class="p-card p-component"><div class="u-state"><span class="u-tile is-off"><i class="pi pi-exclamation-triangle" aria-hidden="true"></i></span><b>We couldn’t load your systems</b><p>The server didn’t send the list. Try again. If it keeps happening, contact IT Support.</p><div class="actions"><a class="p-button p-component" href="Home.dc.html"><i class="pi pi-refresh" aria-hidden="true"></i><span class="p-button-label">Try again</span></a></div></div></div>
+    </sc-if>
+  </div></main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","options":["normal", "loading", "empty", "error"],"default":"normal","section":"Prototype"},"$preview":{"width":1440,"height":900}}'>
+const ICONS = [{"id":"shield","name":"Shield","d":"M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"},{"id":"doc","name":"Document","d":"M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6"},{"id":"users","name":"People","d":"M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c0-4 3-6 7-6s7 2 7 6M17 3.5a4 4 0 0 1 0 7.5M22 21c0-3-1.5-5-4-5.7"},{"id":"card","name":"Payment","d":"M3 6h18v12H3zM3 10h18M7 15h3"},{"id":"chart","name":"Chart","d":"M4 20V10M10 20V4M16 20v-7M22 20H2"},{"id":"folder","name":"Folder","d":"M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"},{"id":"phone","name":"Mobile","d":"M8 2h8a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM11 18h2"},{"id":"headset","name":"Support","d":"M4 14v-2a8 8 0 0 1 16 0v2M4 14h3v6H4zM17 14h3v6h-3z"},{"id":"calendar","name":"Calendar","d":"M4 5h16v16H4zM4 9h16M8 3v4M16 3v4"},{"id":"search","name":"Search","d":"M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-3.5-3.5"},{"id":"gear","name":"Settings","d":"M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"},{"id":"briefcase","name":"Work","d":"M3 8h18v12H3zM8 8V5h8v3M3 13h18"},{"id":"home","name":"Home","d":"M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"},{"id":"upload","name":"Upload","d":"M12 16V4M7 9l5-5 5 5M4 20h16"},{"id":"check","name":"Approve","d":"M4 12l5 5L20 6"},{"id":"clipboard","name":"Checklist","d":"M9 3h6v3H9zM7 4.5H5V21h14V4.5h-2M9 12h6M9 16h4"}];
+const FUNCS = ["View","Add","Edit","Delete","Report","Export","Approve","Print","Upload","Download","Cancel","Reprint"];
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { q: '', type: 'All' }; }
+  renderVals() {
+    const st = this.props.state ?? 'normal';
+    const tints = ['#e2edff', '#e3f3ec', '#fbeedd', '#efe8f8', '#e2f1f6'];
+    const all = [
+      ['Claim System', 'Web', 'Register and track insurance claims', 'Claims Dept.', 'shield'],
+      ['Policy Admin', 'Web', 'Issue and service policies', 'Operations', 'doc'],
+      ['Agent Portal', 'Web', 'Agent licensing and commission', 'Agency', 'users'],
+      ['Underwriting', 'Web', 'Case review and approvals', 'Underwriting', 'check'],
+      ['Finance Hub', 'Web', 'Payments and premium collection', 'Finance', 'card'],
+      ['HR Self-service', 'Web', 'Leave, payslips and profile', 'HR', 'briefcase'],
+      ['Field Sales App', 'Mobile', 'Quotes and e-application on the go', 'Agency', 'phone'],
+      ['Document Center', 'Web', 'Scan, index and search documents', 'IT', 'folder'],
+      ['Customer Care', 'Web', 'Service requests and call notes', 'Customer Care', 'headset']
+    ].map((r) => ({ name: r[0], type: r[1], desc: r[2], owner: r[3], up: true, iconD: (ICONS.find(x => x.id === r[4]) || ICONS[0]).d }));
+    const q = this.state.q.trim().toLowerCase();
+    const list = all.filter(s => (this.state.type === 'All' || s.type === this.state.type) && (!q || s.name.toLowerCase().includes(q)));
+    const types = ['All', 'Web', 'Mobile'].map(t => ({ label: t, on: this.state.type === t ? 'true' : 'false', cls: this.state.type === t ? 'p-button p-component p-highlight' : 'p-button p-component', pick: () => this.setState({ type: t }) }));
+    return {
+      q: this.state.q,
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      clear: () => this.setState({ q: '', type: 'All' }),
+      systems: list, empty: list.length === 0, types,
+      summary: st === 'loading' ? 'Loading your systems…' : st === 'empty' ? 'You have no systems yet.' : st === 'error' ? '' : all.length + ' systems you can open',
+      showList: st === 'normal', isLoading: st === 'loading', isEmpty: st === 'empty', isError: st === 'error'
+    };
+  }
+}
+</script>
+</body>
+</html>

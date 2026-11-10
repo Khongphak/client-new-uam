@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · Error page</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="u-errpage">
+  <header class="u-errpage__top"><a href="Home.dc.html" aria-label="UAM home"><img src="/_blob/689fe8019dedee5de4cc643af5bd8b4c" alt="Phillip Life"></a></header>
+  <main class="u-errpage__body">
+    <span class="u-tile" style="width: 3.5rem; height: 3.5rem; border-radius: 50%;"><sc-if value="{{showHelp}}" hint-placeholder-val="{{false}}"><i class="pi pi-lock" aria-hidden="true"></i></sc-if><sc-if value="{{notAccess}}" hint-placeholder-val="{{true}}"><i class="pi pi-exclamation-triangle" aria-hidden="true"></i></sc-if></span>
+    <span class="u-errpage__code">{{code}}</span>
+    <h1>{{title}}</h1>
+    <p>{{text}}</p>
+    <div class="actions"><a class="p-button p-component" href="Home.dc.html"><i class="pi pi-home" aria-hidden="true"></i><span class="p-button-label">Back to Home</span></a><sc-if value="{{showHelp}}" hint-placeholder-val="{{false}}"><a class="p-button p-component p-button-secondary" href="mailto:ITSupport@philliplife.com">Contact IT Support</a></sc-if></div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"kind":{"editor":"enum","options":["notfound","noaccess"],"default":"notfound","section":"Prototype"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const k = this.props.kind ?? 'notfound';
+    const no = k === 'noaccess';
+    return {
+      code: no ? '403' : '404',
+      title: no ? 'You don’t have access to this page' : 'This page doesn’t exist',
+      text: no ? 'Your UAM role can’t open this page. If you need it, ask a UAM admin to change your role.' : 'The link may be old, or the address may have a typo. Go back to Home and start from there.',
+      showHelp: no,
+      notAccess: !no
+    };
+  }
+}
+</script>
+</body>
+</html>
