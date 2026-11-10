@@ -122,7 +122,7 @@ providePrimeNG({ theme: { preset: UamPreset, options: { darkModeSelector: 'none'
 กติกา: ห้าม `effect()` เพื่อ sync state ไปมา (ใช้ `computed`/`linkedSignal`); เปิดเผยเฉพาะ `Signal` แบบอ่านอย่างเดียว; ถ้าภายหลังมีเหตุจำเป็นจริงให้ทำ ADR ใหม่ (ไม่กลับไปใช้ NgRx โดยไม่ผ่านผู้ใช้)
 
 ## ข้อควรระวังที่พบ
-1. ⚠️ **PrimeNG 22, `@primeuix/themes` 3, PrimeIcons 8 เปลี่ยนจาก MIT เป็น PrimeUI License** (PrimeNG ≤21.1.10, `@primeuix/themes` ≤2.0.3, PrimeIcons 7 ยังเป็น MIT) — ต้องมี license key: Community (ฟรี เฉพาะองค์กร < US$1M รายได้/ปี, < 5 นักพัฒนา, < 10 พนักงาน, ต่ออายุทุกปี) หรือ Commercial (จ่ายต่อนักพัฒนา); ถ้าไม่มี key: `console.warn("[PrimeUI] PrimeUI license is not configured.")` และ**แสดงป้าย "Invalid PrimeUI License" มุมขวาล่างในทุกหน้า** (ตรวจแล้วใน Chromium); key ส่งผ่าน `providePrimeNG({ license })` และตรวจแบบ offline → key จะอยู่ใน bundle ฝั่ง client แต่**ห้าม commit ลง repo** (CLAUDE.md §1 ข้อ 6) ให้ inject ตอน build จาก secret ของ CI (กำหนดวิธีใน FND-01)
+1. ⚠️ **PrimeNG 22, `@primeuix/themes` 3, PrimeIcons 8 เปลี่ยนจาก MIT เป็น PrimeUI License** (PrimeNG เวอร์ชัน community (ไม่มี suffix `-lts`) ≤ 21.1.10 เป็น MIT; เวอร์ชัน `-lts` (เช่น 20.5.1-lts) เป็น paid LTS license ของ PrimeTek; `@primeuix/themes` ≤2.0.3 และ PrimeIcons 7 ยังเป็น MIT) — ต้องมี license key: Community (ฟรี เฉพาะองค์กรที่เข้าเกณฑ์**ครบทั้ง 4 ข้อ**: รายได้ต่อปี < US$1M, นักพัฒนา < 5 (license ครอบคลุมสูงสุด 4 dev), พนักงาน < 10, เงินทุนจากภายนอก/VC < US$3M; บุคคล นักศึกษา non-profit และโอเพนซอร์สที่ไม่ใช่เชิงพาณิชย์ก็เข้าเกณฑ์; ต่ออายุทุกปีโดยยืนยันว่ายังเข้าเกณฑ์) หรือ Commercial (จ่ายต่อนักพัฒนา); ถ้าไม่มี key: `console.warn("[PrimeUI] PrimeUI license is not configured.")` และ**แสดงป้าย "Invalid PrimeUI License" มุมขวาล่างในทุกหน้า** (ตรวจแล้วใน Chromium); key ส่งผ่าน `providePrimeNG({ license })` และตรวจแบบ offline → key จะอยู่ใน bundle ฝั่ง client แต่**ห้าม commit ลง repo** (CLAUDE.md §1 ข้อ 6) ให้ inject ตอน build จาก secret ของ CI (กำหนดวิธีใน FND-01)
 2. Budget initial เริ่มต้นของ `ng new` (1 MB) ไม่พอ — ดู (จ)
 3. TypeScript ต้องอยู่ที่ `~6.0` (TS 7 ยังไม่รองรับ)
 4. coverage ต้องเพิ่ม `@vitest/coverage-v8`; `ng test` ไม่มี `--watch=false` จะค้างใน terminal ที่มี TTY
@@ -139,7 +139,7 @@ providePrimeNG({ theme: { preset: UamPreset, options: { darkModeSelector: 'none'
 ## ประเด็นเปิด (ต้องให้ผู้ใช้ตัดสินใจ)
 1. **License ของ PrimeNG 22 (บล็อก FND-01)** — เลือก:
    - **A. PrimeNG 22 + license key** (Community ถ้าองค์กรเข้าเกณฑ์ หรือซื้อ Commercial) → ใช้ stack ล่าสุดตาม ADR นี้ทั้งหมด *(Senior แนะนำ ถ้าได้ key)*
-   - **B. คง MIT: Angular 21 LTS + PrimeNG 21.1.10 + `@primeuix/themes` 2 + PrimeIcons 7** (PrimeNG 21 peer = Angular ^21 ใช้กับ Angular 22 ไม่ได้) → ไม่ใช่ "ล่าสุด" ต้องย้ายอีกครั้งภายหลัง และต้องตรวจซ้ำ (ยังไม่ได้ทดลองใน ARC-01)
+   - **B. คง MIT: Angular 21 LTS + PrimeNG 21.1.10 (community ไม่ใช่ `-lts`) + `@primeuix/themes` 2 + PrimeIcons 7** (PrimeNG 21 peer = Angular ^21 ใช้กับ Angular 22 ไม่ได้) → ไม่ใช่ "ล่าสุด" ต้องย้ายอีกครั้งภายหลัง และต้องตรวจซ้ำ (ยังไม่ได้ทดลองใน ARC-01)
 2. **แหล่งสัญญา API** (payload/ฟิลด์/`RESULT_CODE`): API spec/Swagger หรือ HAR ที่ผู้ใช้ให้ — **ไม่ใช่โค้ดเก่า** (clean-room) — ดู UAM-API-01
 3. รับได้ไหมที่หน้าตา PrimeNG 22 ต่างจากต้นแบบ PrimeNG 17 เล็กน้อย (ตรงด้วย token/ภาพ ไม่ pixel-exact)
 4. ~~NgRx~~ — ตัดสินแล้ว: ไม่ใช้ NgRx (ผู้ใช้ยืนยัน 2026-11-10)
