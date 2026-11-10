@@ -3,40 +3,40 @@ title: "[UAM-FND-06] คอมโพเนนต์ร่วมของหน�
 labels: ["feature", "fnd", "P1", "wave-4"]
 ---
 
-# UAM-FND-06 — คอมโพเนนต์ร่วมของหน้า detail (facts, stats, approvers, accordion, group-head, perm-row, sys-grid/card, meta-ico)
+# 🧱 UAM-FND-06 — คอมโพเนนต์ร่วมของหน้า detail (facts, stats, approvers, accordion, group-head, perm-row, sys-grid/card, meta-ico)
 
 | ฟิลด์ | ค่า |
 |---|---|
 | Code | `UAM-FND-06` |
-| ประเภท | feature |
-| Priority | **P1** (score 75) |
-| Value / Unblocks / Effort | 4 / 4 / 5 pts |
-| Wave (ลำดับการทำ) | 4 |
-| Branch | `feature/UAM-FND-06-shared-detail-components` (แตกจาก `develop`) |
-| Depends on | [UAM-FND-03](UAM-FND-03.md) |
-| Blocks | [UAM-HOM-01](UAM-HOM-01.md), [UAM-USR-02](UAM-USR-02.md), [UAM-USR-03](UAM-USR-03.md), [UAM-USR-04](UAM-USR-04.md), [UAM-ROL-01](UAM-ROL-01.md) |
+| ประเภท | ✨ feature |
+| Priority | 🟠 **P1** (score 75) |
+| ⭐ Value / 🔓 Unblocks / 💪 Effort | 4 / 4 / 5 pts |
+| 🌊 Wave (ลำดับการทำ) | 4 |
+| 🌿 Branch | `feature/UAM-FND-06-shared-detail-components` (แตกจาก `develop`) |
+| ⛓️ Depends on | [UAM-FND-03](UAM-FND-03.md) |
+| 🚧 Blocks | [UAM-HOM-01](UAM-HOM-01.md), [UAM-USR-02](UAM-USR-02.md), [UAM-USR-03](UAM-USR-03.md), [UAM-USR-04](UAM-USR-04.md), [UAM-ROL-01](UAM-ROL-01.md) |
 
-## Description
+## 📝 Description
 ทำ `u-facts` (+`is-cols`,`is-prose`), `u-stats` (Menus/Groups/Top level), `u-approvers` (ลำดับ 1–3 ชื่ออย่างเดียว อ่านอย่างเดียว), `u-meta-ico`, `u-accordion`, `u-group-head`, `u-perm-row`, `u-sys-grid` + `u-sys-card`
 
-## Design reference
+## 🎯 Design reference
 - Artboard: UserView, RoleView, RoleEditor, Home
 - Source เดิม (`client-uam-develop`, path ใต้ `src/app/`): `shared/component/table-preview`, `tree-group-menu`, `role-permission`, `component/system-card`
 
-## Actual result (ปัจจุบัน)
+## 🐞 Actual result (ปัจจุบัน)
 หน้า detail เดิมใช้ฟอร์ม disabled เป็นหลัก
 
-## Expected result
+## ✅ Expected result
 ชิ้นส่วนใช้ซ้ำสำหรับ View/Editor/Home โดยแสดงเฉพาะฟิลด์ที่ model มี
 
-## แนวทางการแก้ไข
+## 🛠️ แนวทางการแก้ไข
 - Approvers ใช้ `managers[].name` เท่านั้น
 - stats คำนวณจากโครงเมนูที่โหลดมาแล้ว (หน้าบ้าน)
 
-## Acceptance criteria
-- ตรงกับ artboard ที่อ้างถึง (desktop และ phone ถ้ามี)
-- ใช้เฉพาะฟิลด์ใน `shared/interfaces/**` ปัจจุบัน
-- Payload ที่ส่งหลังบ้านไม่เปลี่ยน (ผ่าน UAM-QA-01)
-- ผ่าน lint/build/test ใน CI
+## ☑️ Acceptance criteria
+- ☑️ ตรงกับ artboard ที่อ้างถึง (desktop และ phone ถ้ามี)
+- ☑️ ใช้เฉพาะฟิลด์ใน `shared/interfaces/**` ปัจจุบัน
+- ☑️ Payload ที่ส่งหลังบ้านไม่เปลี่ยน (ผ่าน UAM-QA-01)
+- ☑️ ผ่าน lint/build/test ใน CI
 
-> หมายเหตุ: ระบุ "actual result" จากสเปก/เอกสารดีไซน์ — ให้ยืนยันกับ source เดิมตอนเริ่มทำ (session ที่ทำต้องมีสิทธิ์อ่าน `client-uam-develop`)
+> 💡 หมายเหตุ: ระบุ "actual result" จากสเปก/เอกสารดีไซน์ — ให้ยืนยันกับ source เดิมตอนเริ่มทำ (session ที่ทำต้องมีสิทธิ์อ่าน `client-uam-develop`)

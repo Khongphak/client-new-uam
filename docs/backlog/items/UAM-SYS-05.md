@@ -3,39 +3,39 @@ title: "[UAM-SYS-05] ถอด route action ของ System Setting ทั้�
 labels: ["chore", "sys", "P3", "wave-8"]
 ---
 
-# UAM-SYS-05 — ถอด route action ของ System Setting ทั้ง 10 ตัว + redirect ลิงก์เก่า
+# ⚙️ UAM-SYS-05 — ถอด route action ของ System Setting ทั้ง 10 ตัว + redirect ลิงก์เก่า
 
 | ฟิลด์ | ค่า |
 |---|---|
 | Code | `UAM-SYS-05` |
-| ประเภท | chore |
-| Priority | **P3** (score 48) |
-| Value / Unblocks / Effort | 3 / 2 / 2 pts |
-| Wave (ลำดับการทำ) | 8 |
-| Branch | `chore/UAM-SYS-05-remove-legacy-routes` (แตกจาก `develop`) |
-| Depends on | [UAM-SYS-02](UAM-SYS-02.md), [UAM-SYS-03](UAM-SYS-03.md), [UAM-SYS-04](UAM-SYS-04.md), [UAM-ERR-04](UAM-ERR-04.md) |
-| Blocks | [UAM-RSP-01](UAM-RSP-01.md) |
+| ประเภท | 🧹 chore |
+| Priority | 🟢 **P3** (score 48) |
+| ⭐ Value / 🔓 Unblocks / 💪 Effort | 3 / 2 / 2 pts |
+| 🌊 Wave (ลำดับการทำ) | 8 |
+| 🌿 Branch | `chore/UAM-SYS-05-remove-legacy-routes` (แตกจาก `develop`) |
+| ⛓️ Depends on | [UAM-SYS-02](UAM-SYS-02.md), [UAM-SYS-03](UAM-SYS-03.md), [UAM-SYS-04](UAM-SYS-04.md), [UAM-ERR-04](UAM-ERR-04.md) |
+| 🚧 Blocks | [UAM-RSP-01](UAM-RSP-01.md) |
 
-## Description
+## 📝 Description
 ลบ 10 route: `action-system`,`-edit`,`-view`,`-setup`,`action-menu-screen`,`-edit`,`-view`,`action-system-to-system`,`-view`,`-edit` และ redirect ลิงก์เก่าไปรูปแบบ drawer
 
-## Design reference
+## 🎯 Design reference
 - Artboard: การตัดสินใจ #1
 - Source เดิม (`client-uam-develop`, path ใต้ `src/app/`): routing ของ `/setting`
 
-## Actual result (ปัจจุบัน)
+## 🐞 Actual result (ปัจจุบัน)
 10 route ยังอยู่
 
-## Expected result
+## ✅ Expected result
 ไม่มี route เก่า, ลิงก์เก่า (bookmark) ยังเปิดได้ผ่าน redirect
 
-## แนวทางการแก้ไข
+## 🛠️ แนวทางการแก้ไข
 - ลบ component ที่ไม่ใช้แล้ว
 
-## Acceptance criteria
-- ตรงกับ artboard ที่อ้างถึง (desktop และ phone ถ้ามี)
-- ใช้เฉพาะฟิลด์ใน `shared/interfaces/**` ปัจจุบัน
-- Payload ที่ส่งหลังบ้านไม่เปลี่ยน (ผ่าน UAM-QA-01)
-- ผ่าน lint/build/test ใน CI
+## ☑️ Acceptance criteria
+- ☑️ ตรงกับ artboard ที่อ้างถึง (desktop และ phone ถ้ามี)
+- ☑️ ใช้เฉพาะฟิลด์ใน `shared/interfaces/**` ปัจจุบัน
+- ☑️ Payload ที่ส่งหลังบ้านไม่เปลี่ยน (ผ่าน UAM-QA-01)
+- ☑️ ผ่าน lint/build/test ใน CI
 
-> หมายเหตุ: ระบุ "actual result" จากสเปก/เอกสารดีไซน์ — ให้ยืนยันกับ source เดิมตอนเริ่มทำ (session ที่ทำต้องมีสิทธิ์อ่าน `client-uam-develop`)
+> 💡 หมายเหตุ: ระบุ "actual result" จากสเปก/เอกสารดีไซน์ — ให้ยืนยันกับ source เดิมตอนเริ่มทำ (session ที่ทำต้องมีสิทธิ์อ่าน `client-uam-develop`)
