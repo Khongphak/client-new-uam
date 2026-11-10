@@ -1,9 +1,9 @@
 ---
-title: "[UAM-FND-01] เตรียม codebase ใน repo นี้ (นำ source เดิมเข้ามา + baseline)"
+title: "[UAM-FND-01] เริ่มแอปใหม่ด้วย ng new + baseline CI/test (เสร็จแล้ว)"
 labels: ["chore", "fnd", "P0", "wave-1"]
 ---
 
-# 🧱 UAM-FND-01 — เตรียม codebase ใน repo นี้ (นำ source เดิมเข้ามา + baseline)
+# 🧱 UAM-FND-01 — เริ่มแอปใหม่ด้วย ng new + baseline CI/test (เสร็จแล้ว)
 
 | ฟิลด์ | ค่า |
 |---|---|
@@ -17,24 +17,22 @@ labels: ["chore", "fnd", "P0", "wave-1"]
 | 🚧 Blocks | [UAM-FND-02](UAM-FND-02.md), [UAM-QA-01](UAM-QA-01.md) |
 
 ## 📝 Description
-repo `client-new-uam` ตอนนี้มีเฉพาะ `docs/` ยังไม่มีโค้ด Angular ต้องนำ source เดิม (Angular 17.2, PrimeNG 17.18, PrimeFlex 3.3, PrimeIcons 7, NgRx) เข้ามาเป็น baseline ก่อนทำ story อื่น
+เริ่มแอป Angular 17.2 ใหม่ด้วย `ng new` (standalone, SCSS, routing) + PrimeNG 17.18, PrimeFlex 3.3, PrimeIcons 7, NgRx 17; ตั้ง Karma headless (`ChromeHeadlessNoSandbox`) และ CI (test + build) **สถานะ: ทำเสร็จแล้ว** ใน commit เริ่มต้นของ phase 0
 
 ## 🎯 Design reference
 - Artboard: -
-- Source เดิม (`client-uam-develop`, path ใต้ `src/app/`): repo `client-uam-develop` (อ่านอย่างเดียว) → ปลายทาง repo นี้
+- Source เดิม (`client-uam-develop`, path ใต้ `src/app/`): repo นี้ (ไม่ใช้โค้ด `client-uam-develop`)
 
 ## 🐞 Actual result (ปัจจุบัน)
-ไม่มี `package.json`, `angular.json`, `src/app/` ใน repo; ไม่มี CI
+ก่อนทำ: repo มีแต่ `docs/`
 
 ## ✅ Expected result
-ติดตั้งและ `ng build` / `ng serve` ผ่านบน `develop`; โครงสร้าง `src/app/**` เหมือน repo เดิม; มี CI (build + lint + test) และ README อธิบายวิธีรัน
+`npm ci && npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox && npm run build` ผ่านบน `develop`; มี CI; มี CLAUDE.md และ template
 
 ## 🛠️ แนวทางการแก้ไข
-- คัดลอก/ย้าย source จาก `client-uam-develop` (ไม่เอา history ก็ได้ แต่ต้องระบุ commit ต้นทางใน README)
-- ล็อกเวอร์ชันตามสเปก (Angular 17.2, PrimeNG 17.18, PrimeFlex 3.3, PrimeIcons 7, NgRx)
-- นำ assets จริง (`assets/images`, `assets/svg`, ฟอนต์ Sukhumvit Set ใน `src/styles.scss`) มาด้วย เพราะ `/_blob/<id>` ในไฟล์ดีไซน์ใช้ไม่ได้
-- เพิ่ม GitHub Actions: install, lint, build, test
-- ตั้ง branch protection ให้ `develop` ต้องผ่าน CI
+- ยังเหลือ: ตั้ง branch protection ของ `develop`/`main` บน GitHub (ต้องทำโดยเจ้าของ repo)
+- เพิ่ม ESLint เป็นงานแยกถ้าต้องการ (ยังไม่อยู่ใน CI)
+- ฟอนต์ Sukhumvit Set และรูป/ไอคอนต้องหาไฟล์จริงมาใส่ใน `src/assets` (ไฟล์ดีไซน์อ้าง `/_blob/<id>` ใช้ไม่ได้)
 
 ## ☑️ Acceptance criteria
 - ☑️ `npm ci && ng build` ผ่านบน `develop`

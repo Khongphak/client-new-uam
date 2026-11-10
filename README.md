@@ -25,6 +25,7 @@ ADMIN · DEVELOPER · AUDIT · USER · Super admin (`systemAdmin`) — ตาร
 | [docs/design-spec/README.md](docs/design-spec/README.md) | สเปกดีไซน์สุดท้าย, การตัดสินใจ, ช่องว่างที่ยังเปิด |
 | [docs/backlog/BACKLOG.md](docs/backlog/BACKLOG.md) | Backlog 42 รายการ (code `UAM-<EPIC>-<nn>`) |
 | [docs/backlog/EXECUTION-PLAN.md](docs/backlog/EXECUTION-PLAN.md) | ลำดับ/คู่ขนานของงาน |
+| [CLAUDE.md](CLAUDE.md) · [docs/workflow/WORKFLOW.md](docs/workflow/WORKFLOW.md) | กติกา agent และ workflow PM/Senior/Junior/QA |
 | [docs/testing/TESTING.md](docs/testing/TESTING.md) | กลยุทธ์และขั้นตอน unit test, E2E, TDD/DDD |
 | [docs/testing/test-cases/README.md](docs/testing/test-cases/README.md) | 📋 Test case จริง 59 รายการ (.md) + traceability กับ backlog |
 | [docs/testing/PHASES.md](docs/testing/PHASES.md) | 🪜 Phase การ build และเวลาที่เริ่มเขียนบอท E2E |
@@ -42,10 +43,24 @@ main ← develop ← <type>/<CODE>-<slug>   เช่น feature/UAM-SYS-02-syst
 4. เกณฑ์ตรวจรับ: ตรง artboard · ใช้เฉพาะฟิลด์เดิม · payload ไม่เปลี่ยน · CI ผ่าน
 
 ## 🚀 เริ่มต้น
-โค้ดแอปยังไม่อยู่ใน repo นี้ — เริ่มที่ [`UAM-FND-01`](docs/backlog/items/UAM-FND-01.md) หลังเสร็จจะมีคำสั่งรัน (`npm ci`, `ng serve`, `ng test`, `npx playwright test`) ที่นี่
+แอป Angular 17.2 (ใหม่ ด้วย `ng new`) อยู่ที่ root ของ repo
+
+```bash
+npm ci
+npm start                      # http://localhost:4200
+export CHROME_BIN=/path/to/chrome   # ถ้ายังไม่มี Chrome ใน PATH
+npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox
+npm run build
+```
+
+## 🤖 ทำงานกับ agent
+อ่าน [`CLAUDE.md`](CLAUDE.md) และ [docs/workflow/WORKFLOW.md](docs/workflow/WORKFLOW.md) — บทบาท PM / Senior Dev / Junior Dev / QA อยู่ที่ `.claude/agents/`, skill ของ workflow ที่ `.claude/skills/`, template ที่ `.github/`
 
 ## 🗂️ โครงสร้าง repo (ปัจจุบัน)
 ```text
+src/ angular.json package.json   แอป Angular
+CLAUDE.md  .claude/{agents,skills}   กติกา/บทบาท/skill ของ agent
+.github/   PR/issue template, CI
 docs/
   design-spec/   สเปก + ไฟล์ดีไซน์ (.dc.html, uam.css, canvas.json)
   backlog/       BACKLOG, EXECUTION-PLAN, items/

@@ -1,0 +1,15 @@
+name: 💡 Requirement จากผู้ใช้
+description: ความต้องการใหม่ → PM ออกแบบ architecture / test case / แตก backlog
+title: "[REQ] "
+labels: ["role:pm"]
+body:
+  - type: textarea
+    id: need
+    attributes: {label: ต้องการอะไร / ทำไม}
+    validations: {required: true}
+  - type: textarea
+    id: constraints
+    attributes: {label: ข้อจำกัด (เช่น ห้ามแก้หลังบ้าน)}
+  - type: textarea
+    id: done
+    attributes: {label: ถือว่าเสร็จเมื่อ}

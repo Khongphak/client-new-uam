@@ -1,0 +1,42 @@
+name: 🐞 QA failure / bug
+description: QA รายงานผลไม่ผ่าน (PM + ผู้ใช้เป็นผู้ตัดสินว่าตีกลับหรือเปิดใหม่)
+title: "[QA][TC-XXX-nnn] "
+labels: ["type:bug", "qa:failed"]
+body:
+  - type: input
+    id: tc
+    attributes: {label: Test case, placeholder: TC-SYS-003}
+    validations: {required: true}
+  - type: input
+    id: backlog
+    attributes: {label: Backlog ที่เกี่ยวข้อง, placeholder: UAM-SYS-02}
+  - type: input
+    id: build
+    attributes: {label: Build (commit SHA / branch / browser / viewport)}
+    validations: {required: true}
+  - type: textarea
+    id: steps
+    attributes: {label: ขั้นตอน reproduce}
+    validations: {required: true}
+  - type: textarea
+    id: expected
+    attributes: {label: Expected (จาก test case)}
+    validations: {required: true}
+  - type: textarea
+    id: actual
+    attributes: {label: Actual (ผลจริง)}
+    validations: {required: true}
+  - type: textarea
+    id: evidence
+    attributes: {label: หลักฐาน (screenshot / log / ไฟล์ใน docs/qa/results)}
+  - type: dropdown
+    id: severity
+    attributes: {label: ความรุนแรง, options: [critical, major, minor]}
+  - type: dropdown
+    id: proposal
+    attributes:
+      label: ข้อเสนอของ QA
+      options: ["ตีกลับ issue เดิม (story ยังไม่ผ่านเกณฑ์/regression)", "เปิด issue ใหม่ (นอกขอบเขต/บั๊กเดิม/สเปกขาด)", "test case หรือ env ผิด"]
+  - type: textarea
+    id: reason
+    attributes: {label: เหตุผลของข้อเสนอ}

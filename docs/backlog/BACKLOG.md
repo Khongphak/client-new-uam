@@ -17,7 +17,7 @@
 ## 🗂️ ตารางรวม
 | Code | Title | Type | Priority | Score | Pts | Wave | Depends on |
 |---|---|---|---|---|---|---|---|
-| [UAM-FND-01](items/UAM-FND-01.md) | เตรียม codebase ใน repo นี้ (นำ source เดิมเข้ามา + baseline) | 🧹 chore | 🔴 **P0** | 97 | 3 | W1 | — |
+| [UAM-FND-01](items/UAM-FND-01.md) | เริ่มแอปใหม่ด้วย ng new + baseline CI/test (เสร็จแล้ว) | 🧹 chore | 🔴 **P0** | 97 | 3 | W1 | — |
 | [UAM-DSN-01](items/UAM-DSN-01.md) | ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301 | 🎨 design | 🟡 **P2** | 67 | 3 | W1 | — |
 | [UAM-FND-02](items/UAM-FND-02.md) | Design tokens & ธีม (uam.css → SCSS) | ✨ feature | 🔴 **P0** | 97 | 3 | W2 | UAM-FND-01 |
 | [UAM-QA-01](items/UAM-QA-01.md) | ชุดทดสอบ contract: payload/response ต้องไม่เปลี่ยน | 🧪 test | 🔴 **P0** | 87 | 3 | W2 | UAM-FND-01 |

@@ -6,7 +6,7 @@
 
 | Code | งาน | Pts | Priority | ต้องเสร็จก่อน |
 |---|---|---|---|---|
-| [UAM-FND-01](items/UAM-FND-01.md) | เตรียม codebase ใน repo นี้ (นำ source เดิมเข้ามา + baseline) | 3 | 🔴 P0 | — |
+| [UAM-FND-01](items/UAM-FND-01.md) | เริ่มแอปใหม่ด้วย ng new + baseline CI/test (เสร็จแล้ว) | 3 | 🔴 P0 | — |
 | [UAM-DSN-01](items/UAM-DSN-01.md) | ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301 | 3 | 🟡 P2 | — |
 
 ## 🌊 Wave 2

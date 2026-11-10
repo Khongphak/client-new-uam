@@ -1,0 +1,43 @@
+name: 📋 Backlog item
+description: งานตาม backlog (PM เป็นผู้สร้าง จากไฟล์ docs/backlog/items/)
+title: "[UAM-XXX-nn] "
+labels: ["status:ready"]
+body:
+  - type: input
+    id: code
+    attributes: {label: Code, placeholder: UAM-SYS-02}
+    validations: {required: true}
+  - type: input
+    id: branch
+    attributes: {label: Branch (จาก develop), placeholder: feature/UAM-SYS-02-system-drawer-deeplink}
+    validations: {required: true}
+  - type: textarea
+    id: description
+    attributes: {label: Description}
+    validations: {required: true}
+  - type: textarea
+    id: actual
+    attributes: {label: Actual result (ยืนยันกับโค้ดก่อนเริ่ม)}
+  - type: textarea
+    id: expected
+    attributes: {label: Expected result}
+    validations: {required: true}
+  - type: textarea
+    id: approach
+    attributes: {label: แนวทางการแก้ไข}
+  - type: textarea
+    id: acceptance
+    attributes: {label: Acceptance criteria (checklist)}
+    validations: {required: true}
+  - type: input
+    id: depends
+    attributes: {label: Depends on (#issue หรือ code), description: "เริ่มได้เมื่อทุกตัวเป็น status:done"}
+  - type: dropdown
+    id: priority
+    attributes: {label: Priority, options: [P0, P1, P2, P3]}
+  - type: input
+    id: testcases
+    attributes: {label: Test case ที่ผูก (TC-…)}
+  - type: input
+    id: design
+    attributes: {label: Artboard / สเปกอ้างอิง}
