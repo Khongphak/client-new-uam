@@ -1,0 +1,5 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Demo login</title>
+<h1>Sign in</h1>
+<input data-testid="login-username" placeholder="Username"><input data-testid="login-password" type="password" placeholder="Password">
+<button data-testid="login-submit" onclick="if(document.querySelector('[data-testid=login-username]').value==='demo'&&document.querySelector('[data-testid=login-password]').value==='demo'){location.href='/home.html'}else{document.getElementById('e').hidden=false}">Sign in</button>
+<p id=e hidden data-testid="login-error" role=alert>Username or password is incorrect.</p>

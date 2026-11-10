@@ -1,0 +1,7 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Demo home</title>
+<h1>Home</h1>
+<input data-testid="search" placeholder="Search" oninput="f(this.value)">
+<ul id=l><li>Alpha system</li><li>Beta system</li><li>Gamma system</li></ul>
+<button data-testid="load" onclick="fetch('/api/fail').then(r=>r.ok?document.getElementById('s').textContent='Loaded':0)">Load</button>
+<p id=s data-testid="status"></p>
+<script>function f(v){document.querySelectorAll('#l li').forEach(li=>li.hidden=!li.textContent.toLowerCase().includes(v.toLowerCase()))}</script>

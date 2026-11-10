@@ -26,6 +26,7 @@ ADMIN · DEVELOPER · AUDIT · USER · Super admin (`systemAdmin`) — ตาร
 | [docs/backlog/BACKLOG.md](docs/backlog/BACKLOG.md) | Backlog 42 รายการ (code `UAM-<EPIC>-<nn>`) |
 | [docs/backlog/EXECUTION-PLAN.md](docs/backlog/EXECUTION-PLAN.md) | ลำดับ/คู่ขนานของงาน |
 | [docs/testing/TESTING.md](docs/testing/TESTING.md) | กลยุทธ์และขั้นตอน unit test, E2E, TDD/DDD |
+| [e2e-bot/README.md](e2e-bot/README.md) | 🤖 บอท E2E (Python) รันเทส + screenshot + รายงาน + ร่าง issue + ร่างคู่มือ |
 
 ## 🌿 วิธีทำงาน (Git flow)
 
@@ -47,4 +48,5 @@ docs/
   design-spec/   สเปก + ไฟล์ดีไซน์ (.dc.html, uam.css, canvas.json)
   backlog/       BACKLOG, EXECUTION-PLAN, items/
   testing/       TESTING.md
+e2e-bot/        บอท E2E (Python/Playwright) + case YAML
 ```

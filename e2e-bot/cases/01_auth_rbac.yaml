@@ -1,0 +1,123 @@
+- id: E2E-AUT-001
+  title: "Login สำเร็จด้วย AD account"
+  backlog: [UAM-AUT-01]
+  severity: critical
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  viewports: [desktop, phone]
+  manual: {section: "เข้าสู่ระบบ", title: "เข้าสู่ระบบ"}
+  steps:
+    - goto: /login
+    - shot: login
+      caption: เปิดหน้า Sign in
+    - fill: ["@login-username", "${UAM_ADMIN_USER}"]
+    - fill: ["@login-password", "${UAM_ADMIN_PASS}"]
+    - click: "@login-submit"
+    - expect_url: "/(pdpaconsent|home)"
+
+- id: E2E-AUT-002
+  title: "Login ผิด แสดงข้อความและไม่เข้าระบบ"
+  backlog: [UAM-AUT-01]
+  severity: critical
+  viewports: [desktop, phone]
+  manual: {section: "เข้าสู่ระบบ", title: "กรณีรหัสผ่านไม่ถูกต้อง"}
+  steps:
+    - goto: /login
+    - fill: ["@login-username", "no.such.user"]
+    - fill: ["@login-password", "wrong-password"]
+    - click: "@login-submit"
+    - expect_visible: "@login-error"
+    - expect_url: "/login"
+    - shot: error
+      caption: ระบบแจ้งว่า Username หรือ Password ไม่ถูกต้อง
+
+- id: E2E-AUT-003
+  title: "Consent ต้องติ๊กก่อนปุ่ม Agree ใช้ได้"
+  backlog: [UAM-AUT-02]
+  viewports: [desktop, phone]
+  manual: {section: "เข้าสู่ระบบ", title: "ยอมรับ PDPA"}
+  steps:
+    - goto: /pdpaconsent
+    - expect_disabled: "@consent-agree"
+    - click: "@consent-accept"
+    - expect_enabled: "@consent-agree"
+    - shot: consent
+      caption: ติ๊กยอมรับแล้วปุ่ม Agree and continue ใช้ได้
+
+- id: E2E-AUT-004
+  title: "Decline ถามยืนยันก่อน sign out"
+  backlog: [UAM-AUT-02]
+  steps:
+    - goto: /pdpaconsent
+    - click: "@consent-decline"
+    - expect_visible: "@dialog"
+
+- id: E2E-RBAC-001
+  title: "ADMIN เห็นเมนู Home, Setting, Report"
+  backlog: [UAM-SHL-02]
+  severity: critical
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  viewports: [desktop, phone]
+  manual: {section: "ภาพรวมและเมนู", title: "เมนูซ้ายของ ADMIN"}
+  steps:
+    - goto: /home
+    - expect_visible: "@menu-home"
+    - expect_visible: "@menu-setting"
+    - expect_visible: "@menu-report"
+    - shot: menu
+      caption: เมนูซ้ายของ ADMIN
+
+- id: E2E-RBAC-002
+  title: "DEVELOPER ไม่เห็น Report และเข้า users-setting ไม่ได้ (403)"
+  backlog: [UAM-SHL-02, UAM-ERR-02]
+  severity: critical
+  role: DEVELOPER
+  requires_env: [UAM_DEV_USER, UAM_DEV_PASS]
+  steps:
+    - goto: /home
+    - expect_hidden: "@menu-report"
+    - goto: /setting/users-setting
+    - expect_url: "/forbidden"
+    - expect_visible: "@err-403"
+
+- id: E2E-RBAC-003
+  title: "AUDIT เห็นเฉพาะ Home และ Report"
+  backlog: [UAM-SHL-02]
+  role: AUDIT
+  requires_env: [UAM_AUDIT_USER, UAM_AUDIT_PASS]
+  steps:
+    - goto: /home
+    - expect_hidden: "@menu-setting"
+    - expect_visible: "@menu-report"
+    - goto: /setting/system-setting
+    - expect_url: "/forbidden"
+
+- id: E2E-RBAC-004
+  title: "USER เห็นเฉพาะ Home"
+  backlog: [UAM-SHL-02]
+  role: USER
+  requires_env: [UAM_USER_USER, UAM_USER_PASS]
+  steps:
+    - goto: /home
+    - expect_hidden: "@menu-setting"
+    - expect_hidden: "@menu-report"
+    - goto: /report
+    - expect_url: "/forbidden"
+
+- id: E2E-RBAC-005
+  title: "Super admin ผ่านทุก guard"
+  backlog: [UAM-SHL-02]
+  role: SUPERADMIN
+  requires_env: [UAM_SUPER_USER, UAM_SUPER_PASS]
+  steps:
+    - goto: /setting/users-setting
+    - expect_visible: "@tab-roles"
+    - goto: /report
+    - expect_visible: "@report-export"
+
+- id: E2E-ERR-001
+  title: "URL ที่ไม่รู้จักไปหน้า 404"
+  backlog: [UAM-ERR-01]
+  steps:
+    - goto: /this-page-does-not-exist
+    - expect_visible: "@err-404"

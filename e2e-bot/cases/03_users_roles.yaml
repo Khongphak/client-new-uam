@@ -1,0 +1,162 @@
+- id: E2E-USR-001
+  title: "Roles ก่อน Users, กรอง, และไม่มีคอลัมน์ที่ model ไม่มี"
+  backlog: [UAM-USR-01]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  viewports: [desktop, phone]
+  manual: {section: "Users & Roles", title: "รายการ Roles และ Users"}
+  steps:
+    - goto: /setting/users-setting
+    - expect_visible: "@table-roles"
+    - shot: roles
+      caption: แท็บ Roles
+    - click: "@tab-users"
+    - expect_url: "#users"
+    - expect_visible: "@table-users"
+    - shot: users
+      caption: แท็บ Users
+    - expect_no_text: {target: "@table-users", text: "Last login"}
+
+- id: E2E-USR-002
+  title: "ปุ่มกลับจาก User details กลับแท็บ Users (#users)"
+  backlog: [UAM-USR-03, UAM-USR-06]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  manual: {section: "Users & Roles", title: "ดูรายละเอียดผู้ใช้"}
+  steps:
+    - goto: /setting/users-setting#users
+    - click: "@row-open-first"
+    - expect_visible: "@approvers"
+    - shot: view
+      caption: รายละเอียดผู้ใช้ และ Approvers (อ่านอย่างเดียว)
+    - click: "@btn-back"
+    - expect_url: "#users"
+
+- id: E2E-USR-003
+  title: "ปุ่มกลับจาก Role details กลับแท็บ Roles (#roles)"
+  backlog: [UAM-USR-02, UAM-USR-06]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  steps:
+    - goto: /setting/users-setting#roles
+    - click: "@row-open-first"
+    - expect_visible: "@role-stats"
+    - click: "@btn-back"
+    - expect_url: "#roles"
+
+- id: E2E-USR-004
+  title: "Edit user: Save ปิดจนกว่าจะมีการแก้ไข และระบุจำนวนที่ยังไม่บันทึก"
+  backlog: [UAM-USR-04]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  manual: {section: "Users & Roles", title: "แก้ไขผู้ใช้"}
+  steps:
+    - goto: /setting/users-setting#users
+    - click: "@row-edit-first"
+    - expect_disabled: "@user-save"
+    - click: "@switch-active"
+    - expect_enabled: "@user-save"
+    - shot: edit
+      caption: แก้ไขแล้วปุ่ม Save changes ใช้ได้
+    - click: "@tab-user-systems"
+    - expect_visible: "@system-role-row"
+    - click: "@tab-user-preview"
+    - expect_visible: "@permission-preview"
+
+- id: E2E-USR-005
+  title: "Edit user: ระบบซ้ำ แสดงที่แถว และ Save ถูกปิด"
+  backlog: [UAM-USR-05]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  steps:
+    - goto: /setting/users-setting#users
+    - click: "@row-edit-first"
+    - click: "@tab-user-systems"
+    - click: "@btn-add-system-row"
+    - click: "@btn-duplicate-last-system"
+    - expect_visible: "@row-error-duplicate"
+    - expect_disabled: "@user-save"
+
+- id: E2E-USR-006
+  title: "Edit user: AD ไม่ครบ ล้างช่องและแจ้งเตือน"
+  backlog: [UAM-USR-05]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  steps:
+    - goto: /setting/users-setting#users
+    - click: "@btn-add"
+    - mock: {url: "**/api/**/ad*", status: 200, json: {RESULT_CODE: 40400}}
+    - fill: ["@field-username", "ghost.user"]
+    - click: "@ad-lookup"
+    - expect_visible: "@ad-error"
+    - expect_value: {target: "@field-email", value: ""}
+
+- id: E2E-ROL-001
+  title: "Role editor 3 ขั้น (Role info → Menus & groups → Permissions)"
+  backlog: [UAM-ROL-01]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  viewports: [desktop, phone]
+  manual: {section: "Role", title: "สร้าง Role 3 ขั้นตอน"}
+  steps:
+    - goto: /setting/users-setting#roles
+    - click: "@btn-add"
+    - fill: ["@field-role-name", "E2E Role"]
+    - shot: step1
+      caption: ขั้นที่ 1 ข้อมูล Role
+    - click: "@step-next"
+    - expect_visible: "@menu-tree"
+    - shot: step2
+      caption: ขั้นที่ 2 จัดโครงเมนูและกลุ่ม
+    - click: "@step-next"
+    - expect_visible: "@permission-table"
+    - shot: step3
+      caption: ขั้นที่ 3 กำหนดสิทธิ์
+
+- id: E2E-ROL-002
+  title: "เมนูใช้ได้ครั้งเดียว และซ้อนกลุ่มเกิน 2 ชั้นไม่ได้"
+  backlog: [UAM-ROL-02]
+  severity: critical
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  depends_on: [E2E-ROL-001]
+  steps:
+    - goto: /setting/users-setting#roles
+    - click: "@btn-add"
+    - fill: ["@field-role-name", "E2E Role 2"]
+    - click: "@step-next"
+    - click: "@menu-add-first"
+    - expect_disabled: "@menu-add-first"
+    - click: "@group-add"
+    - click: "@group-add-nested"
+    - expect_disabled: "@group-add-nested-3rd"
+
+- id: E2E-ROL-003
+  title: "ลากเมนูเข้ากลุ่ม และ Move to... ทำงานได้"
+  backlog: [UAM-ROL-02]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  depends_on: [E2E-ROL-001]
+  steps:
+    - goto: /setting/users-setting#roles
+    - click: "@btn-add"
+    - click: "@step-next"
+    - drag: {from: "@menu-item-first", to: "@group-first"}
+    - expect_count: {target: "@group-first [data-testid=menu-item]", count: 1}
+    - click: "@menu-more-first"
+    - click: "@menu-move-to"
+    - expect_visible: "@move-to-list"
+
+- id: E2E-ROL-004
+  title: "Permissions: เลือกทั้งหมดที่หัวคอลัมน์ติ๊กทุกเมนู"
+  backlog: [UAM-ROL-03]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  depends_on: [E2E-ROL-001]
+  steps:
+    - goto: /setting/users-setting#roles
+    - click: "@btn-add"
+    - click: "@step-next"
+    - click: "@step-next"
+    - click: "@perm-col-all-first"
+    - expect_count: {target: "@perm-cell-first-col:not(:checked)", count: 0}

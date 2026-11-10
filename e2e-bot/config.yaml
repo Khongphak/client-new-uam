@@ -1,0 +1,21 @@
+# ตั้งค่าบอท E2E ของ UAM
+base_url: http://localhost:4200     # หรือส่ง --base-url
+timeout_ms: 8000
+locale: th-TH
+# chromium_path: /opt/pw-browsers/chromium/...   # หรือ env UAM_CHROMIUM
+
+auth:                               # ล็อกอินผ่าน UI ครั้งเดียวต่อ role/viewport แล้วเก็บ storage state
+  login_path: /login
+  username: "@login-username"
+  password: "@login-password"
+  submit: "@login-submit"
+  success_url_regex: "/(home|pdpaconsent)"
+  consent_url_regex: "/pdpaconsent"
+  consent_steps: ["@consent-accept", "@consent-agree"]
+  after_consent_regex: "/home"
+  roles:                            # ใส่ username/password ผ่าน env เท่านั้น ห้าม commit
+    ADMIN:      {user_env: UAM_ADMIN_USER,     pass_env: UAM_ADMIN_PASS}
+    DEVELOPER:  {user_env: UAM_DEV_USER,       pass_env: UAM_DEV_PASS}
+    AUDIT:      {user_env: UAM_AUDIT_USER,     pass_env: UAM_AUDIT_PASS}
+    USER:       {user_env: UAM_USER_USER,      pass_env: UAM_USER_PASS}
+    SUPERADMIN: {user_env: UAM_SUPER_USER,     pass_env: UAM_SUPER_PASS}

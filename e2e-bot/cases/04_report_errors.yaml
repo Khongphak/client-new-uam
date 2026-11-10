@@ -1,0 +1,79 @@
+- id: E2E-RPT-001
+  title: "Report: เลือกรายงาน → ตั้งช่วงวันที่ลัด → Export ได้ไฟล์ Excel"
+  backlog: [UAM-RPT-01]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  viewports: [desktop, phone]
+  manual: {section: "Report", title: "ออกรายงาน"}
+  steps:
+    - goto: /report
+    - shot: report
+      caption: หน้า Report เลือกชนิดรายงาน
+    - click: "@report-range-last7"
+    - shot: range
+      caption: เลือกช่วงวันที่ลัด Last 7 days
+    - download: {click: "@report-export", ext: ".xlsx"}
+    - expect_no_text: {target: "@report-page", text: "Preview"}
+
+- id: E2E-RPT-002
+  title: "Report: ดาวน์โหลดล้มเหลว แสดง toast"
+  backlog: [UAM-RPT-02]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  steps:
+    - goto: /report
+    - mock: {url: "**/api/**/report*", status: 500, json: {RESULT_CODE: 50000}}
+    - click: "@report-export"
+    - expect_visible: "@toast-error"
+
+- id: E2E-ERR-010
+  title: "Session หมดอายุ → dialog → กลับหน้า Login"
+  backlog: [UAM-ERR-03]
+  severity: critical
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  steps:
+    - goto: /home
+    - mock: {url: "**/api/**", status: 401, json: {}}
+    - reload: true
+    - expect_text: {target: "@dialog", text: "Your session has expired"}
+    - click: "@dialog-confirm"
+    - expect_url: "/login"
+
+- id: E2E-ERR-011
+  title: "Network error (status 0) แสดงข้อความ Network Error"
+  backlog: [UAM-ERR-03]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  steps:
+    - goto: /home
+    - mock_abort: "**/api/**"
+    - reload: true
+    - expect_text: {target: "@dialog", text: "Network Error"}
+
+- id: E2E-ERR-012
+  title: "Server error 50000 แสดงข้อความจาก server"
+  backlog: [UAM-ERR-03]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  steps:
+    - goto: /home
+    - mock: {url: "**/api/**", status: 500, json: {RESULT_CODE: 50000, message: "System error"}}
+    - reload: true
+    - expect_text: {target: "@dialog", text: "System error"}
+
+- id: E2E-HOM-001
+  title: "Home แสดงการ์ดระบบ และสถานะ empty เมื่อไม่มีข้อมูล"
+  backlog: [UAM-HOM-01, UAM-HOM-02]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  viewports: [desktop, phone]
+  manual: {section: "ภาพรวมและเมนู", title: "หน้า Home"}
+  steps:
+    - goto: /home
+    - expect_visible: "@sys-card"
+    - shot: home
+      caption: การ์ดระบบที่ผู้ใช้เข้าถึงได้
+    - mock: {url: "**/api/**/system*", status: 200, json: {data: []}}
+    - reload: true
+    - expect_visible: "@state-empty"

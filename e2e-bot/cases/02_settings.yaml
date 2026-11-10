@@ -1,0 +1,85 @@
+- id: E2E-SYS-001
+  title: "System Setting ค้นหาและกรองจากแถวที่โหลดแล้ว"
+  backlog: [UAM-SYS-01]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  viewports: [desktop, phone]
+  manual: {section: "System Setting", title: "ค้นหาและกรองรายการ"}
+  steps:
+    - goto: /setting/system-setting
+    - expect_visible: "@table-system"
+    - shot: list
+      caption: รายการ System พร้อมตัวนับในแท็บ
+    - fill: ["@table-search", "a"]
+    - click: "@filters-toggle"
+    - expect_visible: "@filters-panel"
+    - shot: filters
+      caption: กด Filters เพื่อเปิดแผงตัวกรอง
+    - click: "@filters-reset"
+
+- id: E2E-SYS-002
+  title: "สลับแท็บ System / Menu / System to System"
+  backlog: [UAM-SYS-01]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  steps:
+    - goto: /setting/system-setting
+    - click: "@tab-menu"
+    - expect_visible: "@table-menu"
+    - click: "@tab-s2s"
+    - expect_visible: "@table-s2s"
+
+- id: E2E-SYS-003
+  title: "เปิด drawer ผ่าน deep link"
+  backlog: [UAM-SYS-02]
+  severity: critical
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  depends_on: [E2E-SYS-001]
+  manual: {section: "System Setting", title: "ดูรายละเอียด System"}
+  steps:
+    - goto: /setting/system-setting
+    - click: "@row-open-first"
+    - expect_visible: "@drawer"
+    - expect_url: "drawer=system"
+    - shot: drawer
+      caption: รายละเอียดเปิดในแถบด้านขวา (drawer)
+    - reload: true
+    - expect_visible: "@drawer"
+
+- id: E2E-SYS-004
+  title: "เพิ่ม System ใหม่ใน drawer"
+  backlog: [UAM-SYS-02]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  depends_on: [E2E-SYS-003]
+  manual: {section: "System Setting", title: "เพิ่ม System"}
+  steps:
+    - goto: /setting/system-setting
+    - click: "@btn-add"
+    - fill: ["@field-system-name", "E2E Sample System"]
+    - shot: form
+      caption: กรอกข้อมูลระบบใหม่
+    - click: "@drawer-save"
+    - expect_visible: "@toast-success"
+
+- id: E2E-SYS-005
+  title: "ลิงก์ route เก่า action-system ถูก redirect"
+  backlog: [UAM-SYS-05]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  steps:
+    - goto: /setting/system-setting/action-system
+    - expect_url: "drawer=system"
+
+- id: E2E-ERR-002
+  title: "ลบไม่ได้ แสดง message + statusDescription จาก server"
+  backlog: [UAM-ERR-04]
+  role: ADMIN
+  requires_env: [UAM_ADMIN_USER, UAM_ADMIN_PASS]
+  steps:
+    - goto: /setting/system-setting
+    - mock: {url: "**/api/**/delete*", status: 400, json: {message: "Cannot delete", statusDescription: "In use"}}
+    - click: "@row-delete-first"
+    - click: "@dialog-confirm"
+    - expect_text: {target: "@dialog", text: "In use"}

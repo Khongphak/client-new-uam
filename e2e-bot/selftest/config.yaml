@@ -1,0 +1,11 @@
+timeout_ms: 3000
+locale: th-TH
+chromium_path: /opt/pw-browsers/chromium-1243/chrome-linux64/chrome
+auth:
+  login_path: /login.html
+  username: "@login-username"
+  password: "@login-password"
+  submit: "@login-submit"
+  success_url_regex: "/home.html"
+  roles:
+    ADMIN: {user_env: DEMO_USER, pass_env: DEMO_PASS}

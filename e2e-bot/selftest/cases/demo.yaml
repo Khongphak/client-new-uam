@@ -1,0 +1,72 @@
+- id: E2E-AUT-900
+  title: Login ผิด แสดงข้อความผิดพลาด
+  backlog: [UAM-AUT-01]
+  viewports: [desktop, phone]
+  selftest_expect: passed
+  manual: {section: "เข้าสู่ระบบ", title: "กรอกรหัสผ่านผิด"}
+  steps:
+    - goto: /login.html
+    - fill: ["@login-username", "demo"]
+    - fill: ["@login-password", "wrong"]
+    - shot: filled
+      caption: กรอก Username และ Password
+    - click: "@login-submit"
+    - expect_visible: "@login-error"
+    - shot: error
+      caption: ระบบแจ้งว่ารหัสผ่านไม่ถูกต้อง
+
+- id: E2E-AUT-901
+  title: ค้นหาในหน้า Home ตัดรายการ
+  backlog: [UAM-HOM-01]
+  role: ADMIN
+  selftest_expect: passed
+  manual: {section: "หน้า Home", title: "ค้นหาระบบ"}
+  steps:
+    - goto: /home.html
+    - shot: all
+      caption: รายการระบบทั้งหมด
+    - fill: ["@search", "beta"]
+    - expect_text: {target: "#l", text: "Beta"}
+    - shot: filtered
+      caption: พิมพ์ชื่อระบบเพื่อกรองรายการ
+
+- id: E2E-SYS-902
+  title: (ตั้งใจให้ล้ม) ปุ่ม Export ต้องมีในหน้า Home
+  backlog: [UAM-RPT-01]
+  role: ADMIN
+  selftest_expect: failed
+  steps:
+    - goto: /home.html
+    - expect_visible: "@export-button"
+
+- id: E2E-ERR-903
+  title: (ตั้งใจให้ล้ม) โหลดข้อมูลแล้วต้องขึ้น Loaded แต่ server ตอบ 500
+  backlog: [UAM-ERR-05]
+  role: ADMIN
+  selftest_expect: failed
+  steps:
+    - goto: /home.html
+    - click: "@load"
+    - expect_text: {target: "@status", text: "Loaded"}
+
+- id: E2E-ERR-904
+  title: (ตั้งใจให้ล้ม) case ที่ไม่มี backlog
+  selftest_expect: failed
+  steps:
+    - goto: /home.html
+    - expect_text: {text: "Nonexistent heading"}
+
+- id: E2E-AUT-905
+  title: ข้ามเมื่อไม่มี env
+  requires_env: [SOME_MISSING_ENV]
+  selftest_expect: skipped
+  steps:
+    - goto: /home.html
+
+- id: E2E-AUT-906
+  title: ถูกบล็อกเพราะ depends_on ล้ม
+  depends_on: [E2E-SYS-902]
+  role: ADMIN
+  selftest_expect: blocked
+  steps:
+    - goto: /home.html
