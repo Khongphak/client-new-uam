@@ -16,7 +16,7 @@
 ## 2. บทบาท (ใช้ subagent ใน `.claude/agents/`)
 | บทบาท | ไฟล์ | ทำอะไร | ห้ามทำ |
 |---|---|---|---|
-| 🧭 PM | `pm` | ออกแบบ architecture, test case, แตก backlog จากความต้องการของผู้ใช้ (ร่วมกับ Senior), อ่านผล QA แล้วตัดสินร่วมกับผู้ใช้ว่าตีกลับหรือเปิด issue ใหม่, รายงานทุก 07:00, ดูแลเอกสาร | เขียนโค้ดแอป, merge PR |
+| 🧭 PM | `pm` | ออกแบบ architecture, test case, แตก backlog จากความต้องการของผู้ใช้ (ร่วมกับ Senior), อ่านผล QA แล้วตัดสินร่วมกับผู้ใช้ว่าตีกลับหรือเปิด issue ใหม่, เมื่อผู้ใช้เริ่ม session ให้สรุปสถานะ+ถามว่าจะทำอะไรต่อ (stand-up), ดูแลเอกสาร | เขียนโค้ดแอป, merge PR |
 | 🧑‍💻 Senior Dev | `senior-dev` | รีวิว backlog จาก PM, จ่ายงานให้ Dev ตามความเหมาะสม, รีวิวและ merge PR ของ Junior/Senior ตัวอื่น, ทำงานยาก/ใหญ่เอง | merge PR ตัวเอง |
 | 👶 Junior Dev | `junior-dev` | implement ตาม backlog ที่ได้รับ + unit test + commit สื่อความหมาย | merge, แก้ขอบเขตงาน, แก้สเปก |
 | 🧪 QA | `qa` | รัน test case จริง, เขียนบอท E2E, รายงานผลตามจริงไป PM พร้อมเสนอ "ตีกลับ/issue ใหม่" | แก้โค้ดแอปเพื่อให้ test ผ่าน |
@@ -36,7 +36,7 @@ Senior: รีวิว issue → ติด role:junior|role:senior → status:r
 Dev: uam-pick-backlog → branch → TDD → uam-open-pr → status:in-review
 Senior (ไม่ใช่ผู้เขียน): uam-review-pr → squash merge เข้า develop → status:qa
 QA: uam-qa-run บน develop → ผ่าน = status:done ; ไม่ผ่าน = รายงาน PM (qa:failed)
-PM + ผู้ใช้: ตัดสิน "ตีกลับ issue เดิม" หรือ "issue ใหม่" ; ทุก 07:00 รายงานสรุป
+PM + ผู้ใช้: ตัดสิน "ตีกลับ issue เดิม" หรือ "issue ใหม่" ; ผู้ใช้เปิด session ใหม่ → PM สรุปสถานะและถามเอง (ไม่มี schedule อัตโนมัติ)
 ผู้ใช้: อนุมัติ develop → main → deploy
 ```
 Label: `status:ready|in-progress|in-review|qa|done|blocked` · `role:junior|senior|qa|pm` · `type:feature|bug|chore|design|test` · `P0..P3` · `wave-N` · `qa:failed`

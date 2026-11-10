@@ -1,6 +1,6 @@
 ---
 name: uam-daily-standup
-description: PM สรุปประจำวัน (ตั้งเวลาก่อน 07:00 น. เวลาไทย เพื่อคุยกับผู้ใช้ 07:00) — อะไรเสร็จแล้ว ค้างอะไร ควรทำอะไรต่อ เริ่มได้เลยไหม ต้องการการตัดสินใจอะไร
+description: PM stand-up ตอนผู้ใช้เริ่ม session (ผู้ใช้เรียกเอง ไม่มี schedule) — อะไรเสร็จแล้ว ค้างอะไร ควรทำอะไรต่อ เริ่มได้เลยไหม ต้องการการตัดสินใจอะไร
 ---
 1. `git fetch origin` และอ่านสถานะจริง: PR ที่ merge/เปิดอยู่ใน 24 ชม. (`mcp__github__list_pull_requests`/`list_commits`), issue ตาม label `status:*`, `qa:failed`, CI ล่าสุด, `docs/qa/results/` ล่าสุด, `docs/backlog/status.json`, `EXECUTION-PLAN.md`
 2. เขียน `docs/reports/daily/<YYYY-MM-DD>.md` ด้วยหัวข้อ:
