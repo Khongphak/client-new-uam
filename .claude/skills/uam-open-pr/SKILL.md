@@ -4,8 +4,7 @@ description: ปิดงาน backlog UAM เป็น PR — รัน test/b
 ---
 1. ก่อนเปิด PR รันทั้งหมดและแนบผลจริง:
    ```bash
-   export CHROME_BIN=/opt/pw-browsers/chromium-1243/chrome-linux64/chrome
-   npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox
+   npm run test:ci
    npm run build
    ```
 2. ตรวจ diff ด้วยตัวเอง: เล็ก ตรงเรื่อง ไม่มีไฟล์เกินขอบเขต ไม่มี secret ไม่มี `console.log`/`fdescribe`/`xit`

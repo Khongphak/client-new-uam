@@ -1,8 +1,6 @@
 # 📋 UAM Redesign — Backlog
 
-สร้างจาก `docs/design-spec/README.md` + `project/canvas.json` (42 รายการ) แต่ละรายการมีไฟล์รายละเอียดใน `items/<CODE>.md` ซึ่งพร้อมใช้เป็นเนื้อหา GitHub issue (มี front matter `title`/`labels`)
-
-> 🔢 แผนที่ code ↔ issue: [ISSUES.md](ISSUES.md)
+สร้างจาก `docs/design-spec/README.md` + `project/canvas.json` (44 รายการ) แต่ละรายการมีไฟล์รายละเอียดใน `items/<CODE>.md` ซึ่งพร้อมใช้เป็นเนื้อหา GitHub issue (มี front matter `title`/`labels`)
 
 ## 📐 ข้อตกลง
 - **Code**: `UAM-<EPIC>-<nn>` — EPIC: FND (foundation), SHL (shell), ERR (error/state), AUT (login/consent), HOM (home), SYS (system setting), USR (users/roles list/view/edit user), ROL (role editor), RPT (report), RSP (responsive), A11Y, QA, DSN (design)
@@ -19,10 +17,12 @@
 ## 🗂️ ตารางรวม
 | Code | Title | Type | Priority | Score | Pts | Wave | Depends on |
 |---|---|---|---|---|---|---|---|
-| [UAM-FND-01](items/UAM-FND-01.md) | เริ่มแอปใหม่ด้วย ng new + baseline CI/test (เสร็จแล้ว) | 🧹 chore | 🔴 **P0** | 97 | 3 | W1 | — |
-| [UAM-DSN-01](items/UAM-DSN-01.md) | ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301 | 🎨 design | 🟡 **P2** | 67 | 3 | W1 | — |
-| [UAM-FND-02](items/UAM-FND-02.md) | Design tokens & ธีม (uam.css → SCSS) | ✨ feature | 🔴 **P0** | 97 | 3 | W2 | UAM-FND-01 |
-| [UAM-QA-01](items/UAM-QA-01.md) | ชุดทดสอบ contract: payload/response ต้องไม่เปลี่ยน | 🧪 test | 🔴 **P0** | 87 | 3 | W2 | UAM-FND-01 |
+| [UAM-ARC-01](items/UAM-ARC-01.md) | ADR-0001: ยืนยัน stack ล่าสุดและสถาปัตยกรรม (Angular 22, PrimeNG 22, Vitest, signals) | 🎨 design | 🔴 **P0** | 98 | 2 | W0 | — |
+| [UAM-DSN-01](items/UAM-DSN-01.md) | ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301 | 🎨 design | 🟡 **P2** | 67 | 3 | W0 | — |
+| [UAM-FND-01](items/UAM-FND-01.md) | สร้างแอปใหม่บน stack ล่าสุด (Angular 22) + baseline CI/test — ทำใหม่ | 🧹 chore | 🔴 **P0** | 97 | 3 | W1 | UAM-ARC-01 |
+| [UAM-FND-02](items/UAM-FND-02.md) | Design tokens & ธีม: PrimeNG 22 custom preset + SCSS tokens (ตาม uam.css) | ✨ feature | 🔴 **P0** | 95 | 5 | W2 | UAM-FND-01 |
+| [UAM-QA-01](items/UAM-QA-01.md) | ชุดทดสอบ contract: golden fixtures + helper (payload/response ต้องไม่เปลี่ยน) | 🧪 test | 🔴 **P0** | 87 | 3 | W2 | UAM-FND-01 |
+| [UAM-API-01](items/UAM-API-01.md) | โมเดลและ service ของ API (interfaces ใช้ฟิลด์เดิม) — รอผู้ใช้ตัดสินแหล่งความจริง | ✨ feature | 🔴 **P0** | 85 | 5 | W2 | UAM-FND-01 |
 | [UAM-FND-03](items/UAM-FND-03.md) | คอมโพเนนต์ร่วมชุดพื้นฐาน (status, role, num, chips, count, tile, row, switch-row, back, section-title) | ✨ feature | 🔴 **P0** | 95 | 5 | W3 | UAM-FND-02 |
 | [UAM-FND-04](items/UAM-FND-04.md) | คอมโพเนนต์ร่วมชุดสถานะ/ข้อความ (dialog, state, skeleton, toast, errpage) | ✨ feature | 🔴 **P0** | 95 | 5 | W3 | UAM-FND-02 |
 | [UAM-SHL-01](items/UAM-SHL-01.md) | Shell: topbar 70px + sidebar 250px + breakpoint 768px | ✨ feature | 🔴 **P0** | 95 | 5 | W3 | UAM-FND-02 |

@@ -1,43 +1,43 @@
 ---
-title: "[UAM-FND-02] Design tokens & ธีม (uam.css → SCSS)"
+title: "[UAM-FND-02] Design tokens & ธีม: PrimeNG 22 custom preset + SCSS tokens (ตาม uam.css)"
 labels: ["feature", "fnd", "P0", "wave-2"]
 ---
 
-# 🧱 UAM-FND-02 — Design tokens & ธีม (uam.css → SCSS)
+# 🧱 UAM-FND-02 — Design tokens & ธีม: PrimeNG 22 custom preset + SCSS tokens (ตาม uam.css)
 
 | ฟิลด์ | ค่า |
 |---|---|
 | Code | `UAM-FND-02` |
 | ประเภท | ✨ feature |
-| Priority | 🔴 **P0** (score 97) |
-| ⭐ Value / 🔓 Unblocks / 💪 Effort | 5 / 5 / 3 pts |
+| Priority | 🔴 **P0** (score 95) |
+| ⭐ Value / 🔓 Unblocks / 💪 Effort | 5 / 5 / 5 pts |
 | 🌊 Wave (ลำดับการทำ) | 2 |
-| 🌿 Branch | `feature/UAM-FND-02-design-tokens-theme` (แตกจาก `develop`) |
+| 🌿 Branch | `feature/UAM-FND-02-primeng22-preset-tokens` (แตกจาก `develop`) |
 | ⛓️ Depends on | [UAM-FND-01](UAM-FND-01.md) |
 | 🚧 Blocks | [UAM-FND-03](UAM-FND-03.md), [UAM-FND-04](UAM-FND-04.md), [UAM-SHL-01](UAM-SHL-01.md), [UAM-AUT-01](UAM-AUT-01.md) |
 
 ## 📝 Description
-แปลงตัวแปรและธีมจาก `uam.css` เป็น SCSS ของแอป: ตัวแปร `--uam-*` (สีหลัก `#00194b` / `#2854a7`, gradient, muted, line), สเกลระยะ `--sp-1..6`, ฟอนต์ Sukhumvit Set, focus ring `#2854a7`, override ของ PrimeNG (tabmenu แบบเส้นใต้, input, button, message)
+PrimeNG 22 ใช้ระบบ preset (`@primeuix/themes`) ไม่ใช่ไฟล์ CSS ธีมแบบเดิม จึงต้องสร้าง **custom preset** (ฐาน Lara, primary `#2854a7`, surface/radius/focus ring ตามดีไซน์) + ตัวแปร `--uam-*`, สเกลระยะ `--sp-1..6`, font-stack Sukhumvit Set ให้ภาพใกล้ artboard
 
 ## 🎯 Design reference
-- Artboard: ทุก artboard; `uam.css` (ธีม lara-light-blue + override)
-- Source เดิม (`client-uam-develop`, path ใต้ `src/app/`): `src/styles.scss`, theme ของ PrimeNG
+- Artboard: ทุก artboard; `uam.css` (ธีม lara-light-blue ของ PrimeNG 17 + override)
+- Source เดิม (`client-uam-develop`, path ใต้ `src/app/`): `src/styles.scss`, `app.config.ts` (`providePrimeNG`)
 
 ## 🐞 Actual result (ปัจจุบัน)
-ธีมเดิมของแอป ไม่มี token ชุดใหม่ ระยะห่างใช้ค่าตายตัว/inline
+ยังไม่มีธีม/token ในแอปใหม่
 
 ## ✅ Expected result
-มี token ชุดเดียวใช้ทั้งแอป; PrimeNG แสดงตาม artboard; ไม่คัดลอก `uam.css` ทั้งไฟล์ (265 KB) แต่แยกเป็น partial: tokens / primeng-overrides / components
+token ชุดเดียวใช้ทั้งแอป; PrimeNG 22 แสดงใกล้ artboard (เทียบ screenshot); ไม่คัดลอก `uam.css` ทั้งไฟล์ (265 KB)
 
 ## 🛠️ แนวทางการแก้ไข
-- แยกเฉพาะส่วนที่ใช้จริงจาก `uam.css` (เน้นบล็อก `v32`–`v40` ท้ายไฟล์ + :root)
-- สร้าง `styles/_tokens.scss`, `_primeng-overrides.scss`
-- ใช้ PrimeNG component และ PrimeIcons เท่านั้น ห้ามเพิ่มไลบรารีไอคอน
-- ตรวจว่าไม่ทำให้หน้าเดิมที่ยังไม่ได้ redesign พัง (scope ด้วย class ราก หรือ feature flag ชั่วคราว)
+- ศึกษา API preset ของ PrimeNG 22 (`definePreset`, `providePrimeNG({theme})`) จากเอกสาร/โค้ดที่ติดตั้ง ไม่เดา
+- map ค่าจาก `:root` และบล็อก v32–v40 ของ `uam.css` เป็น preset + `_tokens.scss`
+- เทียบภาพหน้า demo กับ artboard (Playwright screenshot) แนบใน PR; ระบุส่วนที่ต่างและเหตุผล
+- ห้ามเพิ่มไลบรารี UI/ไอคอนใหม่; ใช้ PrimeIcons 8
 
 ## ☑️ Acceptance criteria
-- ☑️ สี/ฟอนต์/ระยะตรงกับ `uam.css`
-- ☑️ ไม่มี regression ภาพในหน้าที่ยังไม่ได้ทำ
+- ☑️ สี/ฟอนต์/ระยะตรง token
+- ☑️ ภาพเทียบ artboard แนบใน PR
 - ☑️ ตรงกับ artboard ที่อ้างถึง (desktop และ phone ถ้ามี)
 - ☑️ ใช้เฉพาะฟิลด์ใน `shared/interfaces/**` ปัจจุบัน
 - ☑️ Payload ที่ส่งหลังบ้านไม่เปลี่ยน (ผ่าน UAM-QA-01)

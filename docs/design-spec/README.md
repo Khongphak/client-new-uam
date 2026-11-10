@@ -1,5 +1,7 @@
 # UAM Redesign: Design Spec
 
+> ⚠️ **หมายเหตุ (2026-11-10):** ดีไซน์วาดบน PrimeNG 17 (lara-light-blue) แต่แอปใหม่สร้างบน PrimeNG 22 ที่ใช้ระบบ preset — "ตรงกับ artboard" ให้ตีความว่าตรงด้วยสายตา/โทเคน ไม่ใช่คัดลอก CSS เดิม ดู [ADR-0001](../architecture/ADR-0001-latest-stack.md)
+
 สเปกดีไซน์ฉบับสุดท้ายของ UAM (User Access Management) ใช้เป็นข้อกำหนดของแต่ละ backlog item ร่วมกับ source code ปัจจุบัน
 
 - สถานะ: ผู้ใช้ยืนยันว่าดีไซน์เสร็จแล้ว (2026-11-10)

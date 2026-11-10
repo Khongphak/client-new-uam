@@ -1,9 +1,9 @@
 ---
-title: "[UAM-FND-01] เริ่มแอปใหม่ด้วย ng new + baseline CI/test (เสร็จแล้ว)"
+title: "[UAM-FND-01] สร้างแอปใหม่บน stack ล่าสุด (Angular 22) + baseline CI/test — ทำใหม่"
 labels: ["chore", "fnd", "P0", "wave-1"]
 ---
 
-# 🧱 UAM-FND-01 — เริ่มแอปใหม่ด้วย ng new + baseline CI/test (เสร็จแล้ว)
+# 🧱 UAM-FND-01 — สร้างแอปใหม่บน stack ล่าสุด (Angular 22) + baseline CI/test — ทำใหม่
 
 | ฟิลด์ | ค่า |
 |---|---|
@@ -12,31 +12,36 @@ labels: ["chore", "fnd", "P0", "wave-1"]
 | Priority | 🔴 **P0** (score 97) |
 | ⭐ Value / 🔓 Unblocks / 💪 Effort | 5 / 5 / 3 pts |
 | 🌊 Wave (ลำดับการทำ) | 1 |
-| 🌿 Branch | `chore/UAM-FND-01-bootstrap-codebase` (แตกจาก `develop`) |
-| ⛓️ Depends on | — (เริ่มได้เลย) |
-| 🚧 Blocks | [UAM-FND-02](UAM-FND-02.md), [UAM-QA-01](UAM-QA-01.md) |
+| 🌿 Branch | `chore/UAM-FND-01-bootstrap-angular22` (แตกจาก `develop`) |
+| ⛓️ Depends on | [UAM-ARC-01](UAM-ARC-01.md) |
+| 🚧 Blocks | [UAM-FND-02](UAM-FND-02.md), [UAM-QA-01](UAM-QA-01.md), [UAM-API-01](UAM-API-01.md) |
 
 ## 📝 Description
-เริ่มแอป Angular 17.2 ใหม่ด้วย `ng new` (standalone, SCSS, routing) + PrimeNG 17.18, PrimeFlex 3.3, PrimeIcons 7, NgRx 17; ตั้ง Karma headless (`ChromeHeadlessNoSandbox`) และ CI (test + build) **สถานะ: ทำเสร็จแล้ว** ใน commit เริ่มต้นของ phase 0
+สร้างแอปด้วย `ng new` ตัวล่าสุด (Angular 22.2, TypeScript ~6.0, zoneless, standalone, Vitest+jsdom) + PrimeNG 22, @primeuix/themes, PrimeIcons 8, PrimeFlex 4 (ไม่ใช้ NgRx) ตาม ADR-0001; เปลี่ยน CI เป็น Node 22; กำหนดสคริปต์ `npm test`, `npm run test:ci`, `npm run build`
 
 ## 🎯 Design reference
 - Artboard: -
-- Source เดิม (`client-uam-develop`, path ใต้ `src/app/`): repo นี้ (ไม่ใช้โค้ด `client-uam-develop`)
+- Source เดิม (`client-uam-develop`, path ใต้ `src/app/`): repo นี้ (แทนที่แอป Angular 17 เดิมทั้งหมด; ไม่ใช้โค้ด `client-uam-develop`)
 
 ## 🐞 Actual result (ปัจจุบัน)
-ก่อนทำ: repo มีแต่ `docs/`
+แอปปัจจุบันเป็น Angular 17.2 / PrimeNG 17.18 / Karma (ล้าสมัย) — issue #2 เดิมถูกปิดว่าเสร็จ แต่ต้องเปิดใหม่
 
 ## ✅ Expected result
-`npm ci && npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox && npm run build` ผ่านบน `develop`; มี CI; มี CLAUDE.md และ template
+`npm ci && npm run test:ci && npm run build` ผ่านบน Node 22; ไม่มี Karma/zone.js ตกค้าง; CI เขียว; CLAUDE.md/README ตรงกับคำสั่งจริง
 
 ## 🛠️ แนวทางการแก้ไข
-- ยังเหลือ: ตั้ง branch protection ของ `develop`/`main` บน GitHub (ต้องทำโดยเจ้าของ repo)
-- เพิ่ม ESLint เป็นงานแยกถ้าต้องการ (ยังไม่อยู่ใน CI)
-- ฟอนต์ Sukhumvit Set และรูป/ไอคอนต้องหาไฟล์จริงมาใส่ใน `src/assets` (ไฟล์ดีไซน์อ้าง `/_blob/<id>` ใช้ไม่ได้)
+- ลบ Angular 17 เดิมออกทั้งหมด (`angular.json`, `karma.conf.js`, `package.json`, `src/`) แล้วสร้างใหม่ใน repo นี้ — ห้ามผสมสองเวอร์ชัน
+- ใช้เวอร์ชันที่ `ng new` เลือก (TS ~6.0; ห้ามขึ้น TS 7 จน Angular รองรับ)
+- ตรวจว่า PrimeNG 22 ต้องการ animation/provider อะไรบ้าง และตั้ง `providePrimeNG` พื้นฐาน
+- สร้างโครงโฟลเดอร์ DDD-lite ตาม ADR-0001 (ว่างเปล่า + README สั้น ๆ ต่อโฟลเดอร์ ถ้าจำเป็น)
+- อัปเดต `.github/workflows/ci.yml` (Node 22, `npm run test:ci`, `npm run build`) — ชื่อ job ต้องยังเป็น `build-test` (ruleset บังคับ)
+- อัปเดตคำสั่งใน CLAUDE.md / README / PR template / skill ให้ตรง (PM จะแก้เอกสารล่วงหน้าเป็น placeholder `test:ci`)
+- ฟอนต์ Sukhumvit Set และรูปโลโก้ยังไม่มีไฟล์จริง → ใช้ font-stack ชั่วคราว
 
 ## ☑️ Acceptance criteria
-- ☑️ `npm ci && ng build` ผ่านบน `develop`
-- ☑️ CI รันอัตโนมัติบน PR
+- ☑️ Node 22 + Angular 22 build/test ผ่าน
+- ☑️ CI `build-test` เขียวบน PR
+- ☑️ ไม่เหลือ dependency Angular 17
 - ☑️ ตรงกับ artboard ที่อ้างถึง (desktop และ phone ถ้ามี)
 - ☑️ ใช้เฉพาะฟิลด์ใน `shared/interfaces/**` ปัจจุบัน
 - ☑️ Payload ที่ส่งหลังบ้านไม่เปลี่ยน (ผ่าน UAM-QA-01)

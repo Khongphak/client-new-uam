@@ -1,6 +1,6 @@
 # CLAUDE.md — กติกาของ agent ใน client-new-uam
 
-โปรเจกต์: **UI ใหม่ของ UAM (User Access Management)** — Angular 17.2 + PrimeNG 17.18 + PrimeFlex 3.3 + PrimeIcons 7 + NgRx
+โปรเจกต์: **UI ใหม่ของ UAM (User Access Management)** — Angular 22 (zoneless, standalone, signals) + PrimeNG 22 (@primeuix/themes) + PrimeIcons 8 + PrimeFlex 4 + Vitest (ไม่ใช้ NgRx — state ด้วย signals) — ดู [ADR-0001](docs/architecture/ADR-0001-latest-stack.md)
 ภาพรวม: [README.md](README.md) · สเปก: [docs/design-spec/README.md](docs/design-spec/README.md) · Backlog: [docs/backlog/](docs/backlog/BACKLOG.md) · Test case: [docs/testing/](docs/testing/test-cases/README.md) · Workflow เต็ม: [docs/workflow/WORKFLOW.md](docs/workflow/WORKFLOW.md)
 
 ## 1. กฎแข็ง (ห้ามฝ่าฝืน ทุกบทบาท)
@@ -48,17 +48,18 @@ Label: `status:backlog|ready|in-progress|in-review|qa|done|blocked` (`backlog` =
 - Branch: `<type>/<CODE>-<slug>` จาก `develop` ล่าสุด (`feature/UAM-ERR-01-404-page`)
 - Commit: Conventional Commits + code — `feat(UAM-ERR-01): add 404 page` · `test(UAM-ERR-01): cover notfound route` · `fix(...)`, `chore(...)`, `docs(...)`; 1 commit = 1 เรื่อง ข้อความบอก**ทำไม**ถ้าไม่ชัด
 - PR: ใช้ `.github/PULL_REQUEST_TEMPLATE.md` ครบทุกช่อง · base = `develop` · `Closes #<issue>`
-- ต้องรันก่อนเปิด PR: `npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox` และ `npm run build` ผ่านทั้งคู่
+- ต้องรันก่อนเปิด PR: `npm run test:ci` และ `npm run build` ผ่านทั้งคู่
 - Merge: squash เข้า `develop` โดย Senior (ไม่ใช่ผู้เขียน) หลัง CI ผ่านและรีวิวผ่าน
 
 ## 6. คำสั่งที่ใช้บ่อย
 ```bash
-npm ci                                  # ติดตั้ง
+npm ci                                  # ติดตั้ง (Node ≥ 22.22)
 npm start                               # ng serve
 npm run build                           # build
-npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox
+npm run test:ci
 ```
-Chrome ในสภาพแวดล้อมคลาวด์: `export CHROME_BIN=/opt/pw-browsers/chromium-1243/chrome-linux64/chrome`
+unit test ใช้ Vitest+jsdom (ไม่ต้องมี Chrome); Chrome จำเป็นเฉพาะ Playwright/screenshot ในคลาวด์: `export CHROME_BIN=/opt/pw-browsers/chromium-1243/chrome-linux64/chrome`
+> ⚠️ ระหว่างย้ายไป stack ใหม่ (UAM-FND-01) สคริปต์ `test:ci` ยังไม่มีในแอปเดิม — ห้ามใช้แอป Angular 17 เดิมเป็นฐานของงานใหม่
 
 ## 7. Definition of Done (ต่อ backlog)
 ตรง artboard (desktop + phone ถ้ามี) · ใช้เฉพาะฟิลด์เดิม · payload ไม่เปลี่ยน · มี unit test ของ logic ใหม่ · test case ที่ผูกไว้ (`TRACEABILITY.md`) ผ่านเมื่อ QA ทดสอบ · CI เขียว · PR ผ่านรีวิว · เอกสารที่เกี่ยวข้องอัปเดต (PM/ผู้เขียน)

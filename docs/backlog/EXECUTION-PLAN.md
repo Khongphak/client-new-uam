@@ -2,19 +2,26 @@
 
 คำนวณจาก dependency ใน `items/*.md` — งานใน wave เดียวกันทำ**คู่ขนาน**ได้ทั้งหมด (ไม่ขึ้นต่อกัน); wave ถัดไปเริ่มได้เมื่อ dependency ที่ระบุเสร็จ (ไม่จำเป็นต้องรอทั้ง wave) ภายใน wave เรียงตาม priority
 
+## 🌊 Wave 0
+
+| Code | งาน | Pts | Priority | ต้องเสร็จก่อน |
+|---|---|---|---|---|
+| [UAM-ARC-01](items/UAM-ARC-01.md) | ADR-0001: ยืนยัน stack ล่าสุดและสถาปัตยกรรม (Angular 22, PrimeNG 22, Vitest, signals) | 2 | 🔴 P0 | — |
+| [UAM-DSN-01](items/UAM-DSN-01.md) | ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301 | 3 | 🟡 P2 | — |
+
 ## 🌊 Wave 1
 
 | Code | งาน | Pts | Priority | ต้องเสร็จก่อน |
 |---|---|---|---|---|
-| [UAM-FND-01](items/UAM-FND-01.md) | เริ่มแอปใหม่ด้วย ng new + baseline CI/test (เสร็จแล้ว) | 3 | 🔴 P0 | — |
-| [UAM-DSN-01](items/UAM-DSN-01.md) | ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301 | 3 | 🟡 P2 | — |
+| [UAM-FND-01](items/UAM-FND-01.md) | สร้างแอปใหม่บน stack ล่าสุด (Angular 22) + baseline CI/test — ทำใหม่ | 3 | 🔴 P0 | UAM-ARC-01 |
 
 ## 🌊 Wave 2
 
 | Code | งาน | Pts | Priority | ต้องเสร็จก่อน |
 |---|---|---|---|---|
-| [UAM-FND-02](items/UAM-FND-02.md) | Design tokens & ธีม (uam.css → SCSS) | 3 | 🔴 P0 | UAM-FND-01 |
-| [UAM-QA-01](items/UAM-QA-01.md) | ชุดทดสอบ contract: payload/response ต้องไม่เปลี่ยน | 3 | 🔴 P0 | UAM-FND-01 |
+| [UAM-FND-02](items/UAM-FND-02.md) | Design tokens & ธีม: PrimeNG 22 custom preset + SCSS tokens (ตาม uam.css) | 5 | 🔴 P0 | UAM-FND-01 |
+| [UAM-QA-01](items/UAM-QA-01.md) | ชุดทดสอบ contract: golden fixtures + helper (payload/response ต้องไม่เปลี่ยน) | 3 | 🔴 P0 | UAM-FND-01 |
+| [UAM-API-01](items/UAM-API-01.md) | โมเดลและ service ของ API (interfaces ใช้ฟิลด์เดิม) — รอผู้ใช้ตัดสินแหล่งความจริง | 5 | 🔴 P0 | UAM-FND-01 |
 
 ## 🌊 Wave 3
 
@@ -99,8 +106,8 @@
 | [UAM-A11Y-01](items/UAM-A11Y-01.md) | Accessibility audit บน Angular จริง (WCAG 2.1 AA) | 3 | 🟡 P2 | UAM-RSP-01 |
 | [UAM-QA-02](items/UAM-QA-02.md) | เก็บกวาด inline style และตรวจระยะห่างกับหน้าจอจริง | 2 | 🟢 P3 | UAM-RSP-01 |
 
-## 🔥 Critical path (ยาวที่สุดตามแต้ม effort รวม 48 pts)
-UAM-FND-01 → UAM-FND-02 → UAM-FND-03 → UAM-FND-05 → UAM-USR-01 → UAM-ROL-01 → UAM-ROL-02 → UAM-ROL-03 → UAM-ROL-04 → UAM-RSP-01 → UAM-A11Y-01
+## 🔥 Critical path (ยาวที่สุดตามแต้ม effort รวม 52 pts)
+UAM-ARC-01 → UAM-FND-01 → UAM-FND-02 → UAM-FND-03 → UAM-FND-05 → UAM-USR-01 → UAM-ROL-01 → UAM-ROL-02 → UAM-ROL-03 → UAM-ROL-04 → UAM-RSP-01 → UAM-A11Y-01
 
 ## 👷 แนะนำการแบ่งสายงาน (ถ้ามีหลายคน)
 - 🧱 **สาย A – Foundation**: FND-01 → FND-02 → FND-03/04 → FND-05/06 (ทุกสายอื่นรอสายนี้)

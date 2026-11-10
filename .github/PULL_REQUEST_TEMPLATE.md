@@ -9,7 +9,7 @@
 
 ## ✅ ผลทดสอบจริง
 <!-- วางผลที่รันจริง ห้ามเขียนว่าผ่านถ้าไม่ได้รัน -->
-- [ ] `npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox` → ผล:
+- [ ] `npm run test:ci` → ผล:
 - [ ] `npm run build` → ผล:
 - [ ] Test case ที่เกี่ยวข้อง (TC-…): 
 
