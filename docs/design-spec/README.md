@@ -92,11 +92,12 @@ Role คือ `CONFIG_UAM_ROLE` = ADMIN, DEVELOPER, AUDIT, USER ส่วน Su
 
 ## ช่องว่างที่ยังเปิดอยู่
 
-1. ยังไม่ได้ออกแบบ: หน้า phone ของหน้าสถานะ, สถานะผิดพลาดของ drawer ใน System Setting, ข้อผิดพลาดชื่อซ้ำ 40301 (ALREADY_EXISTED) ในฟอร์ม System/Role
-2. `/setting` เทียบกับเมนูย่อยในเมนูซ้าย และการกรองเมนูซ้ายตาม role (ดูหัวข้อสิทธิ์ตาม route)
-3. ข้อความตัวอย่างใน dialog (เช่น "used by 42 users") เป็นตัวแทนของข้อความจากเซิร์ฟเวอร์ ไม่ใช่ข้อความจริง
-4. ระยะห่างยังเป็นการป้องกันด้วย CSS ต้องตรวจกับหน้าจอจริงตอน implement; inline style เหลือราว 85 จุด (จัดวางอย่างเดียว)
-5. Accessibility: ใช้ปุ่ม/ลิงก์จริง, label บนปุ่มไอคอน, focus ring `#2854a7`, ปุ่มบนมือถือสูง 44px แต่ยังไม่ได้ audit บน Angular จริง
+1. `/setting` เทียบกับเมนูย่อยในเมนูซ้าย และการกรองเมนูซ้ายตาม role (ดูหัวข้อสิทธิ์ตาม route)
+2. ข้อความตัวอย่างใน dialog (เช่น "used by 42 users") เป็นตัวแทนของข้อความจากเซิร์ฟเวอร์ ไม่ใช่ข้อความจริง
+3. ระยะห่างยังเป็นการป้องกันด้วย CSS ต้องตรวจกับหน้าจอจริงตอน implement; inline style เหลือราว 85 จุด (จัดวางอย่างเดียว)
+4. Accessibility: ใช้ปุ่ม/ลิงก์จริง, label บนปุ่มไอคอน, focus ring `#2854a7`, ปุ่มบนมือถือสูง 44px แต่ยังไม่ได้ audit บน Angular จริง
+
+ปิดแล้ว (UAM-DSN-01): phone ของหน้าสถานะ, error ของ drawer ใน System Setting และชื่อซ้ำ 40301 มี spec ข้อความใน `UAM-DSN-01-gap-spec.md` และ artboard ชุด "DSN-01 · …" ท้าย canvas (`Err404Phone`, `Err403Phone`, `Home*Phone`, `DlgServerPhone`, `DlgDiscard`, `DlgSetInactive*`, `SysDrawer*`, `SysCreatedToast*`) ผู้ใช้ยืนยันแล้ว 2026-11-11; Role editor ที่เจอ 40301 ยังมีเฉพาะ spec ข้อความ ไม่มี artboard
 
 ## ข้อกำหนดก่อนเริ่มทำ backlog
 

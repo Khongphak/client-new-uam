@@ -8408,3 +8408,17 @@ a.u-sys-card:hover{border-color:#c7dafc;box-shadow:0 6px 20px rgba(0,25,75,.08);
 .phead-top.has-back{justify-content:flex-start;align-items:center;gap:var(--sp-4)}
 .phead-top.has-back .actions{margin-left:auto}
 @media (max-width:767px){.phead-top.has-back{flex-wrap:wrap;gap:var(--sp-3)}.phead-top.has-back .actions{margin-left:0}}
+
+/* DSN-01 phone refinements (draft): status pages and toast at <768px */
+@media (max-width:767px){
+.u-errpage__top{height:3.5rem;padding:0 1rem}
+.u-errpage__body{padding:2rem var(--sp-4);gap:var(--sp-3)}
+.u-errpage h1{font-size:1.375rem}
+.u-errpage p{font-size:.9375rem;max-width:100%}
+.u-errpage .actions{flex-direction:column;width:100%;max-width:22rem}
+.u-errpage .actions sc-if{display:contents}
+.u-errpage .actions .p-button{width:100%;min-height:2.75rem;justify-content:center;box-sizing:border-box}
+.u-toast{left:var(--sp-4);right:var(--sp-4);bottom:var(--sp-4);max-width:none}
+.p-sidebar{width:100%}
+.p-sidebar .p-sidebar-footer .p-button{min-height:2.75rem}
+}

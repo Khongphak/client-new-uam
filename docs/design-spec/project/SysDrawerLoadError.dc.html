@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · System drawer load error</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 100%; min-height: 100vh; font-family: 'Sukhumvit Set', 'IBM Plex Sans Thai', system-ui, sans-serif;">
+<div style="position: relative;">
+<dc-import name="Systems" hint-size="100%,1000px"></dc-import>
+<div class="p-sidebar-mask p-component-overlay">
+  <div class="p-sidebar p-component p-sidebar-right" role="dialog" aria-modal="true" aria-label="Edit system">
+    <div class="p-sidebar-header"><span>Edit system</span><button type="button" class="p-button p-component p-button-text p-button-icon-only" aria-label="Close"><i class="pi pi-times" aria-hidden="true"></i></button></div>
+    <div class="p-sidebar-content"><div class="u-state" role="alert"><span class="u-tile"><i class="pi pi-exclamation-triangle" aria-hidden="true"></i></span><b>Couldn’t load this record</b><p>Check your connection and try again.</p><div class="actions" style="display:flex; gap:.625rem;"><button type="button" class="p-button p-component"><span class="p-button-label">Try again</span></button><button type="button" class="p-button p-component p-button-secondary"><span class="p-button-label">Close</span></button></div></div></div>
+    <div class="p-sidebar-footer"><button type="button" class="p-button p-component p-button-secondary"><span class="p-button-label">Close</span></button></div>
+  </div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -332,6 +332,126 @@
       "title": "28 · Edit user · missing fields",
       "expand": "fill",
       "is_interactive": true
+    },
+    "Err404Phone.dc.html": {
+      "x": 0,
+      "y": 13900,
+      "w": 390,
+      "h": 844,
+      "title": "DSN-01 · 404 · phone",
+      "is_interactive": true
+    },
+    "Err403Phone.dc.html": {
+      "x": 470,
+      "y": 13900,
+      "w": 390,
+      "h": 844,
+      "title": "DSN-01 · 403 · phone",
+      "is_interactive": true
+    },
+    "HomeLoadingPhone.dc.html": {
+      "x": 940,
+      "y": 13900,
+      "w": 390,
+      "h": 844,
+      "title": "DSN-01 · Home loading · phone",
+      "is_interactive": true
+    },
+    "HomeEmptyPhone.dc.html": {
+      "x": 1410,
+      "y": 13900,
+      "w": 390,
+      "h": 844,
+      "title": "DSN-01 · Home empty · phone",
+      "is_interactive": true
+    },
+    "HomeErrorPhone.dc.html": {
+      "x": 1880,
+      "y": 13900,
+      "w": 390,
+      "h": 844,
+      "title": "DSN-01 · Home error · phone",
+      "is_interactive": true
+    },
+    "DlgServerPhone.dc.html": {
+      "x": 2350,
+      "y": 13900,
+      "w": 390,
+      "h": 844,
+      "title": "DSN-01 · Server error dialog · phone",
+      "is_interactive": true
+    },
+    "DlgDiscard.dc.html": {
+      "x": 2820,
+      "y": 13900,
+      "w": 1440,
+      "h": 900,
+      "title": "DSN-01 · Discard changes",
+      "is_interactive": true
+    },
+    "DlgSetInactive.dc.html": {
+      "x": 4340,
+      "y": 13900,
+      "w": 1440,
+      "h": 900,
+      "title": "DSN-01 · Set to Inactive",
+      "is_interactive": true
+    },
+    "DlgSetInactiveFail.dc.html": {
+      "x": 0,
+      "y": 14920,
+      "w": 1440,
+      "h": 900,
+      "title": "DSN-01 · Set to Inactive failed",
+      "is_interactive": true
+    },
+    "SysDrawerLoadError.dc.html": {
+      "x": 1520,
+      "y": 14920,
+      "w": 1440,
+      "h": 1000,
+      "title": "DSN-01 · System drawer · load error",
+      "is_interactive": true
+    },
+    "SysDrawerSaveError.dc.html": {
+      "x": 3040,
+      "y": 14920,
+      "w": 1440,
+      "h": 1000,
+      "title": "DSN-01 · System drawer · save error",
+      "is_interactive": true
+    },
+    "SysDrawerDuplicate.dc.html": {
+      "x": 4560,
+      "y": 14920,
+      "w": 1440,
+      "h": 1000,
+      "title": "DSN-01 · System drawer · duplicate name 40301",
+      "is_interactive": true
+    },
+    "SysDrawerDuplicatePhone.dc.html": {
+      "x": 0,
+      "y": 16040,
+      "w": 390,
+      "h": 844,
+      "title": "DSN-01 · System drawer · duplicate · phone (full screen)",
+      "is_interactive": true
+    },
+    "SysCreatedToast.dc.html": {
+      "x": 470,
+      "y": 16040,
+      "w": 1440,
+      "h": 900,
+      "title": "DSN-01 · System created toast",
+      "is_interactive": true
+    },
+    "SysCreatedToastPhone.dc.html": {
+      "x": 1990,
+      "y": 16040,
+      "w": 390,
+      "h": 844,
+      "title": "DSN-01 · System created toast · phone",
+      "is_interactive": true
     }
   },
   "order": [
@@ -371,7 +491,22 @@
     "UsersEmpty.dc.html",
     "EditAdMissing.dc.html",
     "EditDuplicate.dc.html",
-    "EditInvalid.dc.html"
+    "EditInvalid.dc.html",
+    "Err404Phone.dc.html",
+    "Err403Phone.dc.html",
+    "HomeLoadingPhone.dc.html",
+    "HomeEmptyPhone.dc.html",
+    "HomeErrorPhone.dc.html",
+    "DlgServerPhone.dc.html",
+    "DlgDiscard.dc.html",
+    "DlgSetInactive.dc.html",
+    "DlgSetInactiveFail.dc.html",
+    "SysDrawerLoadError.dc.html",
+    "SysDrawerSaveError.dc.html",
+    "SysDrawerDuplicate.dc.html",
+    "SysDrawerDuplicatePhone.dc.html",
+    "SysCreatedToast.dc.html",
+    "SysCreatedToastPhone.dc.html"
   ],
   "notes": {
     "row1": {
@@ -496,6 +631,13 @@
       "size": "m",
       "fill": "orange",
       "text": "กติกา: ไม่แก้หลังบ้าน\nทุกหน้าจอใช้เฉพาะฟิลด์ใน Model Response ปัจจุบัน และไม่เปลี่ยน Payload ที่ส่งกลับ\n• Roles: Role / System / Description / Status / Updated (ไม่มีจำนวนเมนู จำนวนผู้ใช้)\n• Users: Username / Name / Email / Ext. / Department / UAM role / Status / Updated (ไม่มีจำนวนระบบ)\n• Approvers: มีแค่ชื่อ (มาจาก AD)\n• ที่ทำฝั่งหน้าบ้านล้วน: ค้นหา/กรองจากข้อมูลที่โหลดแล้ว, ตัวนับในแท็บ, ช่วงวันที่ลัด"
+    },
+    "row-dsn01": {
+      "x": 0,
+      "y": 13600,
+      "text": "DSN-01 draft: gaps closed (phone status pages, drawer errors, duplicate name 40301) — รอผู้ใช้ยืนยัน",
+      "kind": "title1",
+      "maxW": 6000
     }
   },
   "designSystems": []

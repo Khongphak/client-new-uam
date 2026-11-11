@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · Set to Inactive</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 100%; min-height: 100vh; font-family: 'Sukhumvit Set', 'IBM Plex Sans Thai', system-ui, sans-serif;">
+<div style="position: relative;">
+<dc-import name="Systems" hint-size="100%,900px"></dc-import>
+<div class="u-dialog-scrim" role="alertdialog" aria-modal="true" aria-labelledby="dt" aria-describedby="dd">
+  <div class="u-dialog">
+    <div class="u-dialog__body">
+      <span class="u-dialog__icon "><i class="pi pi-ban" aria-hidden="true"></i></span>
+      <div class="u-dialog__content">
+        <h2 id="dt">Set “IT TICKET” to Inactive?</h2>
+        <p id="dd">Roles and users won’t be able to use it. You can set it back to Active later.</p>
+        
+      </div>
+    </div>
+    <div class="u-dialog__footer"><a class="p-button p-component p-button-secondary" href="Systems.dc.html"><span class="p-button-label">Cancel</span></a><a class="p-button p-component " href="Systems.dc.html"><span class="p-button-label">Set to Inactive</span></a></div>
+  </div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
