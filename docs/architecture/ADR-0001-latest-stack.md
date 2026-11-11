@@ -22,7 +22,7 @@ PrimeNG 22, `@primeuix/themes` 3 และ PrimeIcons 8 ไม่ได้เป
 | typescript | 5.9.3 | `~5.9.2` | Apache-2.0 | ตามที่ CLI 21 เลือก — ห้ามขึ้น TS 6 |
 | vitest / @vitest/coverage-v8 | 4.1.12 | `^4.0.8` | MIT | coverage ต้องติดตั้ง `@vitest/coverage-v8` เพิ่ม (ไม่มากับ `ng new`) |
 | jsdom | 28.1.0 | `^28.0.0` | MIT | |
-| primeng | 21.1.10 | `21.1.10` (ตรงตัว) | MIT (community; ส่วน `-lts` ไม่ใช่) | dist-tag `v21-stable`; peer Angular `^21.0.0` (core `^21.0.7`), cdk `^21.0.0`, rxjs `^6 \|\| ^7.8.1`; dep `@primeuix/styled` 0.7.4, `@primeuix/styles` 2.0.3, `@primeuix/utils` 0.6.4, `@primeuix/motion` 0.0.10 (MIT ทั้งหมด) |
+| primeng | 21.1.10 | `21.1.10` (ตรงตัว) | MIT (community; ส่วน `-lts` ไม่ใช่) | dist-tag `v21-stable`; peer Angular `^21.0.0` (core `^21.0.7`), cdk `^21.0.0`, rxjs `^6 \|\| ^7.8.1`; dep `@primeuix/styled` 0.7.4, `@primeuix/styles` 2.0.3, `@primeuix/utils` `^0.7.2` → 0.7.2 (ติดตั้งซ้อนใต้ primeng; 0.6.4 ระดับบนสุดเป็นของ `@primeuix/styled`), `@primeuix/motion` 0.0.10 (MIT ทั้งหมด) |
 | @primeuix/themes | 2.0.3 | `~2.0.3` | MIT | preset Aura / Lara / Material / Nora |
 | primeicons | 7.0.0 | `7.0.0` (ตรงตัว) | MIT | |
 | primeflex | 4.0.0 | `^4.0.0` | MIT | CSS ล้วน ออกล่าสุด 2025-02 (ไม่มีการพัฒนาต่อ) |
