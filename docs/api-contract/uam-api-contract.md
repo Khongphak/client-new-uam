@@ -82,7 +82,8 @@ Body ของ `update-system` (ยืนยันจากตัวอย่า
 - `authenrizationType` **ไม่อยู่ใน body ของ update** (ต่างจาก `ISystemItem` ตอนอ่าน)
 
 Body ของ `add-system` (ยืนยันจากตัวอย่างโค้ดฟอร์มเพิ่ม — 2026-11-11):
-`{ type: string, systemName: string, description: string, url: string, ownerName: string, imageId: number, status: 'Active' }`
+`{ type: string, systemName: string, description: string, url: string, ownerName: string, imageId: number, status: 'Active', accessTokenTime: number, refreshTokenTime: number }`
+> ⚠️ **ข้อยกเว้นเดียวของกฎ "payload ไม่เปลี่ยน" (ผู้ใช้สั่ง 2026-11-11):** แอปเดิม**ไม่ส่ง** `accessTokenTime`/`refreshTokenTime` ใน add-system (เซิร์ฟเวอร์น่าจะใส่ 0 เอง) แอปใหม่**ส่งสองค่านี้** (หน่วยนาที, ≤ 9999, required) ใน add-system ซึ่ง `update-system` รับสองฟิลด์นี้อยู่แล้ว แต่**ยังไม่ยืนยันว่า `add-system` รับ/ไม่สนใจ** — ต้องทดสอบกับ backend ก่อน merge งาน SYS-02; ถ้า backend ปฏิเสธหรือไม่เก็บค่า ให้กลับไปซ่อนช่องในฟอร์ม Add (ดู spec #3)
 - `type` = `code` ของตัวเลือกจาก general data (ชนิดระบบ); `ownerName` = `code` ของตัวเลือกเจ้าของ (แหล่งตัวเลือกนี้ยังไม่ทราบ); `imageId` = `id` ของไอคอนจาก `get-icons`
 - สถานะตอนสร้างส่งคงที่ `'Active'` (ฟอร์มเพิ่มไม่มีตัวเลือกสถานะ)
 - ฟิลด์อ่านอย่างเดียวใน `ISystemItem` (`authenrizationType`, `accessTokenTime`, `refreshTokenTime`, `systemId`) **ไม่อยู่ใน body ตอนเพิ่ม** (แก้ไขแล้ว: ที่ถูกคือ ฟอร์มเดิมบังคับกรอกอายุ token แต่**ไม่ส่งใน add** — เป็นบั๊กของแอปเดิม ไม่ใช่ backend กำหนดเอง ดูภาคผนวก C)
