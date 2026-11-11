@@ -6,7 +6,7 @@
 
 | ระดับ | เครื่องมือ (แนะนำ) | ทดสอบอะไร | สัดส่วน |
 |---|---|---|---|
-| Unit | Vitest 5 + jsdom (ค่าเริ่มต้นของ `ng new` v22; ไม่ใช้ Karma) + `HttpTestingController` | domain logic, guard, pipe, service mapping, component ใช้ซ้ำ (`u-*`) | มากที่สุด |
+| Unit | Vitest 4 + jsdom (ค่าเริ่มต้นของ `ng new` v21; ไม่ใช้ Karma) + `HttpTestingController` | domain logic, guard, pipe, service mapping, component ใช้ซ้ำ (`u-*`) | มากที่สุด |
 | Contract | unit test + JSON snapshot | **payload ที่ส่งหลังบ้านต้องไม่เปลี่ยน** (`UAM-QA-01`) | เท่าที่จำเป็น |
 | E2E | Playwright (viewport desktop 1440 และ phone 390×844) | flow ผู้ใช้จริงบน browser, mock API ด้วย `page.route` | น้อย แต่ครอบ flow สำคัญ |
 | A11y | axe-core (ผ่าน Playwright) | WCAG 2.1 AA (`UAM-A11Y-01`) | ทุกหน้าหลัก |

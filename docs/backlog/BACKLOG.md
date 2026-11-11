@@ -17,10 +17,10 @@
 ## 🗂️ ตารางรวม
 | Code | Title | Type | Priority | Score | Pts | Wave | Depends on |
 |---|---|---|---|---|---|---|---|
-| [UAM-ARC-01](items/UAM-ARC-01.md) | ADR-0001: ยืนยัน stack ล่าสุดและสถาปัตยกรรม (Angular 22, PrimeNG 22, Vitest, signals) | 🎨 design | 🔴 **P0** | 98 | 2 | W0 | — |
+| [UAM-ARC-01](items/UAM-ARC-01.md) | ADR-0001: ยืนยัน stack และสถาปัตยกรรม (Angular 21 LTS, PrimeNG 21, Vitest, signals) | 🎨 design | 🔴 **P0** | 98 | 2 | W0 | — |
 | [UAM-DSN-01](items/UAM-DSN-01.md) | ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301 | 🎨 design | 🟡 **P2** | 67 | 3 | W0 | — |
-| [UAM-FND-01](items/UAM-FND-01.md) | สร้างแอปใหม่บน stack ล่าสุด (Angular 22) + baseline CI/test — ทำใหม่ | 🧹 chore | 🔴 **P0** | 97 | 3 | W1 | UAM-ARC-01 |
-| [UAM-FND-02](items/UAM-FND-02.md) | Design tokens & ธีม: PrimeNG 22 custom preset + SCSS tokens (ตาม uam.css) | ✨ feature | 🔴 **P0** | 95 | 5 | W2 | UAM-FND-01 |
+| [UAM-FND-01](items/UAM-FND-01.md) | สร้างแอปใหม่บน Angular 21 LTS + PrimeNG 21 + baseline CI/test — ทำใหม่ | 🧹 chore | 🔴 **P0** | 97 | 3 | W1 | UAM-ARC-01 |
+| [UAM-FND-02](items/UAM-FND-02.md) | Design tokens & ธีม: PrimeNG 21 custom preset + SCSS tokens (ตาม uam.css) | ✨ feature | 🔴 **P0** | 95 | 5 | W2 | UAM-FND-01 |
 | [UAM-QA-01](items/UAM-QA-01.md) | ชุดทดสอบ contract: golden fixtures + helper (payload/response ต้องไม่เปลี่ยน) | 🧪 test | 🔴 **P0** | 87 | 3 | W2 | UAM-FND-01 |
 | [UAM-API-01](items/UAM-API-01.md) | โมเดลและ service ของ API (interfaces ใช้ฟิลด์เดิม) — รอผู้ใช้ตัดสินแหล่งความจริง | ✨ feature | 🔴 **P0** | 85 | 5 | W2 | UAM-FND-01 |
 | [UAM-FND-03](items/UAM-FND-03.md) | คอมโพเนนต์ร่วมชุดพื้นฐาน (status, role, num, chips, count, tile, row, switch-row, back, section-title) | ✨ feature | 🔴 **P0** | 95 | 5 | W3 | UAM-FND-02 |
