@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · System drawer duplicate name</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 100%; min-height: 100vh; font-family: 'Sukhumvit Set', 'IBM Plex Sans Thai', system-ui, sans-serif;">
+<div style="position: relative;">
+<dc-import name="Systems" hint-size="100%,1000px"></dc-import>
+<div class="p-sidebar-mask p-component-overlay">
+  <div class="p-sidebar p-component p-sidebar-right" role="dialog" aria-modal="true" aria-label="Add system">
+    <div class="p-sidebar-header"><span>Add system</span><button type="button" class="p-button p-component p-button-text p-button-icon-only" aria-label="Close"><i class="pi pi-times" aria-hidden="true"></i></button></div>
+    <div class="p-sidebar-content"><div style="display: flex; flex-direction: column; gap: 1.25rem;"><div class="field"><label for="f-id">System ID</label><input id="f-id" class="p-inputtext p-component" value="(assigned after saving)" disabled></div><div class="field"><label for="f-n">System name <span class="req">*</span></label><input id="f-n" class="p-inputtext p-component p-invalid" value="IT TICKET" aria-invalid="true" aria-describedby="f-n-e"><span id="f-n-e" class="err" role="alert" style="display:flex; gap:.375rem; align-items:flex-start;"><i class="pi pi-exclamation-circle" aria-hidden="true" style="margin-top:.2rem"></i><span>This name is already in use. Choose a different name.<br><span class="hint" style="color:#b42318">It may belong to an inactive record.</span></span></span></div><div class="form-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="field"><label for="f-t">System type <span class="req">*</span></label><select id="f-t" class="p-inputtext p-component"><option>Web Application</option></select></div><div class="field"><label for="f-o">Owner <span class="req">*</span></label><select id="f-o" class="p-inputtext p-component"><option>Test Owner</option></select></div></div><div class="field"><label for="f-d">Description</label><textarea id="f-d" class="p-inputtext p-component" maxlength="250">Example</textarea></div><div class="field"><label for="f-u">System URL <span class="req">*</span></label><input id="f-u" class="p-inputtext p-component" value="https://system-a.example.test/"></div><div class="form-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="field"><label for="f-k">Access token (min) <span class="req">*</span></label><input id="f-k" class="p-inputtext p-component" value="30" inputmode="numeric"></div><div class="field"><label for="f-r">Refresh token (min) <span class="req">*</span></label><input id="f-r" class="p-inputtext p-component" value="60" inputmode="numeric"></div></div><label class="u-switch-row"><span class="u-switch-row__text"><b>Active</b><span class="hint">An inactive item can’t be used by roles or users.</span></span><span class="p-inputswitch p-component p-inputswitch-checked"><span class="p-hidden-accessible"><input type="checkbox" role="switch" checked></span><span class="p-inputswitch-slider"></span></span></label></div></div>
+    <div class="p-sidebar-footer"><button type="button" class="p-button p-component p-button-secondary"><span class="p-button-label">Cancel</span></button><button type="button" class="p-button p-component"><span class="p-button-label">Save</span></button></div>
+  </div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAM · Server error phone</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="uam.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 100%; min-height: 100vh; font-family: 'Sukhumvit Set', 'IBM Plex Sans Thai', system-ui, sans-serif;">
+<div style="position: relative;">
+<dc-import name="Systems" hint-size="100%,900px"></dc-import>
+<div class="u-dialog-scrim" role="alertdialog" aria-modal="true" aria-labelledby="dt" aria-describedby="dd">
+  <div class="u-dialog">
+    <div class="u-dialog__body">
+      <span class="u-dialog__icon is-error"><i class="pi pi-exclamation-triangle" aria-hidden="true"></i></span>
+      <div class="u-dialog__content">
+        <h2 id="dt">Something went wrong</h2>
+        <p id="dd">The server couldn’t finish your request. Try again in a moment. If this keeps happening, contact IT Support.</p>
+        <div class="u-dialog__detail"><span>Error</span><b>50001 · Database error</b></div>
+      </div>
+    </div>
+    <div class="u-dialog__footer"><a class="p-button p-component p-button-secondary" href="Systems.dc.html"><span class="p-button-label">Close</span></a><a class="p-button p-component " href="Systems.dc.html"><span class="p-button-label">Try again</span></a></div>
+  </div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

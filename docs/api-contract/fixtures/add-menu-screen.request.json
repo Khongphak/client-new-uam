@@ -1,0 +1,2 @@
+{ "systemId": "00000000-0000-4000-8000-000000000001", "functional": "[add,view,edit]", "screenName": "Example Screen", "description": "Example",
+  "url": "/screen-1", "imageId": 2, "status": "Active" }

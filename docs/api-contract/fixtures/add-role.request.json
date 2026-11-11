@@ -1,0 +1,6 @@
+{ "systemId": "00000000-0000-4000-8000-000000000001", "roleName": "Example Role", "description": "Example", "status": "Active",
+  "menus": [
+    { "sortOrder": 1, "imageGroupId": 161, "menuId": 122, "permission": "[view]" },
+    { "sortOrder": 2, "imageGroupId": 69, "groupName": "Group A",
+      "groupMenus": [ { "sortOrder": 3, "imageGroupId": 2, "menuId": 1, "permission": "[add,view]" } ] }
+  ] }

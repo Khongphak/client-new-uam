@@ -1,0 +1,8 @@
+{
+  "status": "IP-S-0001", "statusCode": "20000", "message": "Success",
+  "data": [
+    { "id": 1, "type": "Function", "value": "add", "remark": "Add", "createdDate": "2025-01-15T13:30:50.06", "createdBy": "System", "updatedDate": "2025-01-15T13:30:50.06", "updatedBy": "System" },
+    { "id": 2, "type": "Function", "value": "view", "remark": "View", "createdDate": "2025-01-15T13:30:50.06", "createdBy": "System", "updatedDate": "2025-01-15T13:30:50.06", "updatedBy": "System" },
+    { "id": 3, "type": "Function", "value": "edit", "remark": "Edit", "createdDate": "2025-01-15T13:30:50.06", "createdBy": "System", "updatedDate": "2025-01-15T13:30:50.06", "updatedBy": "System" }
+  ]
+}

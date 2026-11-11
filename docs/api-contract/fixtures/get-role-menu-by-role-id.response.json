@@ -1,0 +1,14 @@
+{
+  "status": "IP-S-0001", "statusCode": "20000", "message": "Success",
+  "data": [
+    { "id": 69, "roleId": 108, "roleMenuId": 2, "menuId": 0, "parentId": 0, "groupName": "Group A", "screenName": null,
+      "sortOrder": 2, "permission": null, "functional": null, "imageGroupId": 69,
+      "createdDate": "2025-01-16T15:17:14.63", "createdBy": "System", "updatedDate": "2025-01-16T15:17:14.63", "updatedBy": "System",
+      "groupMenus": [
+        { "id": 70, "roleId": 108, "roleMenuId": 3, "menuId": 1, "parentId": 2, "groupName": null, "screenName": "Example Screen",
+          "sortOrder": 3, "permission": "[add,view]", "functional": "[add,view,edit]", "imageGroupId": 2,
+          "createdDate": "2025-01-16T15:17:14.63", "createdBy": "System", "updatedDate": "2025-01-16T15:17:14.63", "updatedBy": "System",
+          "groupMenus": [] }
+      ] }
+  ]
+}

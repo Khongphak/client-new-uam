@@ -1,0 +1,9 @@
+{
+  "status": "IP-S-0001", "statusCode": "20000", "message": "Success",
+  "data": [
+    { "id": 1, "createdDate": "2025-01-15T13:30:50.06", "systemId": "00000000-0000-4000-8000-000000000001", "systemName": "Example System A",
+      "type": "Web Application", "description": "Example", "imageId": 1, "url": "https://system-a.example.test/",
+      "authenrizationType": "JWT", "ownerName": "Test Owner", "accessTokenTime": 30, "refreshTokenTime": 60,
+      "status": "Active", "createdBy": "System", "updatedDate": "2025-01-15T15:52:55.393", "updatedBy": "System", "icon": "PHN2Zy8+" }
+  ]
+}

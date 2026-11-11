@@ -69,7 +69,7 @@ Role คือ `CONFIG_UAM_ROLE` = ADMIN, DEVELOPER, AUDIT, USER ส่วน Su
 
 เมนูซ้าย (`layout/components/app.menu.ts`): ADMIN หรือ super admin = Home, Setting, Report; DEVELOPER = Home, Setting; AUDIT = Home, Report; USER = Home อย่างเดียว
 การ์ดหน้า Setting เดิม (`setting-page.component.ts`): DEVELOPER เห็น System Setting อย่างเดียว; ADMIN เห็น System Setting + User & Permissions; super admin เห็นทั้งหมด (fragment: system-setup, menu, system-to-system, roles, users)
-ผลต่อดีไซน์: เมนูซ้ายและเมนูย่อยของ Setting ต้องกรองตาม role (ต้นแบบแสดงมุมมอง ADMIN อย่างเดียว) และเพราะดีไซน์ตัดหน้าการ์ด Setting ออก route `/setting` ต้องมีกติกา (เด้งไปหน้าลูกแรกที่มีสิทธิ์ หรือคงหน้าเดิม) ยังไม่ได้ตัดสินใจ ให้ยืนยันตอนทำ backlog
+ผลต่อดีไซน์: เมนูซ้ายและเมนูย่อยของ Setting ต้องกรองตาม role (ต้นแบบแสดงมุมมอง ADMIN อย่างเดียว) **ตัดสินใจแล้ว (ผู้ใช้ 2026-11-11, #22):** route `/setting` คงหน้าการ์ดเดิม (ไม่เด้งไปหน้าลูกแรก) โดยกรองการ์ดตามสิทธิ์; ต้นแบบยังไม่มี artboard ของหน้าการ์ดนี้ (ใช้ `u-sys-grid`/`u-sys-card` ที่มีอยู่) ต้องยืนยันกับผู้ใช้ตอนเริ่มงาน #22
 
 ## กติกาดีไซน์ที่ตกลงกัน
 
@@ -94,11 +94,11 @@ Role คือ `CONFIG_UAM_ROLE` = ADMIN, DEVELOPER, AUDIT, USER ส่วน Su
 
 ## ช่องว่างที่ยังเปิดอยู่
 
-1. ยังไม่ได้ออกแบบ: หน้า phone ของหน้าสถานะ, สถานะผิดพลาดของ drawer ใน System Setting, ข้อผิดพลาดชื่อซ้ำ 40301 (ALREADY_EXISTED) ในฟอร์ม System/Role
-2. `/setting` เทียบกับเมนูย่อยในเมนูซ้าย และการกรองเมนูซ้ายตาม role (ดูหัวข้อสิทธิ์ตาม route)
-3. ข้อความตัวอย่างใน dialog (เช่น "used by 42 users") เป็นตัวแทนของข้อความจากเซิร์ฟเวอร์ ไม่ใช่ข้อความจริง
-4. ระยะห่างยังเป็นการป้องกันด้วย CSS ต้องตรวจกับหน้าจอจริงตอน implement; inline style เหลือราว 85 จุด (จัดวางอย่างเดียว)
-5. Accessibility: ใช้ปุ่ม/ลิงก์จริง, label บนปุ่มไอคอน, focus ring `#2854a7`, ปุ่มบนมือถือสูง 44px แต่ยังไม่ได้ audit บน Angular จริง
+1. ข้อความตัวอย่างใน dialog (เช่น "used by 42 users") เป็นตัวแทนของข้อความจากเซิร์ฟเวอร์ ไม่ใช่ข้อความจริง
+2. ระยะห่างยังเป็นการป้องกันด้วย CSS ต้องตรวจกับหน้าจอจริงตอน implement; inline style เหลือราว 85 จุด (จัดวางอย่างเดียว)
+3. Accessibility: ใช้ปุ่ม/ลิงก์จริง, label บนปุ่มไอคอน, focus ring `#2854a7`, ปุ่มบนมือถือสูง 44px แต่ยังไม่ได้ audit บน Angular จริง
+
+ปิดแล้ว (UAM-DSN-01): phone ของหน้าสถานะ, error ของ drawer ใน System Setting และชื่อซ้ำ 40301 มี spec ข้อความใน `UAM-DSN-01-gap-spec.md` และ artboard ชุด "DSN-01 · …" ท้าย canvas (`Err404Phone`, `Err403Phone`, `Home*Phone`, `DlgServerPhone`, `DlgDiscard`, `DlgSetInactive*`, `SysDrawer*`, `SysCreatedToast*`) ผู้ใช้ยืนยันแล้ว 2026-11-11; Role editor ที่เจอ 40301 ยังมีเฉพาะ spec ข้อความ ไม่มี artboard
 
 ## ข้อกำหนดก่อนเริ่มทำ backlog
 
