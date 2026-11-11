@@ -8,7 +8,7 @@ New UI สำหรับ **User Access Management (UAM)** — ออกแบ�
 |---|---|
 | เป้าหมาย | Redesign UI ของ UAM ให้เป็นรูปแบบเดียวกันทั้งแอป รองรับ desktop และ phone (390px) |
 | ข้อจำกัดแข็ง | Backend ไม่เปลี่ยน ใช้เฉพาะฟิลด์ใน `shared/interfaces/**` เดิม |
-| Stack | Angular 22 (zoneless), PrimeNG 22, PrimeIcons 8, PrimeFlex 4, Vitest (ไม่ใช้ NgRx) — ล่าสุด ณ 2026-11-10 ตาม [ADR-0001](docs/architecture/ADR-0001-latest-stack.md) |
+| Stack | Angular 21 LTS (zoneless), PrimeNG 21.1.10, @primeuix/themes 2, PrimeIcons 7, PrimeFlex 4, Vitest 4 (ไม่ใช้ NgRx) — MIT ทั้งสาย ตาม [ADR-0001](docs/architecture/ADR-0001-latest-stack.md) |
 | ฟอนต์ / สี | Sukhumvit Set; `#00194b` / `#2854a7` |
 | โค้ดเดิม | **ไม่ใช้เลย (clean-room)** — แอปนี้สร้างใหม่ทั้งหมดบน stack ล่าสุด ห้ามอ่าน/อิงโค้ดเก่า ดู [CLAUDE.md](CLAUDE.md) §1 ข้อ 2 |
 
@@ -43,7 +43,7 @@ main ← develop ← <type>/<CODE>-<slug>   เช่น feature/UAM-SYS-02-syst
 4. เกณฑ์ตรวจรับ: ตรง artboard · ใช้เฉพาะฟิลด์เดิม · payload ไม่เปลี่ยน · CI ผ่าน
 
 ## 🚀 เริ่มต้น
-> ⚠️ แอปใน repo ตอนนี้ยังเป็น Angular 17 ชั่วคราว กำลังสร้างใหม่บน Angular 22 (issue UAM-FND-01) — คำสั่งด้านล่างคือเป้าหมายหลังย้ายเสร็จ
+> ⚠️ แอปใน repo ตอนนี้ยังเป็น Angular 17 ชั่วคราว กำลังสร้างใหม่บน Angular 21 LTS (issue UAM-FND-01) — คำสั่งด้านล่างคือเป้าหมายหลังย้ายเสร็จ
 
 ```bash
 npm ci

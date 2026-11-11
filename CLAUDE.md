@@ -1,6 +1,6 @@
 # CLAUDE.md — กติกาของ agent ใน client-new-uam
 
-โปรเจกต์: **UI ใหม่ของ UAM (User Access Management)** — Angular 22 (zoneless, standalone, signals) + PrimeNG 22 (@primeuix/themes) + PrimeIcons 8 + PrimeFlex 4 + Vitest (ไม่ใช้ NgRx — state ด้วย signals) — ดู [ADR-0001](docs/architecture/ADR-0001-latest-stack.md)
+โปรเจกต์: **UI ใหม่ของ UAM (User Access Management)** — Angular 21 LTS (zoneless, standalone, signals) + PrimeNG 21.1.10 (@primeuix/themes 2) + PrimeIcons 7 + PrimeFlex 4 + Vitest 4 (สาย PrimeNG ห้ามเกิน 21.1.10/2.x/7.x — MIT) (ไม่ใช้ NgRx — state ด้วย signals) — ดู [ADR-0001](docs/architecture/ADR-0001-latest-stack.md)
 ภาพรวม: [README.md](README.md) · สเปก: [docs/design-spec/README.md](docs/design-spec/README.md) · Backlog: [docs/backlog/](docs/backlog/BACKLOG.md) · Test case: [docs/testing/](docs/testing/test-cases/README.md) · Workflow เต็ม: [docs/workflow/WORKFLOW.md](docs/workflow/WORKFLOW.md)
 
 ## 1. กฎแข็ง (ห้ามฝ่าฝืน ทุกบทบาท)

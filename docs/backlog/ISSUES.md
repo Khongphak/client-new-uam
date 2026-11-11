@@ -4,9 +4,9 @@
 
 | Code | Issue | Wave | Title |
 |---|---|---|---|
-| UAM-FND-01 | #2 | 1 | สร้างแอปใหม่บน stack ล่าสุด (Angular 22) + baseline CI/test — ทำใหม่ |
+| UAM-FND-01 | #2 | 1 | สร้างแอปใหม่บน Angular 21 LTS + PrimeNG 21 + baseline CI/test — ทำใหม่ |
 | UAM-DSN-01 | #3 | 0 | ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301 |
-| UAM-FND-02 | #4 | 2 | Design tokens & ธีม: PrimeNG 22 custom preset + SCSS tokens (ตาม uam.css) |
+| UAM-FND-02 | #4 | 2 | Design tokens & ธีม: PrimeNG 21 custom preset + SCSS tokens (ตาม uam.css) |
 | UAM-QA-01 | #5 | 2 | ชุดทดสอบ contract: golden fixtures + helper (payload/response ต้องไม่เปลี่ยน) |
 | UAM-FND-03 | #6 | 3 | คอมโพเนนต์ร่วมชุดพื้นฐาน (status, role, num, chips, count, tile, row, switch-row, back, section-title) |
 | UAM-FND-04 | #7 | 3 | คอมโพเนนต์ร่วมชุดสถานะ/ข้อความ (dialog, state, skeleton, toast, errpage) |
@@ -46,5 +46,5 @@
 | UAM-RSP-01 | #41 | 10 | Responsive/phone (390px) ของทุกหน้าหลัก |
 | UAM-A11Y-01 | #42 | 11 | Accessibility audit บน Angular จริง (WCAG 2.1 AA) |
 | UAM-QA-02 | #43 | 11 | เก็บกวาด inline style และตรวจระยะห่างกับหน้าจอจริง |
-| UAM-ARC-01 | #45 | 0 | ADR-0001: ยืนยัน stack ล่าสุดและสถาปัตยกรรม (Angular 22, PrimeNG 22, Vitest, signals) |
+| UAM-ARC-01 | #45 | 0 | ADR-0001: ยืนยัน stack และสถาปัตยกรรม (Angular 21 LTS, PrimeNG 21, Vitest, signals) |
 | UAM-API-01 | #46 | 2 | โมเดลและ service ของ API (interfaces ใช้ฟิลด์เดิม) — รอผู้ใช้ตัดสินแหล่งความจริง |

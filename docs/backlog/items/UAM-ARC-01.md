@@ -1,9 +1,9 @@
 ---
-title: "[UAM-ARC-01] ADR-0001: ยืนยัน stack ล่าสุดและสถาปัตยกรรม (Angular 22, PrimeNG 22, Vitest, signals)"
+title: "[UAM-ARC-01] ADR-0001: ยืนยัน stack และสถาปัตยกรรม (Angular 21 LTS, PrimeNG 21, Vitest, signals)"
 labels: ["design", "arc", "P0", "wave-0"]
 ---
 
-# 🏛️ UAM-ARC-01 — ADR-0001: ยืนยัน stack ล่าสุดและสถาปัตยกรรม (Angular 22, PrimeNG 22, Vitest, signals)
+# 🏛️ UAM-ARC-01 — ADR-0001: ยืนยัน stack และสถาปัตยกรรม (Angular 21 LTS, PrimeNG 21, Vitest, signals)
 
 | ฟิลด์ | ค่า |
 |---|---|
@@ -17,7 +17,7 @@ labels: ["design", "arc", "P0", "wave-0"]
 | 🚧 Blocks | [UAM-FND-01](UAM-FND-01.md) |
 
 ## 📝 Description
-ยืนยัน/ปรับร่าง ADR-0001 ที่ PM เขียนไว้ ด้วยการตรวจเวอร์ชันและ API จริง (PrimeNG 22 preset, Signal Forms, state ด้วย signals โดยไม่ใช้ NgRx, zoneless, Vitest) ก่อนเริ่มสร้างแอปใหม่ **และกำหนดหลัก clean-room + แพตเทิร์น refactor ทุกชั้น** (routing/guards, auth+HTTP interceptors, error handling, message catalog, permission model, ตาราง/ฟิลเตอร์, forms, naming/โครงสร้างตาม style guide ล่าสุด) — ห้ามอิงโค้ดเก่า
+ยืนยัน/ปรับร่าง ADR-0001 ที่ PM เขียนไว้ ด้วยการตรวจเวอร์ชันและ API จริง (PrimeNG 21 preset, Signal Forms vs Reactive Forms, state ด้วย signals โดยไม่ใช้ NgRx, zoneless, Vitest) ก่อนเริ่มสร้างแอปใหม่ **และกำหนดหลัก clean-room + แพตเทิร์น refactor ทุกชั้น** (routing/guards, auth+HTTP interceptors, error handling, message catalog, permission model, ตาราง/ฟิลเตอร์, forms, naming/โครงสร้างตาม style guide ล่าสุด) — ห้ามอิงโค้ดเก่า
 
 ## 🎯 Design reference
 - Artboard: -
