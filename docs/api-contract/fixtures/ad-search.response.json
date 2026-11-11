@@ -1,0 +1,6 @@
+{
+  "status": "IP-S-0001", "statusCode": "20000", "message": "Success",
+  "data": [ { "username": "Testuser", "fullName": "Test User", "firstName": "Test", "lastName": "User",
+    "email": "test.user@example.test", "phoneNo": "5743", "checkPwd": null, "department": "Example Dept", "position": "Tester",
+    "managers": [ { "name": "Manager One" }, { "name": "Manager Two" } ] } ]
+}

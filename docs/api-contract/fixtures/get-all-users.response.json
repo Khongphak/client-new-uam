@@ -1,0 +1,15 @@
+{
+  "status": "IP-S-0001", "statusCode": "20000", "message": "Success",
+  "data": [
+    { "id": 1, "username": "Testuser", "fullname": "Test User", "firstname": "Test", "lastname": "User",
+      "email": "test.user@example.test", "department": "Example Dept", "position": "Tester", "phoneNo": null,
+      "isSuperAdmin": false, "status": "Active", "uamRoleId": 1,
+      "createdDate": "2025-01-13T00:00:00", "createdBy": "admin", "updatedDate": "2025-01-30T07:16:30.263", "updatedBy": "Testuser",
+      "roleName": null, "uamRole": "" },
+    { "id": 2, "username": "Seconduser", "fullname": "Second User", "firstname": "Second", "lastname": "User",
+      "email": "second.user@example.test", "department": "Example Dept", "position": "Analyst", "phoneNo": "5911",
+      "isSuperAdmin": true, "status": "Active", "uamRoleId": 2,
+      "createdDate": "2025-01-14T00:00:00", "createdBy": "admin", "updatedDate": "2025-01-22T07:07:21.313", "updatedBy": "Seconduser",
+      "roleName": null, "uamRole": "" }
+  ]
+}

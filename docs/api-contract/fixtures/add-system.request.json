@@ -1,0 +1,2 @@
+{ "type": "Web Application", "systemName": "Example System A", "description": "Example",
+  "url": "https://system-a.example.test/", "ownerName": "Test Owner", "imageId": 1, "status": "Active" }

@@ -1,0 +1,6 @@
+{
+  "status": "IP-S-0001", "statusCode": "20000", "message": "Success",
+  "data": { "id": 1, "name": "PDPA", "title": "<p>Consent title</p>", "description": "<p>Consent body</p>",
+    "version": "1.0", "effectiveDate": "2025-01-01T00:00:00", "status": "Active",
+    "createdDate": "2025-01-01T00:00:00", "createdBy": "System", "updatedDate": "2025-01-01T00:00:00", "updatedBy": "System" }
+}

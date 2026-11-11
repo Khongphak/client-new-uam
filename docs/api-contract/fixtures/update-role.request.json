@@ -1,0 +1,2 @@
+{ "id": 108, "systemId": "00000000-0000-4000-8000-000000000001", "roleName": "Example Role", "description": "Example", "status": "Inactive",
+  "menus": [ { "sortOrder": 1, "imageGroupId": 161, "roleId": 108, "roleMenuId": 1, "parentId": 0, "menuId": 122, "permission": "[view]" } ] }

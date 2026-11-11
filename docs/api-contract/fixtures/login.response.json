@@ -1,0 +1,6 @@
+{
+  "status": "IP-S-0001", "statusCode": "20000", "messageType": "Success", "message": "Success",
+  "data": { "result": { "sessionId": "example-session-id", "isConsent": true,
+    "userProfile": { "userId": 1, "userName": "Testuser", "firstName": "Test", "lastName": "User",
+      "position": "Tester", "uamRole": "ADMIN", "systemAdmin": true, "userType": "AD" } } }
+}
