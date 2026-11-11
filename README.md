@@ -43,21 +43,24 @@ main ← develop ← <type>/<CODE>-<slug>   เช่น feature/UAM-SYS-02-syst
 4. เกณฑ์ตรวจรับ: ตรง artboard · ใช้เฉพาะฟิลด์เดิม · payload ไม่เปลี่ยน · CI ผ่าน
 
 ## 🚀 เริ่มต้น
-> ⚠️ แอปใน repo ตอนนี้ยังเป็น Angular 17 ชั่วคราว กำลังสร้างใหม่บน Angular 21 LTS (issue UAM-FND-01) — คำสั่งด้านล่างคือเป้าหมายหลังย้ายเสร็จ
+ต้องใช้ Node 22 (≥ 22.12, ดู `.nvmrc`)
 
 ```bash
 npm ci
 npm start                      # http://localhost:4200
-npm run test:ci
+npm run test:ci                # Vitest + coverage + test ของ scripts/
+npm run check:licenses         # กันสาย PrimeNG หลุดจาก MIT
 npm run build
 ```
+> เพิ่ม/อัปเดต dependency ด้วย `npx npm@11 install …` (npm 10 สร้าง lockfile ใหม่ไม่ได้ — บั๊ก `edgesOut`) ห้าม `--legacy-peer-deps`; `npm ci` ใช้ npm 10 ได้ตามปกติ
 
 ## 🤖 ทำงานกับ agent
 อ่าน [`CLAUDE.md`](CLAUDE.md) และ [docs/workflow/WORKFLOW.md](docs/workflow/WORKFLOW.md) — บทบาท PM / Senior Dev / Junior Dev / QA อยู่ที่ `.claude/agents/`, skill ของ workflow ที่ `.claude/skills/`, template ที่ `.github/`
 
 ## 🗂️ โครงสร้าง repo (ปัจจุบัน)
 ```text
-src/ angular.json package.json   แอป Angular
+src/ angular.json package.json   แอป Angular 21
+scripts/   สคริปต์ Node ของ CI (check-licenses)
 CLAUDE.md  .claude/{agents,skills}   กติกา/บทบาท/skill ของ agent
 .github/   PR/issue template, CI
 docs/
