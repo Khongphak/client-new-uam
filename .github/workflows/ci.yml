@@ -5,14 +5,23 @@ on:
   push:
     branches: [develop, main]
 jobs:
+  # The job name `build-test` is a required status check in the repo ruleset — do not rename.
   build-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox
+      - run: npm run check:licenses
+      - name: Clean-room guard (no legacy code references under src/)
+        run: |
+          pattern='client-uam-develop|setting-sub-page|modal\.data'
+          if grep -rnE "$pattern" src/ || find src -print | grep -E "$pattern"; then
+            echo "::error::Legacy code reference found under src/ (CLAUDE.md §1 rule 2)"
+            exit 1
+          fi
+      - run: npm run test:ci
       - run: npm run build
