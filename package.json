@@ -9,7 +9,7 @@
     "test": "ng test",
     "test:ci": "ng test --watch=false --coverage --coverage-reporters=text-summary --coverage-reporters=lcov && npm run test:scripts",
     "check:licenses": "node scripts/check-licenses.mjs",
-    "test:scripts": "node --test scripts/*.test.mjs"
+    "test:scripts": "node --test --test-reporter=spec scripts/*.test.mjs"
   },
   "private": true,
   "engines": {
