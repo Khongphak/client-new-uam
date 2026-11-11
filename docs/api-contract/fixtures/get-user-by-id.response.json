@@ -4,6 +4,6 @@
     "email": "test.user@example.test", "department": "Example Dept", "position": "Tester", "phoneNo": "5743",
     "isSuperAdmin": true, "status": "Active", "uamRoleId": 1, "uamRoleName": "ADMIN",
     "manager": "[Manager One,Manager Two]",
-    "systemRoles": [ { "userSystemId": "12", "systemId": "00000000-0000-4000-8000-000000000001", "systemName": "Example System A", "roleId": 108, "roleName": "Example Role" } ],
+    "systemRoles": [ { "userSystemId": 12, "systemId": "00000000-0000-4000-8000-000000000001", "systemName": "Example System A", "roleId": 108, "roleName": "Example Role" } ],
     "createdDate": "2025-01-13T00:00:00", "createdBy": "admin", "updatedDate": "2025-01-30T07:16:30.263", "updatedBy": "Testuser" }
 }

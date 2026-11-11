@@ -2,4 +2,4 @@
   "email": "test.user@example.test", "department": "Example Dept", "position": "Tester", "phoneNo": "5743",
   "uamRoleId": 1, "isSuperAdmin": false, "status": "Inactive",
   "manager": "[]",
-  "systemRoles": [ { "userSystemId": "12", "systemId": "00000000-0000-4000-8000-000000000001", "systemName": "Example System A", "roleId": 108, "roleName": "Example Role" } ] }
+  "systemRoles": [ { "userSystemId": 12, "systemId": "00000000-0000-4000-8000-000000000001", "systemName": "Example System A", "roleId": 108, "roleName": "Example Role" } ] }
