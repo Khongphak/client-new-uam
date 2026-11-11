@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+// PrimeFlex and PrimeIcons are loaded via angular.json › styles (ADR-0001 (ง)).
+// Temporary font stack until the Sukhumvit Set font files are added to public/.
+body {
+  margin: 0;
+  font-family: 'Sukhumvit Set', Tahoma, system-ui, sans-serif;
+}
