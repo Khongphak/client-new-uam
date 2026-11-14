@@ -1,9 +1,9 @@
 # 📋 UAM Redesign — Backlog
 
-สร้างจาก `docs/design-spec/README.md` + `project/canvas.json` (44 รายการ) แต่ละรายการมีไฟล์รายละเอียดใน `items/<CODE>.md` ซึ่งพร้อมใช้เป็นเนื้อหา GitHub issue (มี front matter `title`/`labels`)
+สร้างจาก `docs/design-spec/README.md` + `project/canvas.json` (46 รายการ) แต่ละรายการมีไฟล์รายละเอียดใน `items/<CODE>.md` ซึ่งพร้อมใช้เป็นเนื้อหา GitHub issue (มี front matter `title`/`labels`)
 
 ## 📐 ข้อตกลง
-- **Code**: `UAM-<EPIC>-<nn>` — EPIC: FND (foundation), SHL (shell), ERR (error/state), AUT (login/consent), HOM (home), SYS (system setting), USR (users/roles list/view/edit user), ROL (role editor), RPT (report), RSP (responsive), A11Y, QA, DSN (design)
+- **Code**: `UAM-<EPIC>-<nn>` — EPIC: FND (foundation), OPS (deploy), DEMO (mock/demo), SHL (shell), ERR (error/state), AUT (login/consent), HOM (home), SYS (system setting), USR (users/roles list/view/edit user), ROL (role editor), RPT (report), RSP (responsive), A11Y, QA, DSN (design)
 - **ชื่อ branch**: แตกใหม่ทุก backlog จาก `develop` เป็น `<type>/<CODE>-<slug>` เช่น `feature/UAM-SYS-02-system-drawer-deeplink` (ชื่อที่แนะนำอยู่ในแต่ละไฟล์) แล้ว PR กลับ `develop`; ใส่ code ใน title ของ commit/PR และ `Closes #<issue>`
 - **Priority score** = (Value + Unblocks) × 10 − Effort; Value/Unblocks 1–5, Effort เป็น story points (1,2,3,5,8). P0 ≥ 85, P1 70–84, P2 55–69, P3 < 55
 - **Wave** = ลำดับที่เร็วที่สุดที่เริ่มได้ตาม dependency (ดู `EXECUTION-PLAN.md`)
@@ -23,9 +23,11 @@
 | [UAM-FND-02](items/UAM-FND-02.md) | Design tokens & ธีม: PrimeNG 21 custom preset + SCSS tokens (ตาม uam.css) | ✨ feature | 🔴 **P0** | 95 | 5 | W2 | UAM-FND-01 |
 | [UAM-QA-01](items/UAM-QA-01.md) | ชุดทดสอบ contract: golden fixtures + helper (payload/response ต้องไม่เปลี่ยน) | 🧪 test | 🔴 **P0** | 87 | 3 | W2 | UAM-FND-01 |
 | [UAM-API-01](items/UAM-API-01.md) | โมเดลและ service ของ API (interfaces ใช้ฟิลด์เดิม) — รอผู้ใช้ตัดสินแหล่งความจริง | ✨ feature | 🔴 **P0** | 85 | 5 | W2 | UAM-FND-01 |
+| [UAM-OPS-01](items/UAM-OPS-01.md) | Deploy พรีวิวบน Vercel (URL ต่อ PR) + ตั้งค่า SPA | 🧹 chore | 🟠 **P1** | 78 | 2 | W2 | UAM-FND-01 |
 | [UAM-FND-03](items/UAM-FND-03.md) | คอมโพเนนต์ร่วมชุดพื้นฐาน (status, role, num, chips, count, tile, row, switch-row, back, section-title) | ✨ feature | 🔴 **P0** | 95 | 5 | W3 | UAM-FND-02 |
 | [UAM-FND-04](items/UAM-FND-04.md) | คอมโพเนนต์ร่วมชุดสถานะ/ข้อความ (dialog, state, skeleton, toast, errpage) | ✨ feature | 🔴 **P0** | 95 | 5 | W3 | UAM-FND-02 |
 | [UAM-SHL-01](items/UAM-SHL-01.md) | Shell: topbar 70px + sidebar 250px + breakpoint 768px | ✨ feature | 🔴 **P0** | 95 | 5 | W3 | UAM-FND-02 |
+| [UAM-DEMO-01](items/UAM-DEMO-01.md) | โหมด demo: mock API ทั้งหมดในแอป (ข้อมูลสมมติ ไม่ต่อ backend) | ✨ feature | 🟡 **P2** | 65 | 5 | W3 | UAM-FND-01, UAM-QA-01 |
 | [UAM-FND-05](items/UAM-FND-05.md) | คอมโพเนนต์ร่วมของตาราง: toolbar + Filters panel + footer/paginator | ✨ feature | 🔴 **P0** | 95 | 5 | W4 | UAM-FND-03 |
 | [UAM-ERR-02](items/UAM-ERR-02.md) | หน้า 403 แยก + roleGuard ส่งไป 403 | ✨ feature | 🔴 **P0** | 88 | 2 | W4 | UAM-FND-04, UAM-SHL-01 |
 | [UAM-SHL-02](items/UAM-SHL-02.md) | กรองเมนูซ้ายตาม role (ADMIN/DEVELOPER/AUDIT/USER/Super admin) | ✨ feature | 🔴 **P0** | 87 | 3 | W4 | UAM-SHL-01 |
