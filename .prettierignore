@@ -1,0 +1,2 @@
+# golden fixtures keep their hand-written layout (UAM-QA-01)
+src/testing/fixtures/*.json
