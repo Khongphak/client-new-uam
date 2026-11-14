@@ -23,5 +23,22 @@
 | `get-all-users.response`, `get-user-by-id.response`, `ad-search.request/response`, `add/update-user.request` | `v1/Users/*` |
 | `audit-trails-report.request` | `v1/Reports/generate-audit-trails-report` |
 
-## ย้ายที่ในอนาคต
-ตอนนี้ repo ยังไม่มีแอป (รอ #45 → #2) ไฟล์อยู่ใน `docs/` ก่อน; เมื่อมีแอปแล้วย้ายไปไว้ที่ที่ ADR กำหนด (เช่น `src/testing/fixtures/`) พร้อม helper บน `HttpTestingController` (Vitest) ตามขอบเขตของ #5
+## ใช้งานใน contract test (UAM-QA-01)
+ที่นี่คือ `src/testing/fixtures/` (ย้ายมาจาก `docs/api-contract/fixtures/`); ลงทะเบียนชื่อไฟล์ใน `index.ts` (`fixtures['add-system.request']`) — เพิ่มไฟล์ใหม่ต้องเพิ่มใน `index.ts` ด้วย (`scripts/fixtures.test.mjs` ตรวจให้)
+
+```ts
+import { expectContractRequest, flushFixture } from '../../testing/contract/http-contract';
+
+const req = expectContractRequest(httpCtrl, {
+  method: 'POST', url: 'v1/Systems/add-system', fixture: 'add-system.request', // + baseUrl ถ้า client ต่อให้
+});
+flushFixture(req, 'envelope-success'); // ส่ง response fixture ให้ client parse
+httpCtrl.verify();
+```
+`expectContractRequest` เทียบ method + URL (รวม query) + body แบบเข้ม: ชื่อคีย์/ตัวพิมพ์/ชนิดค่า/ค่า/คีย์เกิน/คีย์ขาด (ผ่าน JSON round-trip เหมือนที่ส่งจริง — คีย์ `undefined` ถือว่าหาย) ดู `contract/json-diff.ts`
+
+## ข้อยกเว้นจาก payload ของระบบเดิม (ผู้ใช้อนุมัติ, ยังไม่ยืนยันกับ backend)
+ดู `deviations.ts` — มีเพียงสองข้อ: (1) `add-system` ส่ง `accessTokenTime`/`refreshTokenTime` (2) trim `systemName`/`screenName`/`roleName` ก่อนส่ง (fixture จึงไม่มีช่องว่างหัวท้าย; test ของ client ใช้ `padded()` เป็น input)
+
+## ไม่ได้ทำในงานนี้
+service/interface ของ API (UAM-API-01), UI, การเทียบกับ response จริงของ backend (`TODO(source)` ยังคงอยู่)
