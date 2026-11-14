@@ -1,0 +1,18 @@
+// Global page defaults that sit outside PrimeNG's preset. Component classes (u-*) belong to UAM-FND-03/04.
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  background: var(--uam-ground);
+  color: var(--uam-ink);
+  font-family: var(--uam-font-family);
+  line-height: 1.5;
+}
+
+:focus-visible {
+  outline: 2px solid var(--uam-blue);
+  outline-offset: 2px;
+}
