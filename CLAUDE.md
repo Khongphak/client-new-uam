@@ -53,13 +53,14 @@ Label: `status:backlog|ready|in-progress|in-review|qa|done|blocked` (`backlog` =
 
 ## 6. คำสั่งที่ใช้บ่อย
 ```bash
-npm ci                                  # ติดตั้ง (Node ≥ 22.22)
+npm ci                                  # ติดตั้ง (Node 22 ≥ 22.12 ตาม .nvmrc/engines)
 npm start                               # ng serve
 npm run build                           # build
-npm run test:ci
+npm run test:ci                         # Vitest + coverage (ng test) + test ของ scripts/
+npm run check:licenses                  # สาย PrimeNG ต้องเป็น MIT (ADR-0001 (ฉ))
 ```
 unit test ใช้ Vitest+jsdom (ไม่ต้องมี Chrome); Chrome จำเป็นเฉพาะ Playwright/screenshot ในคลาวด์: `export CHROME_BIN=/opt/pw-browsers/chromium-1243/chrome-linux64/chrome`
-> ⚠️ ระหว่างย้ายไป stack ใหม่ (UAM-FND-01) สคริปต์ `test:ci` ยังไม่มีในแอปเดิม — ห้ามใช้แอป Angular 17 เดิมเป็นฐานของงานใหม่
+> ⚠️ เพิ่ม/อัปเดต dependency (แก้ lockfile) ด้วย `npx npm@11 install …` — npm 10 ล้มด้วยบั๊ก `edgesOut`; ห้าม `--legacy-peer-deps`; `npm ci` ด้วย npm 10 ใช้ได้ (ADR-0001 (ช))
 
 ## 7. Definition of Done (ต่อ backlog)
 ตรง artboard (desktop + phone ถ้ามี) · ใช้เฉพาะฟิลด์เดิม · payload ไม่เปลี่ยน · มี unit test ของ logic ใหม่ · test case ที่ผูกไว้ (`TRACEABILITY.md`) ผ่านเมื่อ QA ทดสอบ · CI เขียว · PR ผ่านรีวิว · เอกสารที่เกี่ยวข้องอัปเดต (PM/ผู้เขียน)
