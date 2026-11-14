@@ -26,14 +26,14 @@ describe('appConfig', () => {
     expect(button?.querySelector('.pi.pi-check')).not.toBeNull();
   });
 
-  it('injects the Lara theme CSS variables from providePrimeNG', async () => {
+  it('injects the UAM theme CSS variables from providePrimeNG', async () => {
     const fixture = TestBed.createComponent(ButtonHost);
     await fixture.whenStable();
 
     const css = Array.from(document.head.querySelectorAll('style'))
       .map((s) => s.textContent ?? '')
       .join('\n');
-    expect(css).toContain('--p-primary-500');
+    expect(css.replace(/\s+/g, '')).toContain('--p-primary-500:#2854a7');
     expect(css).toContain('--p-button-');
   });
 });

@@ -1,6 +1,3 @@
 // PrimeFlex and PrimeIcons are loaded via angular.json › styles (ADR-0001 (ง)).
-// Temporary font stack until the Sukhumvit Set font files are added to public/.
-body {
-  margin: 0;
-  font-family: 'Sukhumvit Set', Tahoma, system-ui, sans-serif;
-}
+@use 'styles/tokens';
+@use 'styles/overrides';

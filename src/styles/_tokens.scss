@@ -1,0 +1,43 @@
+// Design tokens (UAM-FND-02), mapped from docs/design-spec/project/uam.css.
+// Colours that PrimeNG derives from its palette are in core/theme/uam-preset.ts.
+
+:root {
+  // Font stack: Sukhumvit Set is not bundled yet (no font files in the repo), so fall back.
+  --uam-font-family: 'Sukhumvit Set', 'IBM Plex Sans Thai', Tahoma, system-ui, sans-serif;
+
+  // Brand
+  --uam-navy: #00194b;
+  --uam-blue: #2854a7;
+  --uam-gradient: linear-gradient(90deg, #00194b 0%, #2854a7 100%);
+
+  // Text
+  --uam-ink: #363636;
+  --uam-ink-2: #4e4e4e;
+  --uam-ink-3: #5d5d5d;
+  --uam-muted: #5d5d5d;
+
+  // Surfaces and lines
+  --uam-ground: #f5f6f8;
+  --uam-line: #e5e5e5;
+  --uam-line-input: #b9c0cc;
+  --uam-rule: #eef0f3;
+  --uam-tile: #eef1f7;
+  --uam-focus-ring: 0 0 0 0.2rem #bfdbfe;
+
+  // Status
+  --uam-ok: #1b6b43;
+  --uam-warn: #7a4b00;
+  --uam-danger: #b42318;
+
+  // Layout
+  --uam-menu-width: 15.625rem;
+  --uam-menu-height: 4.375rem;
+
+  // Spacing scale
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+}
