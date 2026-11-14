@@ -22,6 +22,7 @@
 | [UAM-FND-02](items/UAM-FND-02.md) | Design tokens & ธีม: PrimeNG 21 custom preset + SCSS tokens (ตาม uam.css) | 5 | 🔴 P0 | UAM-FND-01 |
 | [UAM-QA-01](items/UAM-QA-01.md) | ชุดทดสอบ contract: golden fixtures + helper (payload/response ต้องไม่เปลี่ยน) | 3 | 🔴 P0 | UAM-FND-01 |
 | [UAM-API-01](items/UAM-API-01.md) | โมเดลและ service ของ API (interfaces ใช้ฟิลด์เดิม) — รอผู้ใช้ตัดสินแหล่งความจริง | 5 | 🔴 P0 | UAM-FND-01 |
+| [UAM-OPS-01](items/UAM-OPS-01.md) | Deploy พรีวิวบน Vercel (URL ต่อ PR) + ตั้งค่า SPA | 2 | 🟠 P1 | UAM-FND-01 |
 
 ## 🌊 Wave 3
 
@@ -30,6 +31,7 @@
 | [UAM-FND-03](items/UAM-FND-03.md) | คอมโพเนนต์ร่วมชุดพื้นฐาน (status, role, num, chips, count, tile, row, switch-row, back, section-title) | 5 | 🔴 P0 | UAM-FND-02 |
 | [UAM-FND-04](items/UAM-FND-04.md) | คอมโพเนนต์ร่วมชุดสถานะ/ข้อความ (dialog, state, skeleton, toast, errpage) | 5 | 🔴 P0 | UAM-FND-02 |
 | [UAM-SHL-01](items/UAM-SHL-01.md) | Shell: topbar 70px + sidebar 250px + breakpoint 768px | 5 | 🔴 P0 | UAM-FND-02 |
+| [UAM-DEMO-01](items/UAM-DEMO-01.md) | โหมด demo: mock API ทั้งหมดในแอป (ข้อมูลสมมติ ไม่ต่อ backend) | 5 | 🟡 P2 | UAM-FND-01, UAM-QA-01 |
 
 ## 🌊 Wave 4
 
