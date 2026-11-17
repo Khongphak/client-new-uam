@@ -11,7 +11,8 @@
     "test:ci": "ng test --watch=false --coverage --coverage-reporters=text-summary --coverage-reporters=lcov && npm run test:scripts",
     "check:licenses": "node scripts/check-licenses.mjs",
     "test:scripts": "node --test --test-reporter=spec scripts/*.test.mjs",
-    "check:no-demo": "node scripts/check-no-demo.mjs"
+    "check:no-demo": "node scripts/check-no-demo.mjs",
+    "gen:status": "node scripts/gen-status.mjs"
   },
   "private": true,
   "engines": {
