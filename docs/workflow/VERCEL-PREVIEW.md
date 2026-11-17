@@ -18,6 +18,8 @@ Node version: Vercel อ่านจาก `engines` (`^22.12.0`) ใน `packag
 2. **Framework Preset = Other** (ค่าอื่นๆ มาจาก `vercel.json`) ห้ามใส่ Environment Variables ที่เป็นความลับ
 3. **Settings → Git → Production Branch = `develop`** เพื่อให้ `develop` ได้ URL ถาวร (`main` ให้ผู้ใช้ตัดสินเองตอน deploy จริง)
 4. **Settings → Deployment Protection → เปิด Vercel Authentication สำหรับ Preview** — repo นี้ public ถ้าไม่เปิด ทุกคนที่มีลิงก์ PR จะเปิดพรีวิวได้
+   - การเปลี่ยน Production Branch **ไม่ได้ build ใหม่ให้เอง** ต้องกด Redeploy ที่แท็บ Deployments หรือ push commit ใหม่เข้า `develop`
+   - ถ้าเข้า URL แล้วเจอ `404 NOT_FOUND` ของ Vercel ทุก path แปลว่ายังไม่มี production deployment ของ `develop` (เช่น Production Branch ยังเป็น `main`)
 5. เปิด PR ทดสอบ → รอ bot ของ Vercel คอมเมนต์ URL
 
 ## ตรวจหลังตั้งค่า
