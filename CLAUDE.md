@@ -46,6 +46,7 @@ Label: `status:backlog|ready|in-progress|in-review|qa|done|blocked` (`backlog` =
 
 ## 5. Git / commit / PR
 - Branch: `<type>/<CODE>-<slug>` จาก `develop` ล่าสุด (`feature/UAM-ERR-01-404-page`)
+  - **ข้อยกเว้น (session บนคลาวด์):** บาง session ถูกบังคับให้ push ได้เฉพาะ branch ที่ระบบกำหนด (เช่น `claude/<ชื่อสุ่ม>`) ซึ่งไม่ตรงรูปแบบนี้ — ห้าม push ไป branch อื่นเอง ให้: (1) ใส่ backlog code ใน**ชื่อ PR และทุก commit** (`feat(UAM-XXX-nn): …`) และ `Closes #<issue>` ใน PR, (2) แจ้งในส่วน "ความเสี่ยง" ของ PR ว่าใช้ branch ที่ระบบกำหนด, (3) ถ้า push ถูกปฏิเสธเพราะ branch มีประวัติของ PR ก่อนหน้าที่ squash merge ไปแล้ว ห้าม force push — ให้ต่อประวัติด้วย `git merge -s ours origin/<branch>` แล้ว push (diff เทียบ `develop` ไม่เปลี่ยน; Senior squash merge ตามปกติ), (4) หนึ่ง PR ต่อหนึ่ง backlog code เหมือนเดิม — ไม่รวมหลายงานใน branch เดียว งานบนเครื่องผู้ใช้ (local) ใช้ชื่อตามรูปแบบปกติ
 - Commit: Conventional Commits + code — `feat(UAM-ERR-01): add 404 page` · `test(UAM-ERR-01): cover notfound route` · `fix(...)`, `chore(...)`, `docs(...)`; 1 commit = 1 เรื่อง ข้อความบอก**ทำไม**ถ้าไม่ชัด
 - PR: ใช้ `.github/PULL_REQUEST_TEMPLATE.md` ครบทุกช่อง · base = `develop` · `Closes #<issue>`
 - ต้องรันก่อนเปิด PR: `npm run test:ci` และ `npm run build` ผ่านทั้งคู่
