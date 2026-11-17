@@ -28,6 +28,7 @@
 | [UAM-FND-04](items/UAM-FND-04.md) | คอมโพเนนต์ร่วมชุดสถานะ/ข้อความ (dialog, state, skeleton, toast, errpage) | ✨ feature | 🔴 **P0** | 95 | 5 | W3 | UAM-FND-02 |
 | [UAM-SHL-01](items/UAM-SHL-01.md) | Shell: topbar 70px + sidebar 250px + breakpoint 768px | ✨ feature | 🔴 **P0** | 95 | 5 | W3 | UAM-FND-02 |
 | [UAM-DEMO-01](items/UAM-DEMO-01.md) | โหมด demo: mock API ทั้งหมดในแอป (ข้อมูลสมมติ ไม่ต่อ backend) | ✨ feature | 🟡 **P2** | 65 | 5 | W3 | UAM-FND-01, UAM-QA-01 |
+| [UAM-DEMO-02](items/UAM-DEMO-02.md) | Demo mock ส่วนที่เหลือ: Menus, SystemToSystem, Reports, role menu ต่อ role + ต่อกับ typed client | ✨ feature | 🟡 **P2** | 65 | 3 | W3 | UAM-DEMO-01, UAM-API-01 |
 | [UAM-FND-05](items/UAM-FND-05.md) | คอมโพเนนต์ร่วมของตาราง: toolbar + Filters panel + footer/paginator | ✨ feature | 🔴 **P0** | 95 | 5 | W4 | UAM-FND-03 |
 | [UAM-ERR-02](items/UAM-ERR-02.md) | หน้า 403 แยก + roleGuard ส่งไป 403 | ✨ feature | 🔴 **P0** | 88 | 2 | W4 | UAM-FND-04, UAM-SHL-01 |
 | [UAM-SHL-02](items/UAM-SHL-02.md) | กรองเมนูซ้ายตาม role (ADMIN/DEVELOPER/AUDIT/USER/Super admin) | ✨ feature | 🔴 **P0** | 87 | 3 | W4 | UAM-SHL-01 |
