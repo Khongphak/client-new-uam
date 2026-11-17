@@ -5,16 +5,26 @@ import { firstValueFrom } from 'rxjs';
 import { demoInterceptor, demoProviders } from './demo-providers';
 
 describe('demo interceptor', () => {
-  beforeEach(() => TestBed.configureTestingModule({ providers: [provideHttpClient(withInterceptors([demoInterceptor]))] }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(withInterceptors([demoInterceptor]))],
+    }),
+  );
 
   it('answers a contract endpoint without any network call', async () => {
-    const res = await firstValueFrom(TestBed.inject(HttpClient).get<{ statusCode: string; data: unknown[] }>('https://real-api.example.test/v1/Roles/get-all-roles'));
+    const res = await firstValueFrom(
+      TestBed.inject(HttpClient).get<{ statusCode: string; data: unknown[] }>(
+        'https://real-api.example.test/v1/Roles/get-all-roles',
+      ),
+    );
     expect(res.statusCode).toBe('20000');
     expect(res.data.length).toBeGreaterThan(0);
   });
 
   it('answers unknown URLs with UNKNOWN_URL (40400) instead of going out', async () => {
-    const res = await firstValueFrom(TestBed.inject(HttpClient).get<{ statusCode: string }>('https://elsewhere.example.test/x'));
+    const res = await firstValueFrom(
+      TestBed.inject(HttpClient).get<{ statusCode: string }>('https://elsewhere.example.test/x'),
+    );
     expect(res.statusCode).toBe('40400');
   });
 
