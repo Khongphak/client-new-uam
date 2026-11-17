@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": { "outDir": "./out-tsc/demo", "resolveJsonModule": true },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/testing/**/*.spec.ts"]
+}

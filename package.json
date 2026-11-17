@@ -5,11 +5,13 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:demo": "ng build --configuration demo",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --watch=false --coverage --coverage-reporters=text-summary --coverage-reporters=lcov && npm run test:scripts",
     "check:licenses": "node scripts/check-licenses.mjs",
-    "test:scripts": "node --test --test-reporter=spec scripts/*.test.mjs"
+    "test:scripts": "node --test --test-reporter=spec scripts/*.test.mjs",
+    "check:no-demo": "node scripts/check-no-demo.mjs"
   },
   "private": true,
   "engines": {

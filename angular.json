@@ -56,6 +56,28 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "demo": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1.5MB",
+                  "maximumError": "2MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all",
+              "tsConfig": "tsconfig.demo.json",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/demo/demo-providers.ts",
+                  "with": "src/demo/demo-providers.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"

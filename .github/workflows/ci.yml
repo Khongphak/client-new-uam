@@ -25,3 +25,5 @@ jobs:
           fi
       - run: npm run test:ci
       - run: npm run build
+      - name: Production bundle must contain no demo code (UAM-DEMO-01)
+        run: npm run check:no-demo
