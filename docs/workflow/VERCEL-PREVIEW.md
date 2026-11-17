@@ -7,7 +7,7 @@
 | ค่า | เหตุผล |
 |---|---|
 | `installCommand: npm ci` | ใช้ lockfile ตรงๆ ห้าม `--legacy-peer-deps` |
-| `buildCommand: npm run build` | แอปตอนนี้เป็น placeholder; เมื่อ UAM-DEMO-01 เสร็จให้เปลี่ยนเป็น `npm run build:demo` |
+| `buildCommand: npm run build:demo` | build โหมด demo (mock API ทั้งหมด ไม่ต่อ backend) — ดู UAM-DEMO-01 |
 | `outputDirectory: dist/client-new-uam/browser` | ยืนยันจากการรัน `ng build` จริง |
 | `rewrites` → `/index.html` | SPA: เข้า/รีเฟรช path ลึก (เช่น `/setting`) แล้วไม่ 404 (Vercel เสิร์ฟไฟล์จริงก่อน แล้วค่อย rewrite) |
 
