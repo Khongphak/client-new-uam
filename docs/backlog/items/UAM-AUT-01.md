@@ -13,7 +13,7 @@ labels: ["feature", "aut", "P1", "wave-4"]
 | ⭐ Value / 🔓 Unblocks / 💪 Effort | 4 / 4 / 3 pts |
 | 🌊 Wave (ลำดับการทำ) | 4 |
 | 🌿 Branch | `feature/UAM-AUT-01-login` (แตกจาก `develop`) |
-| ⛓️ Depends on | [UAM-FND-02](UAM-FND-02.md), [UAM-FND-03](UAM-FND-03.md) |
+| ⛓️ Depends on | [UAM-FND-02](UAM-FND-02.md), [UAM-FND-03](UAM-FND-03.md), [UAM-API-02](UAM-API-02.md) |
 | 🚧 Blocks | [UAM-RSP-01](UAM-RSP-01.md) |
 
 ## 📝 Description
