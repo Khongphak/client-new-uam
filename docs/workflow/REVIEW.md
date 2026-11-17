@@ -23,7 +23,7 @@
 | 4 | **คอขวดที่ Senior** (รีวิว+merge+จ่ายงาน) | งาน Junior ค้างรอ; dependency chain ยาว (critical path ~48 pts) | จำกัด WIP; แยก PR ให้เล็ก; Senior รีวิวก่อนทำงานตัวเอง |
 | 5 | **ไม่มี pre-merge E2E/ภาพเทียบ artboard** — QA ทดสอบหลัง merge | บั๊กเข้า develop ก่อนถูกจับ → ต้อง revert/แก้ | เพิ่ม screenshot บังคับใน PR (ทำแล้ว); เพิ่ม visual regression หลังมี Phase 1; ถ้าถี่ ให้ QA ทดสอบบน PR preview ก่อน merge |
 | 6 | **ข้อมูลใน backlog ยังไม่ถูกตรวจกับโค้ดจริง** ("Actual result" เขียนจากสเปก) และ test case เป็นสมมติฐาน (testid, flow) | Dev/QA เชื่อข้อมูลผิด | `uam-pick-backlog` ข้อ 4 ให้ยืนยันก่อนเริ่ม; PM แก้เอกสารเมื่อพบ |
-| 7 | **สถานะซ้ำหลายที่** (label, `status.json`, EXECUTION-PLAN, รายงาน) | ข้อมูลไม่ตรงกัน | ให้ label ของ issue เป็นแหล่งจริง; `status.json` สร้างจาก issue (สคริปต์) ในอนาคต |
+| 7 | **สถานะซ้ำหลายที่** (label, `status.json`, EXECUTION-PLAN, รายงาน) | ข้อมูลไม่ตรงกัน | ให้ label ของ issue เป็นแหล่งจริง; `status.json` สร้างจาก issue ด้วย `npm run gen:status` (UAM-OPS-02; วิธีรันดู SESSION-PROMPTS.md หัวข้อ F) |
 | 8 | **ไม่มีงานเปิด issue จริงยังเลย** + label ยังไม่ได้สร้าง | agent ติดตามสถานะไม่ได้ | PM เปิด issue 42 รายการ + สร้าง label เป็นงานแรก |
 | 9 | **ไม่มี schedule** → PM ทำงานเมื่อผู้ใช้เรียกเท่านั้น | งานค้างถ้าผู้ใช้ไม่เปิด session | ยอมรับ (ตั้งใจ) — ผู้ใช้คุมจังหวะ; ถ้าต้องการ ค่อยทำ schedule ที่ผูก GitHub connector |
 | 10 | **หลาย agent แก้ไฟล์กลางพร้อมกัน** (routing, styles, shared) | merge conflict | ทำ FND ให้เสร็จก่อนขนาน; รีเบสจาก develop ก่อนเปิด PR; Senior แก้ conflict |
