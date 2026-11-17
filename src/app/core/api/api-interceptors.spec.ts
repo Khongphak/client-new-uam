@@ -187,6 +187,61 @@ describe('api interceptors', () => {
     });
   });
 
+  describe('retry of HTTP 401', () => {
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => vi.useRealTimers());
+
+    it('retries twice, one second apart, then gives up (session expired)', async () => {
+      const result = errorOf(firstValueFrom(api.get('v1/x')));
+      ctrl.expectOne('/api/v1/x').flush({}, unauthorized);
+
+      await vi.advanceTimersByTimeAsync(999);
+      ctrl.expectNone('/api/v1/x');
+      await vi.advanceTimersByTimeAsync(1);
+      ctrl.expectOne('/api/v1/x').flush({}, unauthorized);
+
+      await vi.advanceTimersByTimeAsync(1000);
+      ctrl.expectOne('/api/v1/x').flush({}, unauthorized);
+
+      expect((await result).kind).toBe('session-expired');
+      await vi.advanceTimersByTimeAsync(5000);
+      ctrl.expectNone('/api/v1/x');
+    });
+
+    it('succeeds when a retry succeeds', async () => {
+      const result = firstValueFrom(api.get<string>('v1/x'));
+      ctrl.expectOne('/api/v1/x').flush({}, unauthorized);
+      await vi.advanceTimersByTimeAsync(1000);
+      ctrl.expectOne('/api/v1/x').flush(ok('ok'));
+      expect(await result).toBe('ok');
+      expect(session.expired()).toBe(false);
+    });
+
+    it('does not retry a 401 that names its reason (refresh / new login handle those)', async () => {
+      const result = errorOf(firstValueFrom(api.get('v1/x')));
+      ctrl.expectOne('/api/v1/x').flush(body('SSO_SESSION_EXPIRED'), unauthorized);
+      expect((await result).kind).toBe('session-expired');
+      await vi.advanceTimersByTimeAsync(5000);
+      ctrl.expectNone('/api/v1/x');
+    });
+
+    it('does not retry a rejected login', async () => {
+      const result = errorOf(firstValueFrom(api.send('POST', 'v1/auth/login', {})));
+      ctrl.expectOne('/api/v1/auth/login').flush({}, unauthorized);
+      await result;
+      await vi.advanceTimersByTimeAsync(5000);
+      ctrl.expectNone('/api/v1/auth/login');
+    });
+
+    it('does not retry other statuses', async () => {
+      const result = errorOf(firstValueFrom(api.get('v1/x')));
+      ctrl.expectOne('/api/v1/x').flush({}, { status: 500, statusText: 'x' });
+      await result;
+      await vi.advanceTimersByTimeAsync(5000);
+      ctrl.expectNone('/api/v1/x');
+    });
+  });
+
   describe('other failures', () => {
     it.each([
       [500, 'server'],

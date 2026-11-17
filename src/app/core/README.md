@@ -10,4 +10,4 @@
 2. `sessionInterceptor` — result code 40102 หรือ auth error กลุ่มต้องล็อกอินใหม่ ตั้ง `Session.expired`; ระหว่างนั้นทุกคำขอยกเว้น `v1/auth/logout` และ `v1/auth/login` ล้มที่ฝั่ง client ด้วย `session-expired` จน `Session.signIn()`/`clear()` UI (UAM-ERR-03) อ่าน signal `Session.expired`; ที่นี่ไม่แสดง dialog
 3. `refreshInterceptor` — `token-expired` → เรียก `POST v1/auth/refresh-token` ครั้งเดียวร่วมกัน (`TokenRefresher`; คำขอพร้อมกันรอตัวเดียวกัน) แล้วยิงคำขอเดิมซ้ำหนึ่งครั้ง; refresh ล้มหรือยิงซ้ำแล้วยังหมดอายุ = session หมดอายุ
 
-ยังไม่มี retry เฉพาะ HTTP 401 (รอผู้ใช้ตัดสินใจ) — เพิ่มได้โดยเติม interceptor อีกตัวใน `apiInterceptors`
+4. `retry401Interceptor` — HTTP 401 ที่ไม่มี `errorCode` ลองใหม่สูงสุด 2 ครั้ง หน่วง 1 วินาที (401 ที่ระบุเหตุผลไม่ retry เพราะไปทาง refresh/login ใหม่; login และ refresh-token ไม่ retry) หลังหมดโควตา = session หมดอายุตามปกติ

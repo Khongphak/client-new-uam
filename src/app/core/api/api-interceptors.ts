@@ -11,10 +11,12 @@ import {
   finalize,
   map,
   Observable,
+  retry,
   shareReplay,
   switchMap,
   tap,
   throwError,
+  timer,
 } from 'rxjs';
 
 import { RESULT_CODE } from '../../shared/interfaces';
@@ -132,9 +134,32 @@ export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
   );
 };
 
-/** Order matters: the session guard sits outside the refresh so it sees the final outcome. */
+const RETRY_401_MAX = 2;
+const RETRY_401_DELAY_MS = 1000;
+
+/**
+ * Retries a bare HTTP 401 (no `errorCode`) up to twice, one second apart. A 401 that names its reason is not
+ * retried: token-expired goes to the refresh, the others mean a new login. Login and refresh are never retried.
+ */
+export const retry401Interceptor: HttpInterceptorFn = (req, next) => {
+  if (isPath(req.url, LOGIN_PATH) || isPath(req.url, REFRESH_PATH)) return next(req);
+  return next(req).pipe(
+    retry({
+      count: RETRY_401_MAX,
+      delay: (err: unknown) => (isBare401(err) ? timer(RETRY_401_DELAY_MS) : throwError(() => err)),
+    }),
+  );
+};
+
+const isBare401 = (err: unknown): boolean =>
+  err instanceof HttpErrorResponse &&
+  err.status === 401 &&
+  !(typeof err.error === 'object' && err.error !== null && 'errorCode' in err.error);
+
+/** Order matters: the session guard sits outside refresh and retry so it sees the final outcome. */
 export const apiInterceptors: HttpInterceptorFn[] = [
   headersInterceptor,
   sessionInterceptor,
   refreshInterceptor,
+  retry401Interceptor,
 ];
