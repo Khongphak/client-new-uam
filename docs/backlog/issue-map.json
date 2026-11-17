@@ -42,5 +42,7 @@
   "UAM-A11Y-01": 42,
   "UAM-QA-02": 43,
   "UAM-ARC-01": 45,
-  "UAM-API-01": 46
+  "UAM-API-01": 46,
+  "UAM-OPS-01": 55,
+  "UAM-DEMO-01": 56
 }

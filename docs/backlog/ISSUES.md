@@ -1,6 +1,6 @@
 # 🔢 แผนที่ backlog code ↔ GitHub issue
 
-เปิด issue ครบ 44 รายการ (#2–#43, #45, #46) — รายละเอียดเต็มอยู่ในไฟล์ `items/<CODE>.md` ส่วน issue เก็บสถานะ/label (เลข #44 คือ PR)
+เปิด issue ครบ 46 รายการ (#2–#43, #45, #46, #55, #56) — รายละเอียดเต็มอยู่ในไฟล์ `items/<CODE>.md` ส่วน issue เก็บสถานะ/label (เลข #44 คือ PR)
 
 | Code | Issue | Wave | Title |
 |---|---|---|---|
@@ -48,3 +48,5 @@
 | UAM-QA-02 | #43 | 11 | เก็บกวาด inline style และตรวจระยะห่างกับหน้าจอจริง |
 | UAM-ARC-01 | #45 | 0 | ADR-0001: ยืนยัน stack และสถาปัตยกรรม (Angular 21 LTS, PrimeNG 21, Vitest, signals) |
 | UAM-API-01 | #46 | 2 | โมเดลและ service ของ API (interfaces ใช้ฟิลด์เดิม) — รอผู้ใช้ตัดสินแหล่งความจริง |
+| UAM-OPS-01 | #55 | 2 | Deploy พรีวิวบน Vercel (URL ต่อ PR) + ตั้งค่า SPA |
+| UAM-DEMO-01 | #56 | 3 | โหมด demo: mock API ทั้งหมดในแอป (ข้อมูลสมมติ ไม่ต่อ backend) |
