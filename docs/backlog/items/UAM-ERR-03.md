@@ -13,7 +13,7 @@ labels: ["feature", "err", "P1", "wave-4"]
 | ⭐ Value / 🔓 Unblocks / 💪 Effort | 4 / 4 / 3 pts |
 | 🌊 Wave (ลำดับการทำ) | 4 |
 | 🌿 Branch | `feature/UAM-ERR-03-interceptor-dialogs` (แตกจาก `develop`) |
-| ⛓️ Depends on | [UAM-FND-04](UAM-FND-04.md) |
+| ⛓️ Depends on | [UAM-FND-04](UAM-FND-04.md), [UAM-API-02](UAM-API-02.md) |
 | 🚧 Blocks | [UAM-SYS-02](UAM-SYS-02.md), [UAM-USR-05](UAM-USR-05.md) |
 
 ## 📝 Description

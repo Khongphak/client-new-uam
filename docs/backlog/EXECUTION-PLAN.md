@@ -33,6 +33,7 @@
 | [UAM-SHL-01](items/UAM-SHL-01.md) | Shell: topbar 70px + sidebar 250px + breakpoint 768px | 5 | 🔴 P0 | UAM-FND-02 |
 | [UAM-DEMO-01](items/UAM-DEMO-01.md) | โหมด demo: mock API ทั้งหมดในแอป (ข้อมูลสมมติ ไม่ต่อ backend) | 5 | 🟡 P2 | UAM-FND-01, UAM-QA-01 |
 | [UAM-DEMO-02](items/UAM-DEMO-02.md) | Demo mock ส่วนที่เหลือ: Menus, SystemToSystem, Reports, role menu ต่อ role + ต่อกับ typed client | 3 | 🟡 P2 | UAM-DEMO-01, UAM-API-01 |
+| [UAM-API-02](items/UAM-API-02.md) | HTTP interceptors: header/cookie, refresh token, session หมดอายุ (functional interceptors) | 3 | 🟠 P1 | UAM-API-01, UAM-FND-01 |
 
 ## 🌊 Wave 4
 
@@ -41,8 +42,8 @@
 | [UAM-FND-05](items/UAM-FND-05.md) | คอมโพเนนต์ร่วมของตาราง: toolbar + Filters panel + footer/paginator | 5 | 🔴 P0 | UAM-FND-03 |
 | [UAM-ERR-02](items/UAM-ERR-02.md) | หน้า 403 แยก + roleGuard ส่งไป 403 | 2 | 🔴 P0 | UAM-FND-04, UAM-SHL-01 |
 | [UAM-SHL-02](items/UAM-SHL-02.md) | กรองเมนูซ้ายตาม role (ADMIN/DEVELOPER/AUDIT/USER/Super admin) | 3 | 🔴 P0 | UAM-SHL-01 |
-| [UAM-ERR-03](items/UAM-ERR-03.md) | ข้อความ/dialog จาก HTTP interceptor (session หมดอายุ, network, server 50000–50002) | 3 | 🟠 P1 | UAM-FND-04 |
-| [UAM-AUT-01](items/UAM-AUT-01.md) | หน้า Login | 3 | 🟠 P1 | UAM-FND-02, UAM-FND-03 |
+| [UAM-ERR-03](items/UAM-ERR-03.md) | ข้อความ/dialog จาก HTTP interceptor (session หมดอายุ, network, server 50000–50002) | 3 | 🟠 P1 | UAM-FND-04, UAM-API-02 |
+| [UAM-AUT-01](items/UAM-AUT-01.md) | หน้า Login | 3 | 🟠 P1 | UAM-FND-02, UAM-FND-03, UAM-API-02 |
 | [UAM-FND-06](items/UAM-FND-06.md) | คอมโพเนนต์ร่วมของหน้า detail (facts, stats, approvers, accordion, group-head, perm-row, sys-grid/card, meta-ico) | 5 | 🟠 P1 | UAM-FND-03 |
 | [UAM-ERR-04](items/UAM-ERR-04.md) | Dialog ยืนยันลบ และลบไม่ได้ (message + statusDescription จาก server) | 2 | 🟡 P2 | UAM-FND-04 |
 | [UAM-AUT-02](items/UAM-AUT-02.md) | หน้า PDPA Consent (+ Decline ถามยืนยัน) | 3 | 🟡 P2 | UAM-FND-03, UAM-FND-04 |
