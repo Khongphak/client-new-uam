@@ -1,5 +1,11 @@
 {
   "_comment": "สถานะ backlog ใช้ให้บอทแยกว่าเคสที่ล้มเป็น 'ยังไม่ทำ' หรือ 'bug' ค่า: todo | doing | done — อัปเดตเมื่อ story เสร็จ",
-  "UAM-FND-01": "todo",
-  "UAM-ARC-01": "todo"
+  "UAM-FND-01": "done",
+  "UAM-ARC-01": "done",
+  "UAM-FND-02": "done",
+  "UAM-QA-01": "done",
+  "UAM-OPS-01": "done",
+  "UAM-API-01": "done",
+  "UAM-DEMO-01": "done",
+  "UAM-DEMO-02": "done"
 }

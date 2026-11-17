@@ -32,6 +32,7 @@
 | [UAM-FND-04](items/UAM-FND-04.md) | คอมโพเนนต์ร่วมชุดสถานะ/ข้อความ (dialog, state, skeleton, toast, errpage) | 5 | 🔴 P0 | UAM-FND-02 |
 | [UAM-SHL-01](items/UAM-SHL-01.md) | Shell: topbar 70px + sidebar 250px + breakpoint 768px | 5 | 🔴 P0 | UAM-FND-02 |
 | [UAM-DEMO-01](items/UAM-DEMO-01.md) | โหมด demo: mock API ทั้งหมดในแอป (ข้อมูลสมมติ ไม่ต่อ backend) | 5 | 🟡 P2 | UAM-FND-01, UAM-QA-01 |
+| [UAM-DEMO-02](items/UAM-DEMO-02.md) | Demo mock ส่วนที่เหลือ: Menus, SystemToSystem, Reports, role menu ต่อ role + ต่อกับ typed client | 3 | 🟡 P2 | UAM-DEMO-01, UAM-API-01 |
 
 ## 🌊 Wave 4
 

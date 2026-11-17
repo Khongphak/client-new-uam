@@ -50,3 +50,4 @@
 | UAM-API-01 | #46 | 2 | โมเดลและ service ของ API (interfaces ใช้ฟิลด์เดิม) — รอผู้ใช้ตัดสินแหล่งความจริง |
 | UAM-OPS-01 | #55 | 2 | Deploy พรีวิวบน Vercel (URL ต่อ PR) + ตั้งค่า SPA |
 | UAM-DEMO-01 | #56 | 3 | โหมด demo: mock API ทั้งหมดในแอป (ข้อมูลสมมติ ไม่ต่อ backend) |
+| UAM-DEMO-02 | #61 | 3 | Demo mock ส่วนที่เหลือ: Menus, SystemToSystem, Reports, role menu ต่อ role + ต่อกับ typed client |
