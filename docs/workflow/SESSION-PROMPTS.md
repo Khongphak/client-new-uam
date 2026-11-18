@@ -60,7 +60,7 @@
 ใช้เมื่อ: wave หนึ่ง merge ครบแล้ว ตาม skill `uam-qa-run`: ทดสอบตาม test case ใน `docs/testing/` กับ build `demo` (หรือ `https://client-new-uam.vercel.app/`) บันทึกผลจริงลง `docs/qa/results/` ผ่าน PR รายงานผ่าน/ไม่ผ่านพร้อม screenshot และเสนอ "ตีกลับ / เปิด issue ใหม่" ให้ผู้ใช้ตัดสิน — **ห้ามแก้โค้ดแอปเพื่อให้ test ผ่าน**
 
 ## F. งานเอกสาร backlog หลัง merge
-ใช้เมื่อ: มีงาน merge แล้วและต้องซิงก์เอกสาร ตาม skill `uam-backlog-sync`: ตั้ง `done` ใน `docs/backlog/status.json` ให้งานที่ merge เข้า `develop` แล้ว (ตรวจจาก git log และ issue จริง ไม่เดา), เปลี่ยน label `status:*` ของ issue ที่เกี่ยวข้องเป็น `status:qa`, ลงทะเบียนงานใหม่ใน `items/`, `BACKLOG.md`, `EXECUTION-PLAN.md`, `ISSUES.md`, `issue-map.json` ผ่าน PR (`docs/<slug>`)
+ใช้เมื่อ: มีงาน merge แล้วและต้องซิงก์เอกสาร ตาม skill `uam-backlog-sync`: สร้าง `docs/backlog/status.json` จาก label ของ issue ด้วย `gh issue list --state all --limit 200 --json number,state,stateReason,labels | npm run gen:status` (ตรวจ label ไม่ตรงอย่างเดียว: ต่อท้าย `-- --check`; สคริปต์ `scripts/gen-status.mjs` ไม่แตะ network/token — ห้ามแก้ `status.json` ด้วยมือ), เปลี่ยน label `status:*` ของ issue ที่เกี่ยวข้องเป็น `status:qa`, ลงทะเบียนงานใหม่ใน `items/`, `BACKLOG.md`, `EXECUTION-PLAN.md`, `ISSUES.md`, `issue-map.json` ผ่าน PR (`docs/<slug>`)
 
 ---
 

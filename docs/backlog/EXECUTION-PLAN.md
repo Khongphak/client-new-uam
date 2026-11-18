@@ -34,6 +34,7 @@
 | [UAM-DEMO-01](items/UAM-DEMO-01.md) | โหมด demo: mock API ทั้งหมดในแอป (ข้อมูลสมมติ ไม่ต่อ backend) | 5 | 🟡 P2 | UAM-FND-01, UAM-QA-01 |
 | [UAM-DEMO-02](items/UAM-DEMO-02.md) | Demo mock ส่วนที่เหลือ: Menus, SystemToSystem, Reports, role menu ต่อ role + ต่อกับ typed client | 3 | 🟡 P2 | UAM-DEMO-01, UAM-API-01 |
 | [UAM-API-02](items/UAM-API-02.md) | HTTP interceptors: header/cookie, refresh token, session หมดอายุ (functional interceptors) | 3 | 🟠 P1 | UAM-API-01, UAM-FND-01 |
+| [UAM-OPS-02](items/UAM-OPS-02.md) | สคริปต์สร้าง docs/backlog/status.json จาก label ของ issue | 2 | 🟡 P2 | UAM-OPS-01 |
 
 ## 🌊 Wave 4
 

@@ -52,3 +52,4 @@
 | UAM-DEMO-01 | #56 | 3 | โหมด demo: mock API ทั้งหมดในแอป (ข้อมูลสมมติ ไม่ต่อ backend) |
 | UAM-DEMO-02 | #61 | 3 | Demo mock ส่วนที่เหลือ: Menus, SystemToSystem, Reports, role menu ต่อ role + ต่อกับ typed client |
 | UAM-API-02 | #65 | 3 | HTTP interceptors: header/cookie, refresh token, session หมดอายุ (functional interceptors) |
+| UAM-OPS-02 | #70 | 3 | สคริปต์สร้าง docs/backlog/status.json จาก label ของ issue |
