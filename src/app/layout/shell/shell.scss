@@ -1,0 +1,307 @@
+// Shell geometry from the design spec: topbar 70px, sidebar 250px, drawer below 768px.
+// Values come from --uam-* tokens (src/styles/_tokens.scss).
+
+:host {
+  display: block;
+}
+
+.shell {
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 60;
+  width: var(--uam-menu-width);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-right: 1px solid var(--uam-line);
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition:
+    transform 0.2s ease,
+    visibility 0s linear 0.2s;
+
+  .is-open & {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.2s ease;
+  }
+
+  .is-phone.is-open & {
+    box-shadow: 0 0 40px rgb(0 25 75 / 25%);
+  }
+}
+
+.sidebar__brand {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--uam-menu-height) + 1px);
+  border-bottom: 1px solid var(--uam-line);
+  padding: var(--sp-3) var(--sp-4);
+}
+
+// Logo image is not in the repo yet (design uses a canvas blob); text wordmark until the asset lands.
+.brand {
+  color: var(--uam-navy);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.sidebar__nav {
+  flex: 1;
+  overflow: auto;
+  padding-bottom: var(--sp-6);
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0.625rem;
+  list-style: none;
+}
+
+.menu--sub {
+  margin-top: var(--sp-2);
+  padding: 0;
+}
+
+.menu__link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 3.125rem;
+  padding: var(--sp-2) 1.25rem;
+  border: 0;
+  border-radius: 0.625rem;
+  background: transparent;
+  color: var(--uam-navy);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background: #e2edff;
+  }
+
+  &.is-active {
+    background: var(--uam-gradient);
+    color: #fff;
+  }
+}
+
+.menu__link--sub {
+  padding-left: 3.25rem;
+}
+
+.menu__icon {
+  margin-right: var(--sp-2);
+  font-size: 1.25rem;
+}
+
+.menu__caret {
+  margin-left: auto;
+  font-size: 0.75rem;
+  transition: transform 0.15s;
+
+  &.is-flipped {
+    transform: rotate(-180deg);
+  }
+}
+
+.topbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  height: var(--uam-menu-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem var(--sp-6) 0.8rem calc(var(--uam-menu-width) + 2.5rem);
+  background: #fff;
+  border-bottom: 1px solid var(--uam-line);
+  transition: padding 0.2s ease;
+
+  .shell:not(.is-open) & {
+    padding-left: var(--sp-5);
+  }
+}
+
+.topbar__start,
+.topbar__end {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.topbar__end {
+  position: relative;
+}
+
+.topbar__title {
+  margin: 0 0 0 1.125rem;
+  color: #191919;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.topbar__code {
+  display: none;
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--uam-navy);
+  font-size: 1.25rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #e2edff;
+  }
+}
+
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.user-btn__who {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.25;
+
+  b {
+    color: #00317a;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  small {
+    font-size: 0.875rem;
+    font-weight: 300;
+  }
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--uam-tile);
+  color: var(--uam-blue);
+  font-size: 1.125rem;
+}
+
+.user-btn__caret {
+  color: var(--uam-ink-2);
+  font-size: 0.875rem;
+}
+
+.user-popup {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 80;
+  min-width: 10rem;
+  padding: var(--sp-2);
+  background: #fff;
+  border: 1px solid var(--uam-line);
+  border-radius: 0.625rem;
+  box-shadow: 0 8px 24px rgb(0 25 75 / 12%);
+}
+
+.user-popup__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 2.75rem;
+  padding: 0 var(--sp-3);
+  border-radius: 0.5rem;
+  color: var(--uam-ink);
+  text-decoration: none;
+
+  &:hover {
+    background: #e2edff;
+  }
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: rgb(0 10 28 / 40%);
+}
+
+.content {
+  min-height: 100vh;
+  padding-top: var(--uam-menu-height);
+  margin-left: var(--uam-menu-width);
+  transition: margin 0.2s ease;
+
+  .shell:not(.is-open) & {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .content,
+  .shell:not(.is-open) .content {
+    margin-left: 0;
+  }
+
+  .topbar,
+  .shell:not(.is-open) .topbar {
+    padding: 0.8rem var(--sp-4);
+  }
+
+  .topbar__full,
+  .user-btn__who {
+    display: none;
+  }
+
+  .topbar__code {
+    display: inline;
+  }
+
+  .menu__link,
+  .user-popup__item {
+    min-height: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .topbar,
+  .content,
+  .menu__caret {
+    transition: none;
+  }
+}
