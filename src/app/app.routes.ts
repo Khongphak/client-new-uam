@@ -3,6 +3,12 @@ import { Routes } from '@angular/router';
 // Every feature is lazy-loaded (ADR-0001) to stay inside the initial bundle budget.
 export const routes: Routes = [
   {
+    path: 'forbidden',
+    title: 'No access · UAM',
+    loadComponent: () =>
+      import('./layout/forbidden-page/forbidden-page').then((m) => m.ForbiddenPage),
+  },
+  {
     path: '',
     loadComponent: () => import('./layout/shell/shell').then((m) => m.Shell),
     children: [
