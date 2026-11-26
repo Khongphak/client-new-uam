@@ -53,6 +53,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'setting/users-setting/roles/new',
+        title: 'Add role · UAM',
+        canActivate: [roleGuard(ACCESS_POLICY['user-permission'])],
+        loadComponent: () =>
+          import('./identity-roles/role-editor/role-editor-page').then((m) => m.RoleEditorPage),
+      },
+      {
         path: 'setting/system-setting',
         title: 'System Setting · UAM',
         canActivate: [roleGuard(ACCESS_POLICY['system-setting'])],

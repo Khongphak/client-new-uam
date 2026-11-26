@@ -1,0 +1,144 @@
+<div class="phead">
+  <div class="phead-in">
+    <div class="phead-top">
+      <u-back link="/setting/users-setting" fragment="roles" label="Back to User & Permission" />
+      <div class="phead-title">
+        <h1>{{ store.info().roleName.trim() || 'New role' }}</h1>
+        @if (systemName(); as name) {
+          <p class="sub">{{ name }}</p>
+        }
+      </div>
+    </div>
+    <p-steps
+      class="steps only-desk"
+      [model]="items"
+      [activeIndex]="store.step()"
+      [readonly]="false"
+      (activeIndexChange)="store.goTo($event)"
+      aria-label="Role editor steps"
+    />
+    <div class="mprog" data-testid="progress">
+      <div class="mprog__row">
+        <b>{{ stepLabel() }}</b>
+        <span class="hint">Step {{ store.step() + 1 }} of {{ stepCount }}</span>
+      </div>
+      <div
+        class="mprog__bar"
+        role="progressbar"
+        aria-label="Role editor progress"
+        aria-valuemin="1"
+        [attr.aria-valuemax]="stepCount"
+        [attr.aria-valuenow]="store.step() + 1"
+        [attr.aria-valuetext]="stepLabel()"
+      >
+        <span [style.width]="progress()"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  @switch (store.step()) {
+    @case (0) {
+      @let info = store.info();
+      @let err = store.shownErrors();
+      <section class="card" aria-label="Role information" data-testid="step-info">
+        <div class="form-grid">
+          <div class="field">
+            <label for="role-system">System <span class="req">*</span></label>
+            <select
+              id="role-system"
+              class="p-inputtext p-component"
+              data-testid="role-system"
+              [attr.aria-invalid]="err.systemId ? 'true' : null"
+              [attr.aria-describedby]="err.systemId ? 'role-system-err' : 'role-system-hint'"
+              (change)="store.patchInfo({ systemId: value($event) })"
+            >
+              <option value="" [selected]="!info.systemId">Select a system</option>
+              @for (s of systems.value(); track s.id) {
+                <option [value]="s.id" [selected]="s.id === info.systemId">{{ s.name }}</option>
+              }
+            </select>
+            @if (err.systemId) {
+              <span id="role-system-err" class="err" role="alert" data-testid="err-system">{{ err.systemId }}</span>
+            } @else {
+              <span id="role-system-hint" class="hint">Can’t be changed after the role is saved.</span>
+            }
+          </div>
+          <div class="field">
+            <label for="role-name">Role name <span class="req">*</span></label>
+            <input
+              id="role-name"
+              class="p-inputtext p-component"
+              data-testid="role-name"
+              autocomplete="off"
+              [value]="info.roleName"
+              [attr.aria-invalid]="err.roleName ? 'true' : null"
+              [attr.aria-describedby]="err.roleName ? 'role-name-err' : null"
+              (input)="store.patchInfo({ roleName: value($event) })"
+            />
+            @if (err.roleName) {
+              <span id="role-name-err" class="err" role="alert" data-testid="err-name">{{ err.roleName }}</span>
+            }
+          </div>
+          <div class="field wide">
+            <label for="role-desc">Description</label>
+            <textarea
+              id="role-desc"
+              class="p-inputtext p-component"
+              data-testid="role-description"
+              rows="3"
+              [value]="info.description"
+              [attr.maxlength]="descriptionMax"
+              [attr.aria-invalid]="err.description ? 'true' : null"
+              (input)="store.patchInfo({ description: value($event) })"
+            ></textarea>
+            @if (err.description) {
+              <span class="err" role="alert">{{ err.description }}</span>
+            }
+          </div>
+          <u-switch-row
+            class="wide"
+            label="Active"
+            hint="An inactive role can’t be given to users. People who have it lose its menus."
+            [checked]="info.active"
+            (checkedChange)="store.patchInfo({ active: $event })"
+          />
+        </div>
+      </section>
+    }
+    @case (1) {
+      <section class="card placeholder" aria-label="Menus & groups" data-testid="step-menus">
+        <h2>Menus &amp; groups</h2>
+        <p class="hint">The menu structure is built in the next backlog item (UAM-ROL-02).</p>
+      </section>
+    }
+    @default {
+      <section class="card placeholder" aria-label="Permissions" data-testid="step-permissions">
+        <h2>Permissions</h2>
+        <p class="hint">Permissions are set in a later backlog item (UAM-ROL-03).</p>
+      </section>
+    }
+  }
+
+  <div class="savebar">
+    <div class="actions">
+      @if (isFirst()) {
+        <a pButton severity="secondary" routerLink="/setting/users-setting" fragment="roles" data-testid="cancel">
+          <span class="p-button-label">Cancel</span>
+        </a>
+      } @else {
+        <button type="button" pButton severity="secondary" data-testid="back" (click)="store.back()">
+          <i class="pi pi-arrow-left" aria-hidden="true"></i>
+          <span class="p-button-label">Back</span>
+        </button>
+      }
+      @if (!isLast()) {
+        <button type="button" pButton data-testid="next" (click)="store.next()">
+          <span class="p-button-label">Next: {{ nextLabel() }}</span>
+          <i class="pi pi-arrow-right" aria-hidden="true"></i>
+        </button>
+      }
+    </div>
+  </div>
+</div>
