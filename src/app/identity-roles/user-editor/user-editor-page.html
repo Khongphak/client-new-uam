@@ -1,0 +1,306 @@
+<div class="phead">
+  <div class="phead-in">
+    <div class="top">
+      <u-back link="/setting/users-setting" fragment="users" label="Back to User & Permission" />
+      @if (state(); as s) {
+        <span class="avatar" aria-hidden="true">{{ headInitials() }}</span>
+        <div class="title">
+          <h1>{{ headName() }}</h1>
+          <div class="meta">
+            <span class="hint">{{ s.profile.username }}</span>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="tabs" role="tablist" aria-label="Edit user">
+      @for (t of tabs; track t.id) {
+        <button
+          type="button"
+          role="tab"
+          class="tab"
+          [attr.data-testid]="'tab-' + t.id"
+          [class.is-active]="tab() === t.id"
+          [attr.aria-selected]="tab() === t.id"
+          (click)="selectTab(t.id)"
+        >
+          {{ t.label }}
+          @if (t.id === 'systems' && state(); as s) {
+            <span class="count">{{ s.rows.length }}</span>
+          }
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  @if (data.isLoading() && !state()) {
+    <div class="card"><u-state kind="loading" [rows]="6" /></div>
+  } @else if (data.error()) {
+    <div class="card" data-testid="load-error">
+      <u-state
+        kind="error"
+        heading="We couldn’t load this user"
+        message="The server didn’t answer. Try again. If it keeps happening, contact IT Support."
+      >
+        <button pButton uStateActions type="button" data-testid="retry-btn" (click)="reload()">
+          <i class="pi pi-refresh" aria-hidden="true"></i><span>Try again</span>
+        </button>
+      </u-state>
+    </div>
+  } @else if (state(); as s) {
+    @switch (tab()) {
+      @case ('profile') {
+        <div class="stack" role="tabpanel" aria-label="Profile & access">
+          <section class="card pad" aria-label="Profile">
+            <h2 class="ctitle">Profile</h2>
+            <p class="hint">Filled from Active Directory. You only type the username.</p>
+            <div class="grid lookup">
+              <div class="field">
+                <label for="un">Username <span class="req">*</span></label>
+                <input
+                  id="un"
+                  pInputText
+                  data-testid="username"
+                  [value]="s.profile.username"
+                  (input)="setUsername($any($event.target).value)"
+                  (keydown.enter)="lookUp()"
+                />
+              </div>
+              <button
+                pButton
+                type="button"
+                severity="secondary"
+                data-testid="ad-lookup"
+                [disabled]="adState() === 'busy' || !s.profile.username.trim()"
+                (click)="lookUp()"
+              >
+                <i class="pi pi-search" aria-hidden="true"></i><span>Look up in AD</span>
+              </button>
+            </div>
+            @switch (adState()) {
+              @case ('found') {
+                <p class="note" role="status" data-testid="ad-found">
+                  <i class="pi pi-info-circle" aria-hidden="true"></i> Found in AD
+                </p>
+              }
+              @case ('not-found') {
+                <p class="note is-error" role="alert" data-testid="ad-not-found">
+                  <i class="pi pi-times-circle" aria-hidden="true"></i> No user with this username in
+                  Active Directory.
+                </p>
+              }
+              @case ('failed') {
+                <p class="note is-error" role="alert" data-testid="ad-failed">
+                  <i class="pi pi-times-circle" aria-hidden="true"></i> Active Directory didn’t answer. Try
+                  again.
+                </p>
+              }
+            }
+            <div class="grid">
+              <div class="field">
+                <label for="p1">Name</label>
+                <input id="p1" pInputText readonly [value]="s.profile.firstname" />
+              </div>
+              <div class="field">
+                <label for="p2">Surname</label>
+                <input id="p2" pInputText readonly [value]="s.profile.lastname" />
+              </div>
+              <div class="field">
+                <label for="p3">Position</label>
+                <input id="p3" pInputText readonly [value]="s.profile.position" />
+              </div>
+              <div class="field">
+                <label for="p4">Department</label>
+                <input id="p4" pInputText readonly [value]="s.profile.department" />
+              </div>
+              <div class="field">
+                <label for="p5">Email</label>
+                <input id="p5" pInputText readonly [value]="s.profile.email" />
+              </div>
+              <div class="field">
+                <label for="p6">Ext. number</label>
+                <input id="p6" pInputText readonly [value]="s.profile.phoneNo ?? ''" />
+              </div>
+            </div>
+            <div class="approvers">
+              <h3 class="sub">Approvers</h3>
+              <p class="hint">
+                From Active Directory, in approval order. To change them, update the manager in AD.
+              </p>
+              <u-approvers [names]="s.profile.managers" />
+            </div>
+          </section>
+
+          <section class="card pad" aria-label="Access to UAM">
+            <h2 class="ctitle">Access to UAM</h2>
+            <div role="radiogroup" aria-label="UAM role" class="roles">
+              @for (r of uamRoles(); track r.id) {
+                <label class="rc" [class.on]="s.uamRoleId === r.id">
+                  <input
+                    type="radio"
+                    name="uam"
+                    [attr.data-testid]="'uam-' + r.name"
+                    [checked]="s.uamRoleId === r.id"
+                    (change)="setUamRole(r.id)"
+                  />
+                  <span>
+                    <b>{{ r.name }}</b>
+                    @if (r.description) {
+                      <small>{{ r.description }}</small>
+                    }
+                  </span>
+                </label>
+              }
+            </div>
+            <u-switch-row
+              label="System Admin"
+              hint="Full access to every page. Give this to very few people."
+              [checked]="s.isSuperAdmin"
+              (checkedChange)="setSuperAdmin($event)"
+              data-testid="switch-admin"
+            />
+            @if (s.isSuperAdmin) {
+              <p class="note is-warn" role="alert">
+                <i class="pi pi-exclamation-triangle" aria-hidden="true"></i> System Admin can change users,
+                roles and every system setting. Make sure this person needs it.
+              </p>
+            }
+            <u-switch-row
+              label="Active"
+              hint="Inactive users can’t sign in. Their history stays in reports."
+              [checked]="s.active"
+              (checkedChange)="setActive($event)"
+              data-testid="switch-active"
+            />
+          </section>
+        </div>
+      }
+      @case ('systems') {
+        <section class="card pad" role="tabpanel" aria-label="Systems and roles">
+          <div class="between">
+            <h2 class="ctitle">Systems and roles ({{ s.rows.length }})</h2>
+            <button pButton size="small" type="button" data-testid="add-system" (click)="addRow()">
+              <i class="pi pi-plus" aria-hidden="true"></i><span>Add system</span>
+            </button>
+          </div>
+          @for (r of s.rows; track r.key; let i = $index) {
+            <div class="srow" data-testid="system-row">
+              <div class="field">
+                <label [for]="'s-' + r.key">System</label>
+                <select
+                  pInputText
+                  [id]="'s-' + r.key"
+                  [class.p-invalid]="invalid().has(r.key) && !r.systemId"
+                  (change)="setSystem(r.key, $any($event.target).value)"
+                >
+                  <option value="" [selected]="r.systemId === null">Select a system</option>
+                  @for (sys of systems(); track sys.id) {
+                    <option [value]="sys.id" [selected]="sys.id === r.systemId">{{ sys.name }}</option>
+                  }
+                </select>
+              </div>
+              <div class="field">
+                <label [for]="'r-' + r.key">Role</label>
+                <select
+                  pInputText
+                  [id]="'r-' + r.key"
+                  [disabled]="r.systemId === null"
+                  (change)="setRole(r.key, $any($event.target).value)"
+                >
+                  <option value="" [selected]="r.roleId === null">Select a role</option>
+                  @for (role of rolesOf(r.systemId); track role.id) {
+                    <option [value]="role.id" [selected]="role.id === r.roleId">{{ role.roleName }}</option>
+                  }
+                </select>
+              </div>
+              <div class="actions">
+                <button
+                  pButton
+                  type="button"
+                  variant="text"
+                  size="small"
+                  [disabled]="r.roleId === null"
+                  [attr.aria-expanded]="openRows().has(r.key)"
+                  (click)="toggleRow(r)"
+                >
+                  {{ openRows().has(r.key) ? 'Hide menus' : 'Show menus' }}
+                </button>
+                <button
+                  pButton
+                  type="button"
+                  variant="text"
+                  severity="danger"
+                  size="small"
+                  [rounded]="true"
+                  aria-label="Remove system {{ i + 1 }}"
+                  data-testid="remove-system"
+                  (click)="removeRow(r.key)"
+                >
+                  <i class="pi pi-trash" aria-hidden="true"></i>
+                </button>
+              </div>
+              @if (openRows().has(r.key)) {
+                <div class="menus">
+                  @for (m of menusOf(r) ?? []; track $index) {
+                    <div class="prow">
+                      <span>@if (m.group) {<small>{{ m.group }} /</small> }{{ m.menu }}</span>
+                      <span>{{ m.perms.join(' · ') || '—' }}</span>
+                    </div>
+                  } @empty {
+                    <p class="hint">{{ menusFailed() ? 'Couldn’t load the menus.' : 'Loading…' }}</p>
+                  }
+                </div>
+              }
+            </div>
+          } @empty {
+            <div class="empty">No system yet. Add a system to give this person access.</div>
+          }
+        </section>
+      }
+      @case ('preview') {
+        <section class="stack" role="tabpanel" aria-label="Permission preview">
+          <div>
+            <h2 class="ctitle">Permission preview</h2>
+            <p class="hint">Everything this person gets from the systems and roles above.</p>
+          </div>
+          <p-table [value]="preview()" styleClass="u-preview" [tableStyle]="{ 'min-width': '40rem' }">
+            <ng-template #header>
+              <tr>
+                <th scope="col">System</th>
+                <th scope="col">Role</th>
+                <th scope="col">Group / Menu</th>
+                <th scope="col">Functions</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-p>
+              <tr data-testid="preview-row">
+                <td>{{ p.system }}</td>
+                <td>{{ p.role }}</td>
+                <td>{{ p.group ? p.group + ' / ' : '' }}{{ p.menu }}</td>
+                <td>{{ p.perms.join(' · ') || '—' }}</td>
+              </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+              <tr>
+                <td colspan="4">
+                  {{ s.rows.length === 0 ? 'No system yet.' : menusFailed() ? 'Couldn’t load the menus.' : 'Loading…' }}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </section>
+      }
+    }
+
+    <div class="savebar">
+      <span class="count-text" [class.is-dirty]="changes() > 0" data-testid="changes-text" aria-live="polite">{{ barText() }}</span>
+      <div class="actions">
+        <a pButton severity="secondary" routerLink="/setting/users-setting" fragment="users">Cancel</a>
+        <button pButton type="button" data-testid="save" [disabled]="!canSave()" (click)="save()">
+          Save changes
+        </button>
+      </div>
+    </div>
+  }
+</div>
