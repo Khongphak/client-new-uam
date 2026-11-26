@@ -1,0 +1,79 @@
+<div class="phead">
+  <div class="phead-in">
+    <h1>User &amp; Permission</h1>
+    <div class="tabs" role="tablist" aria-label="User and permission">
+      <a
+        role="tab"
+        class="tab"
+        data-testid="tab-roles"
+        [class.is-active]="tab() === 'roles'"
+        [attr.aria-selected]="tab() === 'roles'"
+        [routerLink]="[]"
+        fragment="roles"
+      >
+        Roles
+        @if (roles.hasValue()) {
+          <u-count [value]="roles.value()!.length" />
+        }
+      </a>
+      <a
+        role="tab"
+        class="tab"
+        data-testid="tab-users"
+        [class.is-active]="tab() === 'users'"
+        [attr.aria-selected]="tab() === 'users'"
+        [routerLink]="[]"
+        fragment="users"
+      >
+        Users
+        @if (users.hasValue()) {
+          <u-count [value]="users.value()!.length" />
+        }
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="content" role="tabpanel" [attr.aria-label]="tab() === 'users' ? 'Users' : 'Roles'">
+  @let s = state();
+  @let what = s.what;
+  @if (s.loading) {
+    <div class="card"><u-state kind="loading" [rows]="6" /></div>
+  } @else if (s.failed) {
+    <div class="card" data-testid="load-error">
+      <u-state
+        kind="error"
+        [heading]="'We couldn’t load ' + what"
+        message="The server didn’t answer. Try again. If it keeps happening, contact IT Support."
+      >
+        <button
+          pButton
+          uStateActions
+          type="button"
+          data-testid="retry-btn"
+          (click)="reload()"
+        >
+          <i class="pi pi-refresh" aria-hidden="true"></i>
+          <span>Try again</span>
+        </button>
+      </u-state>
+    </div>
+  } @else if (s.empty) {
+    <div class="card" data-testid="none-yet">
+      <u-state
+        kind="empty"
+        icon="pi-users"
+        [heading]="'No ' + what + ' yet'"
+        [message]="
+          tab() === 'users'
+            ? 'Add the first user to start giving people access to systems.'
+            : 'Create a role first. A user can only get access to a system through a role.'
+        "
+      />
+    </div>
+  } @else if (tab() === 'users') {
+    <app-users-table [rows]="users.value()!" />
+  } @else {
+    <app-roles-table [rows]="roles.value()!" />
+  }
+</div>
