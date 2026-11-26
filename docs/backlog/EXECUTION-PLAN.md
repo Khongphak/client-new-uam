@@ -105,6 +105,7 @@
 | Code | งาน | Pts | Priority | ต้องเสร็จก่อน |
 |---|---|---|---|---|
 | [UAM-ROL-04](items/UAM-ROL-04.md) | Role editor: บันทึก/แมป payload + ตรวจ regression | 3 | 🟠 P1 | UAM-ROL-03, UAM-QA-01 |
+| [UAM-ROL-05](items/UAM-ROL-05.md) | Role editor: โหมดแก้ไข (route roles/:id/edit + ปุ่ม Edit role ที่หน้า Role details) | 5 | 🟡 P2 | UAM-ROL-03, UAM-USR-02 |
 
 ## 🌊 Wave 10
 
