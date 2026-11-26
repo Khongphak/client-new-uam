@@ -1,0 +1,12 @@
+desktop demo unauth /home -> /login?returnUrl=%2Fhome
+desktop demo login -> /home cards 4
+desktop demo reload -> /home cards 4 topbar USER ACCESS MANAGEMENT | Demo | ADMIN
+desktop after Logout -> /login session key still present: true
+desktop then open /home -> /home cards 4
+desktop then open /setting/users-setting -> /setting/users-setting
+phone demo unauth /home -> /login?returnUrl=%2Fhome
+phone demo login -> /home cards 4
+phone demo reload -> /home cards 4 topbar UAM
+phone after Logout -> /login session key still present: true
+phone then open /home -> /home cards 4
+phone then open /setting/users-setting -> /setting/users-setting
