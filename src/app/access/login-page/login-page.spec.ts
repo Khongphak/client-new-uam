@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { vi } from 'vitest';
 
@@ -33,6 +33,7 @@ describe('LoginPage', () => {
 
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
     login = vi.fn(() => of(data(true)));
     TestBed.configureTestingModule({
       providers: [
@@ -137,6 +138,45 @@ describe('LoginPage', () => {
     await type('login-password', 'pw');
     await submit();
     expect(navigate).toHaveBeenCalledWith('/home');
+  });
+
+  describe('returnUrl (set by the auth guard)', () => {
+    async function loginWith(returnUrl: string | null, isConsent: boolean) {
+      TestBed.resetTestingModule();
+      login.mockReturnValue(of(data(isConsent)));
+      TestBed.configureTestingModule({
+        providers: [
+          provideRouter([]),
+          { provide: AuthApi, useValue: { login } },
+          { provide: CLIENT_ID, useValue: 'client-1' },
+          {
+            provide: ActivatedRoute,
+            useValue: { snapshot: { queryParamMap: convertToParamMap(returnUrl ? { returnUrl } : {}) } },
+          },
+        ],
+      });
+      const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+      const { type, submit } = await render();
+      await type('login-username', 'somchai.k');
+      await type('login-password', 'pw');
+      await submit();
+      return navigate;
+    }
+
+    it('goes back to the page the guard stopped when consent is already accepted', async () => {
+      expect(await loginWith('/report', true)).toHaveBeenCalledWith('/report');
+    });
+
+    it('goes to consent first (keeping returnUrl) when consent is pending (TC-AUT-009)', async () => {
+      expect(await loginWith('/report', false)).toHaveBeenCalledWith(
+        '/pdpaconsent?returnUrl=%2Freport',
+      );
+    });
+
+    it('ignores an external returnUrl', async () => {
+      expect(await loginWith('//evil.example', true)).toHaveBeenCalledWith('/home');
+      expect(await loginWith('https://evil.example', false)).toHaveBeenCalledWith('/pdpaconsent');
+    });
   });
 
   const failWith = (error: ApiError) =>

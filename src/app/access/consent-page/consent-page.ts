@@ -1,13 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageModule } from 'primeng/message';
 import { EMPTY, finalize } from 'rxjs';
 
 import { CLIENT_ID } from '../../core/api/api-config';
+import { HOME_URL, safeReturnUrl } from '../../core/guards/auth-guard';
 import { Session } from '../../core/session';
 import { UDialog } from '../../shared/ui/dialog';
 import { USkel } from '../../shared/ui/skeleton';
@@ -33,6 +34,7 @@ export class ConsentPage {
   readonly #authApi = inject(AuthApi);
   readonly #session = inject(Session);
   readonly #router = inject(Router);
+  readonly #route = inject(ActivatedRoute);
   readonly #clientId = inject(CLIENT_ID);
 
   protected readonly profile = this.#session.profile;
@@ -52,13 +54,6 @@ export class ConsentPage {
     () => this.agreed() && this.consent.hasValue() && !this.saving() && !this.leaving(),
   );
 
-  constructor() {
-    // Direct visit with no sign-in: nothing to consent for. Real route protection is UAM-AUT-03.
-    effect(() => {
-      if (!this.profile() && !this.leaving()) void this.#router.navigateByUrl('/login');
-    });
-  }
-
   protected agree(): void {
     const profile = this.profile();
     const consent = this.consent.hasValue() ? this.consent.value() : null;
@@ -74,7 +69,11 @@ export class ConsentPage {
       })
       .pipe(finalize(() => this.saving.set(false)))
       .subscribe({
-        next: () => void this.#router.navigateByUrl('/home'),
+        next: () => {
+          this.#session.markConsented();
+          const returnUrl = safeReturnUrl(this.#route.snapshot.queryParamMap.get('returnUrl'));
+          void this.#router.navigateByUrl(returnUrl ?? HOME_URL);
+        },
         error: () => this.saveFailed.set(true),
       });
   }

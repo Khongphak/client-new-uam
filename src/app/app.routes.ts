@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { ACCESS_POLICY } from './access/role-access';
+import { authChildGuard, authGuard, consentGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
 
 // Every feature is lazy-loaded (ADR-0001) to stay inside the initial bundle budget.
@@ -13,6 +14,7 @@ export const routes: Routes = [
   {
     path: 'pdpaconsent',
     title: 'Personal data consent · UAM',
+    canActivate: [consentGuard],
     loadComponent: () =>
       import('./access/consent-page/consent-page').then((m) => m.ConsentPage),
   },
@@ -24,6 +26,9 @@ export const routes: Routes = [
   },
   {
     path: '',
+    // One guard on the parent covers every route under the shell (new feature routes need nothing extra).
+    canActivate: [authGuard],
+    canActivateChild: [authChildGuard],
     loadComponent: () => import('./layout/shell/shell').then((m) => m.Shell),
     children: [
       {
