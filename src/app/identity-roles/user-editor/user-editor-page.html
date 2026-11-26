@@ -49,6 +49,19 @@
       </u-state>
     </div>
   } @else if (state(); as s) {
+    @if (summary(); as e) {
+      <div class="errbox" role="alert" data-testid="error-summary">
+        <i class="pi pi-times-circle" aria-hidden="true"></i>
+        <div>
+          <b>{{ e.title }}</b>
+          <ul class="errlist">
+            @for (item of e.items; track $index) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        </div>
+      </div>
+    }
     @switch (tab()) {
       @case ('profile') {
         <div class="stack" role="tabpanel" aria-label="Profile & access">
@@ -62,6 +75,7 @@
                   id="un"
                   pInputText
                   data-testid="username"
+                  [class.p-invalid]="!s.profile.username.trim()"
                   [value]="s.profile.username"
                   (input)="setUsername($any($event.target).value)"
                   (keydown.enter)="lookUp()"
@@ -90,6 +104,11 @@
                   Active Directory.
                 </p>
               }
+              @case ('incomplete') {
+                <p class="note is-error" role="alert" data-testid="ad-incomplete">
+                  <i class="pi pi-times-circle" aria-hidden="true"></i> {{ text.adIncomplete }}
+                </p>
+              }
               @case ('failed') {
                 <p class="note is-error" role="alert" data-testid="ad-failed">
                   <i class="pi pi-times-circle" aria-hidden="true"></i> Active Directory didn’t answer. Try
@@ -100,27 +119,27 @@
             <div class="grid">
               <div class="field">
                 <label for="p1">Name</label>
-                <input id="p1" pInputText readonly [value]="s.profile.firstname" />
+                <input id="p1" pInputText readonly [placeholder]="adState() === 'incomplete' ? text.missingInAd : ''" [value]="s.profile.firstname" />
               </div>
               <div class="field">
                 <label for="p2">Surname</label>
-                <input id="p2" pInputText readonly [value]="s.profile.lastname" />
+                <input id="p2" pInputText readonly [placeholder]="adState() === 'incomplete' ? text.missingInAd : ''" [value]="s.profile.lastname" />
               </div>
               <div class="field">
                 <label for="p3">Position</label>
-                <input id="p3" pInputText readonly [value]="s.profile.position" />
+                <input id="p3" pInputText readonly [placeholder]="adState() === 'incomplete' ? text.missingInAd : ''" [value]="s.profile.position" />
               </div>
               <div class="field">
                 <label for="p4">Department</label>
-                <input id="p4" pInputText readonly [value]="s.profile.department" />
+                <input id="p4" pInputText readonly [placeholder]="adState() === 'incomplete' ? text.missingInAd : ''" [value]="s.profile.department" />
               </div>
               <div class="field">
                 <label for="p5">Email</label>
-                <input id="p5" pInputText readonly [value]="s.profile.email" />
+                <input id="p5" pInputText readonly [placeholder]="adState() === 'incomplete' ? text.missingInAd : ''" [value]="s.profile.email" />
               </div>
               <div class="field">
                 <label for="p6">Ext. number</label>
-                <input id="p6" pInputText readonly [value]="s.profile.phoneNo ?? ''" />
+                <input id="p6" pInputText readonly [placeholder]="adState() === 'incomplete' ? text.missingInAd : ''" [value]="s.profile.phoneNo ?? ''" />
               </div>
             </div>
             <div class="approvers">
@@ -191,7 +210,8 @@
                 <select
                   pInputText
                   [id]="'s-' + r.key"
-                  [class.p-invalid]="invalid().has(r.key) && !r.systemId"
+                  [class.p-invalid]="rowErrs().get(r.key)?.noSystem || rowErrs().get(r.key)?.duplicate"
+                  [attr.aria-invalid]="!!(rowErrs().get(r.key)?.noSystem || rowErrs().get(r.key)?.duplicate)"
                   (change)="setSystem(r.key, $any($event.target).value)"
                 >
                   <option value="" [selected]="r.systemId === null">Select a system</option>
@@ -206,6 +226,8 @@
                   pInputText
                   [id]="'r-' + r.key"
                   [disabled]="r.systemId === null"
+                  [class.p-invalid]="rowErrs().get(r.key)?.noRole"
+                  [attr.aria-invalid]="!!rowErrs().get(r.key)?.noRole"
                   (change)="setRole(r.key, $any($event.target).value)"
                 >
                   <option value="" [selected]="r.roleId === null">Select a role</option>
@@ -240,6 +262,19 @@
                   <i class="pi pi-trash" aria-hidden="true"></i>
                 </button>
               </div>
+              @if (rowErrs().get(r.key); as err) {
+                <p class="row-error" role="alert" data-testid="row-error">
+                  {{
+                    err.duplicate
+                      ? text.duplicateSystem
+                      : err.noSystem && err.noRole
+                        ? text.selectSystemAndRole
+                        : err.noSystem
+                          ? text.selectSystem
+                          : text.selectRole
+                  }}
+                </p>
+              }
               @if (openRows().has(r.key)) {
                 <div class="menus">
                   @for (m of menusOf(r) ?? []; track $index) {

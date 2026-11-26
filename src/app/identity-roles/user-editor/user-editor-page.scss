@@ -160,6 +160,26 @@ h1 {
   background: #fffaeb;
   color: var(--uam-warn);
 }
+.errbox {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: #fef3f2;
+  color: var(--uam-danger);
+}
+.errlist {
+  margin: 0.25rem 0 0;
+  padding-left: 1.25rem;
+}
+.row-error {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--uam-danger);
+  font-size: 0.875rem;
+}
 .approvers {
   margin-top: 1.75rem;
 }
