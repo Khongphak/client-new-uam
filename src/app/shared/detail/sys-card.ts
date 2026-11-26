@@ -49,7 +49,7 @@ export class USysGrid {}
       gap: 0.875rem;
       padding: 1.25rem;
       background: #fff;
-      border: 1px solid var(--hair);
+      border: 1px solid var(--uam-line);
       border-radius: 14px;
       box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
       color: inherit;
