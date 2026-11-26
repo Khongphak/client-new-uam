@@ -2,7 +2,7 @@
 
 รูปแบบ: ทุก case ผูกกับ backlog (`items/UAM-*.md`) · ลำดับ phase ดู [PHASES.md](../PHASES.md) · วิธีรัน: manual ได้ทันทีเมื่อ build เสร็จ; automate (E2E) หลัง phase ที่กำหนด
 
-## TC-ERR-001 — URL ไม่รู้จัก → 404 "Looks like you are lost"
+## TC-ERR-001 — URL ไม่รู้จัก → 404 "This page doesn’t exist"
 
 | | |
 |---|---|
@@ -18,7 +18,7 @@
 
 | # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
 |---|---|---|---|---|
-| 1 | เปิด `/no-such-page` | แสดงหน้า 404 (โครง `u-errpage`) พร้อมทางกลับ | | ☐ |
+| 1 | เปิด `/no-such-page` | แสดงหน้า 404 (โครง `u-errpage`) heading "This page doesn’t exist" พร้อมปุ่ม "Back to Home" (→ `/home`) | | ☐ |
 | 2 | เปิด `/notfound` | แสดงหน้าเดียวกัน | | ☐ |
 
 ## TC-ERR-002 — Session หมดอายุ → dialog → logout ไป Login
@@ -33,12 +33,13 @@
 | ประเภท | E2E |
 
 **Precondition**
-- ล็อกอินแล้ว; จำลอง API ตอบ session หมดอายุ
+- ล็อกอินแล้ว; จำลอง API ตอบ session หมดอายุ (`40102`)
+- ทางทดสอบหลักจนกว่า UAM-HOM-02 / UAM-ERR-05 / UAM-ERR-09 เสร็จ: ให้ request ล้มที่ **login** (ผู้เรียกจัดการ error เอง) — การล้มของ resource บนหน้า Home/Report ยังไม่ขึ้น dialog ทันที (BUG-1 → UAM-ERR-09)
 
 | # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
 |---|---|---|---|---|
-| 1 | ทำ action ที่เรียก API | แสดง dialog "Your session has expired. Please log in again to continue." | | ☐ |
-| 2 | กดยืนยัน | logout และไป `/login` | | ☐ |
+| 1 | ทำ action ที่เรียก API (ตามทางทดสอบหลักใน Precondition) | แสดง dialog heading "Your session has expired" ("Log in again to continue. …") มีปุ่มเดียว "Log in again" | | ☐ |
+| 2 | กด "Log in again" | clear session และไป `/login` (ไม่เรียก `auth/logout` ซ้ำ); Esc ไม่ปิด dialog | | ☐ |
 | 3 | เมื่อมีหลาย request ล้มพร้อมกัน | dialog ขึ้นเพียงอันเดียว | | ☐ |
 
 ## TC-ERR-003 — Network error (status 0)
@@ -53,11 +54,12 @@
 | ประเภท | E2E |
 
 **Precondition**
-- จำลองเครือข่ายขาด
+- จำลองเครือข่ายขาด (status 0)
+- ทางทดสอบหลัก: ให้ request ล้มที่ login (ดู TC-ERR-002)
 
 | # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
 |---|---|---|---|---|
-| 1 | ทำ action ที่เรียก API | แสดง dialog "Network Error!!!" ด้วยโครง dialog มาตรฐาน | | ☐ |
+| 1 | ทำ action ที่เรียก API (ตามทางทดสอบหลัก) | แสดง dialog heading "Can’t reach the server" ("Check your connection, then try again.") รายละเอียด "Error: Network error" ปุ่ม Close และ Try again | | ☐ |
 
 ## TC-ERR-004 — Server error RESULT_CODE 50000 / 50001 / 50002
 
@@ -72,10 +74,11 @@
 
 **Precondition**
 - จำลอง response ทั้ง 3 รหัส
+- ทางทดสอบหลัก: ให้ request ล้มที่ login (ดู TC-ERR-002)
 
 | # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
 |---|---|---|---|---|
-| 1 | ทำ action ที่เรียก API (ทีละรหัส) | dialog แสดง**ข้อความที่ server ส่งมา** (ไม่ใช่ข้อความตัวอย่างในดีไซน์) พร้อมรหัส | | ☐ |
+| 1 | ทำ action ที่เรียก API (ทีละรหัส ตามทางทดสอบหลัก) | dialog heading "Something went wrong" พร้อมรายละเอียด `<code> · <message จาก server>` (เช่น `50001 · …`) — ข้อความ server จริง ไม่ใช่ข้อความตัวอย่างในดีไซน์; ปุ่ม Close และ Try again | | ☐ |
 
 ## TC-ERR-005 — ลบไม่ได้: แสดง message + statusDescription จาก server
 
@@ -137,7 +140,7 @@
 |---|---|---|---|---|
 | 1 | เปิดหน้าใดๆ ที่เรียก API พร้อม `?demo=50001` | dialog server (DlgServer) พร้อมข้อความ/รหัสจาก response จำลอง | | ☐ |
 | 2 | ทำซ้ำด้วย `?demo=session` | dialog session หมดอายุ; กดยืนยัน → logout ไป `/login` | | ☐ |
-| 3 | ทำซ้ำด้วยค่าจำลอง network (ชื่อค่าตามคู่มือ demo ของ UAM-DEMO-03) | dialog "Network Error!!!" | | ☐ |
+| 3 | ทำซ้ำด้วยค่าจำลอง network (ชื่อค่าตามคู่มือ demo ของ UAM-DEMO-03) | dialog "Can’t reach the server" | | ☐ |
 | 4 | `npm run build` + `npm run check:no-demo` | production ไม่มีโค้ด demo | | ☐ |
 
 ## TC-ERR-008 — Try again ของ dialog network/server ส่ง request ซ้ำโดยไม่รีโหลดหน้า (เฉพาะถ้าตัดสินให้ทำ)

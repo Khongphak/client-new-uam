@@ -110,7 +110,7 @@
 
 | | |
 |---|---|
-| Backlog | UAM-AUT-02 |
+| Backlog | UAM-AUT-03 |
 | Priority | P0 |
 | Phase ที่เริ่มทดสอบได้ | 1 |
 | Role | ทุก role |

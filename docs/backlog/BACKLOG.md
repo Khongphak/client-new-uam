@@ -18,6 +18,7 @@
 | Code | Title | Type | Priority | Score | Pts | Wave | Depends on |
 |---|---|---|---|---|---|---|---|
 | [UAM-ARC-01](items/UAM-ARC-01.md) | ADR-0001: ยืนยัน stack และสถาปัตยกรรม (Angular 21 LTS, PrimeNG 21, Vitest, signals) | 🎨 design | 🔴 **P0** | 98 | 2 | W0 | — |
+| [UAM-OPS-03](items/UAM-OPS-03.md) | ng test ไม่ออกหลังรันเสร็จเมื่อคอมโพเนนต์มี styles (CI build-test ค้าง) | 🧹 chore | 🟡 **P2** | 57 | 3 | W0 | — |
 | [UAM-DSN-01](items/UAM-DSN-01.md) | ปิดช่องว่างของดีไซน์: phone ของหน้าสถานะ, error ของ drawer, ชื่อซ้ำ 40301 | 🎨 design | 🟡 **P2** | 67 | 3 | W0 | — |
 | [UAM-FND-01](items/UAM-FND-01.md) | สร้างแอปใหม่บน Angular 21 LTS + PrimeNG 21 + baseline CI/test — ทำใหม่ | 🧹 chore | 🔴 **P0** | 97 | 3 | W1 | UAM-ARC-01 |
 | [UAM-FND-02](items/UAM-FND-02.md) | Design tokens & ธีม: PrimeNG 21 custom preset + SCSS tokens (ตาม uam.css) | ✨ feature | 🔴 **P0** | 95 | 5 | W2 | UAM-FND-01 |
@@ -43,6 +44,7 @@
 | [UAM-ERR-01](items/UAM-ERR-01.md) | หน้า 404 (`/notfound`, `**`) | ✨ feature | 🟡 **P2** | 59 | 1 | W4 | UAM-FND-04 |
 | [UAM-USR-01](items/UAM-USR-01.md) | User & Permission: ตาราง Roles/Users (แท็บ Roles ก่อน Users, fragment `#roles`/`#users`) | ✨ feature | 🔴 **P0** | 95 | 5 | W5 | UAM-SHL-01, UAM-FND-05 |
 | [UAM-SYS-01](items/UAM-SYS-01.md) | System Setting: ตาราง 3 แท็บ (System / Menu / System to System) + ตัวกรอง | ✨ feature | 🔴 **P0** | 85 | 5 | W5 | UAM-SHL-01, UAM-FND-05 |
+| [UAM-ERR-09](items/UAM-ERR-09.md) | dialog error ไม่ขึ้นทันทีเมื่อ rxResource ของหน้า Home/Report ล้ม (BUG-1 จาก QA) | 🐞 bug | 🟠 **P1** | 78 | 2 | W5 | UAM-ERR-03 |
 | [UAM-ERR-05](items/UAM-ERR-05.md) | สถานะ loading / empty / error ของตารางและรายการ ("No Data Available") | ✨ feature | 🟡 **P2** | 67 | 3 | W5 | UAM-FND-04, UAM-FND-05 |
 | [UAM-HOM-01](items/UAM-HOM-01.md) | Home: การ์ดระบบ (`u-sys-grid`/`u-sys-card`) | ✨ feature | 🟡 **P2** | 67 | 3 | W5 | UAM-SHL-01, UAM-FND-06 |
 | [UAM-SHL-03](items/UAM-SHL-03.md) | กติกาของ route `/setting` (เด้งไปหน้าลูกแรกที่มีสิทธิ์) | ✨ feature | 🟡 **P2** | 58 | 2 | W5 | UAM-SHL-02 |

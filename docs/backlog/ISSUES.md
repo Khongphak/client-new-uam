@@ -60,3 +60,5 @@
 | UAM-DEMO-03 | #97 | 5 | Demo จำลอง error ผ่าน interceptor chain เดียวกับของจริง |
 | UAM-ERR-08 | #98 | 5 | ตัดสินใจ: Try again ของ dialog network/server ให้ replay request (รอผู้ใช้/PM ตัดสิน) |
 | UAM-RPT-03 | #99 | 5 | Report: เก็บกวาดหลัง RPT-01 (token, tabpanel/ลูกศร, ยืนยัน dateFrom/dateTo) |
+| UAM-ERR-09 | #106 | 5 | dialog error ไม่ขึ้นทันทีเมื่อ rxResource ของหน้า Home/Report ล้ม (BUG-1 จาก QA) |
+| UAM-OPS-03 | #103 | 0 | ng test ไม่ออกหลังรันเสร็จเมื่อคอมโพเนนต์มี styles (CI build-test ค้าง) |
