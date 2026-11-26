@@ -40,6 +40,9 @@ describe('status dialogs (UAM-ERR-04)', () => {
     host.confirmOpen.set(true);
     await fixture.whenStable();
     expect(q('u-dialog-heading')!.textContent).toContain('Set “IT TICKET” to Inactive?');
+    expect(q('u-dialog-message')!.textContent).toContain(
+      'Roles and users won’t be able to use it. You can set it back to Active later.',
+    );
     expect(q('inactive-cancel')).not.toBeNull();
     expect(q('inactive-confirm')!.textContent).toContain('Set to Inactive');
   });

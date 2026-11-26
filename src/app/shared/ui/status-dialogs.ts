@@ -56,7 +56,7 @@ export class UInactiveConfirm {
   readonly visible = model(false);
   /** Record name for the heading; omit for the generic wording. */
   readonly name = input<string>();
-  readonly message = input('You can set it back to Active later.');
+  readonly message = input('Roles and users won’t be able to use it. You can set it back to Active later.');
   readonly confirmed = output<void>();
 
   protected readonly heading = computed(() => {
