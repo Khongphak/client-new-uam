@@ -1,0 +1,77 @@
+:host {
+  display: block;
+}
+.card {
+  background: #fff;
+  border: 1px solid var(--uam-line);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.name-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.name-cell a,
+.link {
+  font-weight: 700;
+  color: var(--uam-ink);
+  text-decoration: none;
+}
+.name-cell a:hover,
+.link:hover {
+  color: var(--uam-blue);
+  text-decoration: underline;
+}
+.name-cell small,
+.sub {
+  display: block;
+  color: var(--uam-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+.muted {
+  color: var(--uam-muted);
+}
+.nowrap {
+  white-space: nowrap;
+}
+.empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--uam-muted);
+}
+.avatar {
+  flex: none;
+  background: #e2edff;
+  color: var(--uam-navy);
+  font-weight: 700;
+}
+.mob {
+  display: none;
+}
+.mob-row-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+.mob-main {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+.mob-main b {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 767px) {
+  .desk {
+    display: none;
+  }
+  .mob {
+    display: block;
+  }
+}

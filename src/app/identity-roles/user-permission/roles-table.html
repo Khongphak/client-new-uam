@@ -1,0 +1,52 @@
+@let v = view();
+<div class="card">
+  <u-table-toolbar [view]="v" searchPlaceholder="Search role name" />
+
+  @if (v.total() === 0) {
+    <div class="empty" data-testid="no-match">
+      No role matches. Change the search or reset the filters.
+    </div>
+  } @else {
+    <div class="desk">
+      <p-table [value]="v.pageRows()" [tableStyle]="{ 'min-width': '52rem' }" data-testid="roles-table">
+        <ng-template #header>
+          <tr>
+            <th scope="col">Role</th>
+            <th scope="col">System</th>
+            <th scope="col">Description</th>
+            <th scope="col">Status</th>
+            <th scope="col">Updated</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-role>
+          <tr>
+            <td>
+              <a class="link" [routerLink]="viewLink(role.id)">{{ role.name }}</a>
+            </td>
+            <td>{{ role.system }}</td>
+            <td class="muted">{{ role.description }}</td>
+            <td><u-status [active]="role.active" /></td>
+            <td class="nowrap">
+              {{ role.updated }}
+              @if (role.updatedBy) {
+                <span class="sub">by {{ role.updatedBy }}</span>
+              }
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="mob" data-testid="roles-list">
+      @for (role of v.pageRows(); track role.id) {
+        <a uRow [routerLink]="viewLink(role.id)">
+          <span class="mob-main">
+            <b>{{ role.name }}</b>
+            <span class="sub">{{ role.system }}</span>
+          </span>
+          <u-status [active]="role.active" />
+        </a>
+      }
+    </div>
+  }
+  <u-table-footer [view]="v" />
+</div>

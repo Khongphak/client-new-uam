@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
 import { App } from './app';
+import { Session } from './core/session';
 import { routes } from './app.routes';
 
 describe('App', () => {
@@ -30,6 +31,7 @@ describe('App', () => {
 
 describe('routes', () => {
   beforeEach(() => {
+    sessionStorage.clear();
     TestBed.configureTestingModule({ providers: [provideRouter(routes)] });
   });
 
@@ -38,6 +40,17 @@ describe('routes', () => {
     expect(root?.loadComponent).toBeTypeOf('function');
     expect(root?.component).toBeUndefined();
 
+    // The shell is behind authGuard (UAM-AUT-03), so sign in first.
+    TestBed.inject(Session).signIn('AD', 's', {
+      userId: 1,
+      userName: 'u',
+      firstName: 'U',
+      lastName: 'L',
+      position: 'p',
+      uamRole: 'ADMIN',
+      systemAdmin: false,
+      userType: 'AD',
+    });
     const harness = await RouterTestingHarness.create();
     await harness.navigateByUrl('/');
     expect(

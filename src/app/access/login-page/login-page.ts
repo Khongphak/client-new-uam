@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
@@ -8,6 +8,7 @@ import { MessageModule } from 'primeng/message';
 
 import { CLIENT_ID } from '../../core/api/api-config';
 import { ApiException } from '../../core/api/api-error';
+import { CONSENT_URL, HOME_URL, safeReturnUrl } from '../../core/guards/auth-guard';
 import { Session } from '../../core/session';
 import { AuthApi } from '../api/auth-api';
 
@@ -48,6 +49,7 @@ export class LoginPage {
   readonly #auth = inject(AuthApi);
   readonly #session = inject(Session);
   readonly #router = inject(Router);
+  readonly #route = inject(ActivatedRoute);
   readonly #clientId = inject(CLIENT_ID);
 
   readonly username = signal(readRemembered());
@@ -81,8 +83,20 @@ export class LoginPage {
       .subscribe({
         next: ({ result }) => {
           writeRemembered(this.remember() ? username : null);
-          this.#session.signIn(result.userProfile.userType, result.sessionId, result.userProfile);
-          void this.#router.navigateByUrl(result.isConsent ? '/home' : '/pdpaconsent');
+          this.#session.signIn(
+            result.userProfile.userType,
+            result.sessionId,
+            result.userProfile,
+            result.isConsent,
+          );
+          // Come back to where the guard stopped the user; consent comes first when still pending.
+          const returnUrl = safeReturnUrl(this.#route.snapshot.queryParamMap.get('returnUrl'));
+          const target = result.isConsent
+            ? (returnUrl ?? HOME_URL)
+            : returnUrl
+              ? `${CONSENT_URL}?returnUrl=${encodeURIComponent(returnUrl)}`
+              : CONSENT_URL;
+          void this.#router.navigateByUrl(target);
         },
         error: (err: unknown) => {
           const kind = err instanceof ApiException ? err.error.kind : 'unknown';

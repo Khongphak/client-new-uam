@@ -39,6 +39,7 @@ async function render(items: UserSystemItem[]) {
   TestBed.configureTestingModule({
     providers: [{ provide: HomeApi, useValue: { getUserSystems } }],
   });
+  sessionStorage.clear(); // Session persists across reloads (UAM-AUT-03)
   TestBed.inject(Session).signIn('AD', 'sid', profile);
   const fixture = TestBed.createComponent(HomePage);
   await fixture.whenStable();

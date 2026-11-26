@@ -21,6 +21,8 @@ describe('api interceptors', () => {
   let session: Session;
 
   beforeEach(() => {
+
+    sessionStorage.clear(); // Session persists across reloads (UAM-AUT-03); keep tests independent
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(withInterceptors(apiInterceptors)),
