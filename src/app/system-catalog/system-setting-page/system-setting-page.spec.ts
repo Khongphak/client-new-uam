@@ -55,8 +55,8 @@ const S2S = [
     sourceSystemName: 'Claim System',
     targetSystemName: 'Policy Admin',
     status: 'Active',
-    updatedDate: null,
-    updatedBy: null,
+    updatedDate: '2026-10-28T09:00:00',
+    updatedBy: 'somchai.k',
   },
 ] as SystemToSystemListItem[];
 
@@ -66,6 +66,17 @@ async function render(fragment?: string, systemsResult = of(SYSTEMS), url = '') 
     getAllSystemToSystem: vi.fn(() => of(S2S)),
     getById: vi.fn((id: string) => of(SYSTEMS.filter((x) => x.systemId === id))),
     add: vi.fn(() => of(undefined)),
+    getSystemToSystemById: vi.fn(() =>
+      of({
+        sourceSystemUUId: 'SYS-001',
+        targetSystemUUId: 'SYS-002',
+        sourceSystemName: 'Claim System',
+        targetSystemName: 'Policy Admin',
+        accessTokenTime: 30,
+        status: 'Active',
+      }),
+    ),
+    addSystemToSystem: vi.fn(() => of(undefined)),
   };
   const masterApi = {
     getGeneralData: vi.fn(() => of([{ value: 'Web' }])),
@@ -309,6 +320,71 @@ describe('SystemSettingPage', () => {
       expect(drawer()).toBeNull();
       expect(router.url).not.toContain('drawer');
       expect(document.activeElement?.textContent?.trim()).toBe('Legacy Billing');
+    });
+  });
+
+  describe('System to System drawer (UAM-SYS-04)', () => {
+    afterEach(() => TestBed.resetTestingModule());
+    const bodyQ = (sel: string) => document.body.querySelector(sel) as HTMLElement | null;
+
+    it('View on the S2S tab opens the drawer with the row id in the URL', async () => {
+      const { q, fixture, router, systemApi } = await render('system-to-system');
+      q('view-btn')!.click();
+      await fixture.whenStable();
+      expect(router.url).toContain('drawer=s2s');
+      expect(router.url).toContain('id=20');
+      expect(router.url).toContain('#system-to-system');
+      expect(systemApi.getSystemToSystemById).toHaveBeenCalledWith(20);
+      const text = bodyQ('[data-testid="s2s-drawer"]')!.textContent!;
+      expect(text).toContain('30 min');
+      expect(text).toContain('28 Oct 2026 by somchai.k');
+      expect(bodyQ('[data-testid="system-drawer"]')).toBeNull();
+    });
+
+    it('opens from a deep link, and a non-numeric id is just the table', async () => {
+      const ok = await render(
+        undefined,
+        of(SYSTEMS),
+        '/?drawer=s2s&mode=view&id=20#system-to-system',
+      );
+      expect(bodyQ('[data-testid="s2s-drawer"]')).not.toBeNull();
+      TestBed.resetTestingModule();
+      document.body.querySelectorAll('.p-drawer').forEach((e) => e.remove());
+      await render(undefined, of(SYSTEMS), '/?drawer=s2s&mode=view&id=abc#system-to-system');
+      expect(bodyQ('[data-testid="s2s-drawer"]')).toBeNull();
+      void ok;
+    });
+
+    it('Add connection is enabled and saves; then toasts and reloads the list', async () => {
+      const { click, systemApi, router, fixture } = await render('system-to-system');
+      const toast = vi.spyOn(TestBed.inject(UToastService), 'success');
+      await click('add-btn');
+      expect(router.url).toContain('drawer=s2s');
+      expect(router.url).toContain('mode=add');
+      const fill = (sel: string, v: string) => {
+        const el = document.body.querySelector(sel) as HTMLInputElement;
+        el.value = v;
+        el.dispatchEvent(new Event(el.tagName === 'SELECT' ? 'change' : 'input'));
+      };
+      fill('#x-s', 'SYS-001');
+      fill('#x-t', 'SYS-002');
+      fill('#x-k', '30');
+      await fixture.whenStable();
+      bodyQ('[data-testid="drawer-save"]')!.click();
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await fixture.whenStable();
+      expect(systemApi.addSystemToSystem).toHaveBeenCalledWith({
+        sourceSystemUUId: 'SYS-001',
+        targetSystemUUId: 'SYS-002',
+        accessTokenTime: 30,
+        status: 'Active',
+      });
+      expect(toast).toHaveBeenCalledWith(
+        'Connection created',
+        'Claim System → Policy Admin · Token time: 30 min',
+      );
+      expect(systemApi.getAllSystemToSystem).toHaveBeenCalledTimes(2);
+      expect(router.url).not.toContain('drawer');
     });
   });
 });

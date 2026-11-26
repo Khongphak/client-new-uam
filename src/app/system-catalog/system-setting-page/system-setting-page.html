@@ -2,12 +2,12 @@
   <div class="phead-in">
     <div class="phead-top">
       <h1>System Setting</h1>
-      <!-- Add drawers: System = UAM-SYS-02; Menu = -03 and System to System = -04 are not built yet. -->
+      <!-- Add drawers: System = UAM-SYS-02; System to System = -04; Menu = -03 is not built yet. -->
       <button
         type="button"
         class="p-button p-component"
         data-testid="add-btn"
-        [disabled]="tab().id !== 'system'"
+        [disabled]="tab().id === 'menu'"
         (click)="openAdd()"
       >
         <i class="pi pi-plus" aria-hidden="true"></i>
@@ -163,12 +163,27 @@
 </div>
 
 @if (drawer(); as d) {
-  <app-system-drawer
+  @if (d.kind === 'system') {
+    <app-system-drawer
+      [mode]="d.mode"
+      [systemId]="d.id"
+      [owners]="owners()"
+      (closed)="closeDrawer()"
+      (editRequested)="toEdit()"
+      (saved)="onSaved($event)"
+    />
+  }
+}
+
+<!-- System to System drawer (UAM-SYS-04) -->
+@if (s2sDrawer(); as d) {
+  <app-s2s-drawer
     [mode]="d.mode"
-    [systemId]="d.id"
-    [owners]="owners()"
+    [connectionId]="d.id"
+    [systems]="s2sSystems()"
+    [updated]="s2sUpdated()"
     (closed)="closeDrawer()"
     (editRequested)="toEdit()"
-    (saved)="onSaved($event)"
+    (saved)="onS2SSaved($event)"
   />
 }

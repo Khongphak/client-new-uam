@@ -1,0 +1,155 @@
+<u-drawer [heading]="heading()" (closed)="closed.emit()">
+  <div #body data-testid="s2s-drawer">
+    @if (loading()) {
+      <u-state kind="loading" label="Loading" [rows]="3" />
+    } @else if (loadFailed()) {
+      <u-state
+        kind="error"
+        heading="Couldn’t load this record"
+        message="Check your connection and try again."
+      >
+        <button
+          uStateActions
+          type="button"
+          class="p-button p-component"
+          data-testid="drawer-retry"
+          (click)="retry()"
+        >
+          <span class="p-button-label">Try again</span>
+        </button>
+      </u-state>
+    } @else if (mode() === 'view') {
+      @if (record(); as r) {
+        <p class="mb-3"><u-status [active]="active()" /></p>
+        <u-facts [items]="facts()" />
+      }
+    } @else if (showForm()) {
+      <form class="sys-form" novalidate (submit)="$event.preventDefault(); save()">
+        @if (banner(); as text) {
+          <div class="banner" role="alert" data-testid="drawer-banner">
+            <b>Couldn’t save the connection</b><br />{{ text }}
+          </div>
+        }
+
+        <div class="field">
+          <label for="x-s">Source system <span class="req">*</span></label>
+          <select
+            id="x-s"
+            data-field="sourceSystemUUId"
+            class="p-inputtext p-component"
+            [value]="draft().sourceSystemUUId"
+            [attr.aria-invalid]="errors().sourceSystemUUId ? true : null"
+            (change)="set('sourceSystemUUId', $any($event.target).value)"
+          >
+            <option value="" [selected]="draft().sourceSystemUUId === ''">Select a system</option>
+            @for (s of sourceOptions(); track s.id) {
+              <option [value]="s.id" [selected]="s.id === draft().sourceSystemUUId">
+                {{ s.name }}
+              </option>
+            }
+          </select>
+          @if (errors().sourceSystemUUId; as e) {
+            <span class="err" role="alert" data-testid="err-sourceSystemUUId">{{ e }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="x-t">Target system <span class="req">*</span></label>
+          <select
+            id="x-t"
+            data-field="targetSystemUUId"
+            class="p-inputtext p-component"
+            [value]="draft().targetSystemUUId"
+            [attr.aria-invalid]="errors().targetSystemUUId ? true : null"
+            (change)="set('targetSystemUUId', $any($event.target).value)"
+          >
+            <option value="" [selected]="draft().targetSystemUUId === ''">Select a system</option>
+            @for (s of targetOptions(); track s.id) {
+              <option [value]="s.id" [selected]="s.id === draft().targetSystemUUId">
+                {{ s.name }}
+              </option>
+            }
+          </select>
+          @if (errors().targetSystemUUId; as e) {
+            <span class="err" role="alert" data-testid="err-targetSystemUUId">{{ e }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="x-k">Token time (min) <span class="req">*</span></label>
+          <input
+            id="x-k"
+            data-field="accessTokenTime"
+            class="p-inputtext p-component"
+            inputmode="numeric"
+            autocomplete="off"
+            [value]="draft().accessTokenTime"
+            [attr.aria-invalid]="errors().accessTokenTime ? true : null"
+            (input)="set('accessTokenTime', $any($event.target).value)"
+          />
+          @if (errors().accessTokenTime; as e) {
+            <span class="err" role="alert" data-testid="err-accessTokenTime">{{ e }}</span>
+          }
+        </div>
+
+        @if (mode() === 'edit') {
+          <u-switch-row
+            label="Active"
+            hint="An inactive item can’t be used by roles or users."
+            [(checked)]="active"
+          />
+        }
+      </form>
+    }
+  </div>
+
+  <div uDrawerFooter>
+    @if (mode() === 'view') {
+      <button
+        type="button"
+        class="p-button p-component p-button-secondary"
+        data-testid="drawer-close"
+        (click)="closed.emit()"
+      >
+        <span class="p-button-label">Close</span>
+      </button>
+      @if (record()) {
+        <button
+          type="button"
+          class="p-button p-component"
+          data-testid="drawer-edit"
+          (click)="editRequested.emit()"
+        >
+          <i class="pi pi-pencil" aria-hidden="true"></i><span class="p-button-label">Edit</span>
+        </button>
+      }
+    } @else if (showForm()) {
+      <button
+        type="button"
+        class="p-button p-component p-button-secondary"
+        data-testid="drawer-cancel"
+        (click)="closed.emit()"
+      >
+        <span class="p-button-label">Cancel</span>
+      </button>
+      <button
+        type="button"
+        class="p-button p-component"
+        data-testid="drawer-save"
+        [disabled]="saving()"
+        (click)="save()"
+      >
+        <span class="p-button-label">Save</span>
+      </button>
+    } @else {
+      <button
+        type="button"
+        class="p-button p-component p-button-secondary"
+        data-testid="drawer-close"
+        (click)="closed.emit()"
+      >
+        <span class="p-button-label">Close</span>
+      </button>
+    }
+  </div>
+</u-drawer>
