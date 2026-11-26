@@ -53,6 +53,15 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'setting/system-setting',
+        title: 'System Setting · UAM',
+        canActivate: [roleGuard(ACCESS_POLICY['system-setting'])],
+        loadComponent: () =>
+          import('./system-catalog/system-setting-page/system-setting-page').then(
+            (m) => m.SystemSettingPage,
+          ),
+      },
+      {
         path: '',
         title: 'UAM',
         loadComponent: () =>
