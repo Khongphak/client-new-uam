@@ -119,3 +119,44 @@
 
 > 💡 ทดสอบทั้ง System/Menu/S2S/Roles/Users
 
+## TC-ERR-007 — Demo build: ค่าจำลอง error ผ่าน interceptor จริง เปิด dialog ของ ERR-03
+
+| | |
+|---|---|
+| Backlog | UAM-DEMO-03 |
+| Priority | P2 |
+| Phase ที่เริ่มทดสอบได้ | 1 |
+| Role | ADMIN (ผู้ใช้สมมติ) |
+| Viewport | desktop |
+| ประเภท | E2E (demo build) |
+
+**Precondition**
+- `npm run build:demo` แล้วเปิดแอป; ล็อกอินด้วยผู้ใช้สมมติ
+
+| # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
+|---|---|---|---|---|
+| 1 | เปิดหน้าใดๆ ที่เรียก API พร้อม `?demo=50001` | dialog server (DlgServer) พร้อมข้อความ/รหัสจาก response จำลอง | | ☐ |
+| 2 | ทำซ้ำด้วย `?demo=session` | dialog session หมดอายุ; กดยืนยัน → logout ไป `/login` | | ☐ |
+| 3 | ทำซ้ำด้วยค่าจำลอง network (ชื่อค่าตามคู่มือ demo ของ UAM-DEMO-03) | dialog "Network Error!!!" | | ☐ |
+| 4 | `npm run build` + `npm run check:no-demo` | production ไม่มีโค้ด demo | | ☐ |
+
+## TC-ERR-008 — Try again ของ dialog network/server ส่ง request ซ้ำโดยไม่รีโหลดหน้า (เฉพาะถ้าตัดสินให้ทำ)
+
+| | |
+|---|---|
+| Backlog | UAM-ERR-08 |
+| Priority | P3 |
+| Phase ที่เริ่มทดสอบได้ | 1 |
+| Role | ADMIN |
+| Viewport | desktop, phone |
+| ประเภท | E2E |
+
+**Precondition**
+- ⛔ ใช้เมื่อผู้ใช้/PM ตัดสินเลือก "replay" ใน UAM-ERR-08 เท่านั้น (ถ้าเลือกคง reload ให้ยกเลิก case นี้)
+- อยู่หน้า `/login` กรอก username ค้างไว้; จำลอง network error ครั้งแรก แล้วครั้งถัดไปสำเร็จ
+
+| # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
+|---|---|---|---|---|
+| 1 | กด Sign in (request ล้ม) | dialog network | | ☐ |
+| 2 | กด Try again | request ถูกส่งซ้ำ ไม่รีโหลดหน้า; ค่าที่กรอกยังอยู่ | | ☐ |
+| 3 | ให้ request ล้มอีกครั้งแล้วกด Try again | dialog ขึ้นอันเดียว (ไม่ซ้อน) | | ☐ |

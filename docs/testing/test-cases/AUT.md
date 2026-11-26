@@ -104,6 +104,8 @@
 | 2 | กดยกเลิกใน dialog | dialog ปิด ยังอยู่หน้า consent | | ☐ |
 | 3 | กด Decline อีกครั้งแล้วยืนยัน | sign out และกลับ `/login` | | ☐ |
 
+> 💡 การกด Esc บน dialog Decline (ปัจจุบันไม่ปิด) รอคำตัดสิน — ดู UAM-AUT-03 ข้อ (ค) / issue #91 ยังไม่ใช่เกณฑ์ผ่าน/ไม่ผ่านของ case นี้
+
 ## TC-AUT-006 — Guard: ยังไม่ยอมรับ consent เข้า `/home` ไม่ได้
 
 | | |
@@ -161,3 +163,25 @@
 |---|---|---|---|---|
 | 1 | รีโหลดหน้า (F5) | ตามคำตัดสิน PM: ยังเห็นการ์ดของผู้ใช้เดิม หรือถูกส่งไป `/login` พร้อม returnUrl — ต้องไม่เห็นหน้า Home ว่างโดยไม่มี session | | ☐ |
 | 2 | เปิด `/home` ใน tab ใหม่โดยไม่มี session | ถูกส่งไป `/login` (ตรงกับ TC-AUT-007) | | ☐ |
+
+## TC-AUT-009 — Login แล้วยังไม่ยอมรับ consent → ไป `/pdpaconsent`
+
+| | |
+|---|---|
+| Backlog | UAM-AUT-03 |
+| Priority | P0 |
+| Phase ที่เริ่มทดสอบได้ | 2 |
+| Role | ทุก role |
+| Viewport | desktop, phone |
+| ประเภท | E2E |
+
+**Precondition**
+- ผู้ใช้ที่ผล login มี `isConsent = false` (บน demo build ใช้ผู้ใช้สมมติที่ยังไม่ยอมรับ)
+
+| # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
+|---|---|---|---|---|
+| 1 | login สำเร็จ | ถูกส่งไป `/pdpaconsent` (ไม่ใช่ `/home`) | | ☐ |
+| 2 | ล็อกอินด้วยผู้ใช้ที่ `isConsent = true` | ไป `/home` | | ☐ |
+| 3 | ยังไม่ล็อกอิน เปิด `/pdpaconsent` ตรงๆ | ถูกส่งไป `/login` โดย guard (ไม่ใช่ effect ในหน้า) | | ☐ |
+
+> 💡 ส่งต่อจากรีวิว PR #95 (UAM-AUT-02) — เรื่อง Esc บน dialog Decline รอคำตัดสิน ดู UAM-AUT-03 ข้อ (ค)
