@@ -42,3 +42,42 @@
 | 2 | ไม่มีระบบ | "Data not found" (หรือ message จาก server) | | ☐ |
 | 3 | API ล้ม | error + retry | | ☐ |
 
+## TC-HOM-003 — Home: ค้นหาและกรองชนิดระบบ
+
+| | |
+|---|---|
+| Backlog | UAM-HOM-03 |
+| Priority | P2 |
+| Phase ที่เริ่มทดสอบได้ | 2 |
+| Role | ทุก role |
+| Viewport | desktop, phone |
+| ประเภท | E2E |
+
+**Precondition**
+- ผู้ใช้มีระบบหลายชนิด (Web/Mobile) ≥3
+
+| # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
+|---|---|---|---|---|
+| 1 | พิมพ์ชื่อระบบในช่อง "Search systems" | แสดงเฉพาะการ์ดที่ตรง (ฟิลด์ที่ค้นหาตามที่ PM ยืนยัน) | | ☐ |
+| 2 | เลือกตัวกรอง Web/Mobile | แสดงเฉพาะชนิดนั้น; ปุ่มที่เลือกมี `aria-pressed=true` | | ☐ |
+| 3 | ค้นหาคำที่ไม่ตรงระบบใด | แสดง "No system matches “<q>”" + ปุ่ม Clear search | | ☐ |
+| 4 | กด Clear search | กลับมาแสดงทุกการ์ด | | ☐ |
+
+## TC-HOM-004 — Home: คลิกการ์ดบันทึก access history (รอ PM ยืนยัน)
+
+| | |
+|---|---|
+| Backlog | UAM-HOM-04 |
+| Priority | P2 |
+| Phase ที่เริ่มทดสอบได้ | 2 |
+| Role | ทุก role |
+| Viewport | desktop |
+| ประเภท | E2E |
+
+**Precondition**
+- ผู้ใช้มีระบบ ≥1; ดัก request ได้
+
+| # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
+|---|---|---|---|---|
+| 1 | คลิกการ์ดระบบ | เปิดระบบปลายทางในแท็บใหม่ และมี request `addAccessHistory` ด้วย payload เดิม | | ☐ |
+| 2 | จำลอง `addAccessHistory` ล้ม แล้วคลิกการ์ด | ยังเปิดระบบปลายทางได้ หน้า Home ไม่พัง | | ☐ |

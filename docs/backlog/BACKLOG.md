@@ -53,6 +53,10 @@
 | [UAM-USR-02](items/UAM-USR-02.md) | Role details (View) | ✨ feature | 🟡 **P2** | 57 | 3 | W6 | UAM-USR-01, UAM-FND-06 |
 | [UAM-USR-03](items/UAM-USR-03.md) | User details (View) | ✨ feature | 🟡 **P2** | 57 | 3 | W6 | UAM-USR-01, UAM-FND-06 |
 | [UAM-HOM-02](items/UAM-HOM-02.md) | Home: สถานะ loading / empty ("Data not found") / error | ✨ feature | 🟢 **P3** | 48 | 2 | W6 | UAM-HOM-01, UAM-FND-04 |
+| [UAM-AUT-03](items/UAM-AUT-03.md) | auth guard + คง session ข้ามการรีโหลด (เริ่มที่ /home) | ✨ feature | 🟠 **P1** | 75 | 5 | W6 | UAM-AUT-01, UAM-HOM-01 |
+| [UAM-HOM-03](items/UAM-HOM-03.md) | Home: ค้นหา + ตัวกรองชนิดระบบ + empty-search | ✨ feature | 🟡 **P2** | 57 | 3 | W6 | UAM-HOM-01 |
+| [UAM-HOM-04](items/UAM-HOM-04.md) | Home: บันทึก access history ตอนคลิกการ์ดระบบ | ✨ feature | 🟡 **P2** | 59 | 1 | W6 | UAM-HOM-01 |
+| [UAM-HOM-05](items/UAM-HOM-05.md) | Home: เก็บกวาดเล็กน้อยหลัง HOM-01 | 🧹 chore | 🟢 **P3** | 29 | 1 | W6 | UAM-HOM-01 |
 | [UAM-ROL-02](items/UAM-ROL-02.md) | Role editor: ขั้น Menus & groups (โครงเมนูเดียว ลากวาง) | ✨ feature | 🟠 **P1** | 82 | 8 | W7 | UAM-ROL-01 |
 | [UAM-SYS-03](items/UAM-SYS-03.md) | Drawer ของ Menu (ดู/เพิ่ม/แก้ไข) | ✨ feature | 🟡 **P2** | 67 | 3 | W7 | UAM-SYS-02 |
 | [UAM-SYS-04](items/UAM-SYS-04.md) | Drawer ของ System to System (ดู/เพิ่ม/แก้ไข) | ✨ feature | 🟡 **P2** | 67 | 3 | W7 | UAM-SYS-02 |
