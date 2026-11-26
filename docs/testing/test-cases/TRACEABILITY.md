@@ -4,7 +4,7 @@
 |---|---|
 | UAM-A11Y-01 | TC-A11Y-001, TC-A11Y-002 |
 | UAM-AUT-01 | TC-AUT-001, TC-AUT-002, TC-AUT-003, TC-AUT-007 |
-| UAM-AUT-02 | TC-AUT-004, TC-AUT-005, TC-AUT-006 |
+| UAM-AUT-02 | TC-AUT-004, TC-AUT-005 |
 | UAM-AUT-03 | TC-AUT-006, TC-AUT-007, TC-AUT-008, TC-AUT-009 |
 | UAM-DEMO-03 | TC-ERR-007 |
 | UAM-ERR-01 | TC-ERR-001 |
@@ -13,6 +13,7 @@
 | UAM-ERR-04 | TC-ERR-005 |
 | UAM-ERR-05 | TC-ERR-006 |
 | UAM-ERR-06 | TC-SYS-010, TC-ROL-007 |
+| UAM-ERR-09 | TC-ERR-002, TC-ERR-003, TC-ERR-004 (รันซ้ำผ่านหน้า Home/Report) |
 | UAM-ERR-08 | TC-ERR-008 (เฉพาะถ้าตัดสินให้ทำ) |
 | UAM-HOM-01 | TC-HOM-001 |
 | UAM-HOM-02 | TC-HOM-002 |
@@ -44,6 +45,6 @@
 | UAM-USR-06 | TC-USR-006 |
 
 ## Backlog ที่ยังไม่มี test case โดยตรง
-UAM-DSN-01, UAM-FND-01, UAM-FND-02, UAM-FND-03, UAM-FND-04, UAM-FND-05, UAM-FND-06, UAM-QA-02, UAM-RSP-02
+UAM-DSN-01, UAM-FND-01, UAM-FND-02, UAM-FND-03, UAM-FND-04, UAM-FND-05, UAM-FND-06, UAM-OPS-03, UAM-QA-02, UAM-RSP-02
 
 > ส่วนใหญ่เป็นงาน foundation/คอมโพเนนต์ (ทดสอบด้วย unit/component test ตาม TESTING.md) หรืองานออกแบบ
