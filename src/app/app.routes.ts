@@ -8,6 +8,12 @@ export const routes: Routes = [
     loadComponent: () => import('./access/login-page/login-page').then((m) => m.LoginPage),
   },
   {
+    path: 'pdpaconsent',
+    title: 'Personal data consent · UAM',
+    loadComponent: () =>
+      import('./access/consent-page/consent-page').then((m) => m.ConsentPage),
+  },
+  {
     path: 'forbidden',
     title: 'No access · UAM',
     loadComponent: () =>

@@ -1,0 +1,122 @@
+<div class="consent">
+  <header class="top">
+    <span class="brand">Phillip Life</span>
+    @if (profile(); as p) {
+      <span class="who" data-testid="consent-user">{{ p.firstName }} {{ p.lastName }} · {{ p.uamRole }}</span>
+    }
+  </header>
+
+  <main class="body">
+    <div class="title">
+      <h1>Personal data consent</h1>
+      <p>Read how your data is used in UAM. You need to agree before you continue.</p>
+    </div>
+
+    <section class="card" aria-label="Consent text">
+      @if (consent.hasValue()) {
+        @let c = consent.value();
+        <div class="text" data-testid="consent-text">
+          <div class="rich heading" [innerHTML]="c.title"></div>
+          <div class="rich" [innerHTML]="c.description"></div>
+        </div>
+      } @else if (consent.error()) {
+        <u-state
+          data-testid="consent-load-error"
+          kind="error"
+          heading="Can’t show the consent text"
+          [message]="messages.loadFailed"
+        >
+          <button
+            pButton
+            uStateActions
+            type="button"
+            severity="secondary"
+            icon="pi pi-refresh"
+            data-testid="consent-retry"
+            (click)="consent.reload()"
+          >
+            Try again
+          </button>
+        </u-state>
+      } @else {
+        <div class="skeleton" role="status" aria-label="Loading consent text" data-testid="consent-loading">
+          <u-skel width="40%" height="1.25rem" />
+          <u-skel width="100%" height="1rem" />
+          <u-skel width="92%" height="1rem" />
+          <u-skel width="70%" height="1rem" />
+        </div>
+      }
+    </section>
+
+    @if (saveFailed()) {
+      <p-message severity="error" icon="pi pi-times-circle" role="alert" data-testid="consent-error">
+        {{ messages.acceptFailed }}
+      </p-message>
+    }
+  </main>
+
+  <div class="bar">
+    <div class="bar-in">
+      <label class="agree" data-testid="consent-agree-label">
+        <p-checkbox
+          data-testid="consent-check"
+          name="agree"
+          [binary]="true"
+          [ngModel]="agreed()"
+          (ngModelChange)="agreed.set($event)"
+        />
+        I have read and agree to the consent text
+      </label>
+      <div class="actions">
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          data-testid="consent-decline"
+          [disabled]="leaving()"
+          (click)="asking.set(true)"
+        >
+          Decline
+        </button>
+        <button
+          pButton
+          type="button"
+          data-testid="consent-agree"
+          [disabled]="!canAgree()"
+          (click)="agree()"
+        >
+          {{ saving() ? 'Saving…' : 'Agree and continue' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<u-dialog
+  [(visible)]="asking"
+  kind="warn"
+  heading="Decline and sign out?"
+  message="You can’t use UAM until you agree."
+>
+  <button
+    pButton
+    uDialogActions
+    type="button"
+    severity="secondary"
+    data-testid="consent-decline-back"
+    (click)="asking.set(false)"
+  >
+    Go back
+  </button>
+  <button
+    pButton
+    uDialogActions
+    type="button"
+    severity="danger"
+    data-testid="consent-decline-confirm"
+    [disabled]="leaving()"
+    (click)="declineAndSignOut()"
+  >
+    Decline and sign out
+  </button>
+</u-dialog>
