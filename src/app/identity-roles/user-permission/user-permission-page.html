@@ -1,6 +1,14 @@
 <div class="phead">
   <div class="phead-in">
-    <h1>User &amp; Permission</h1>
+    <div class="phead-top">
+      <h1>User &amp; Permission</h1>
+      @if (tab() === 'roles') {
+        <a pButton routerLink="/setting/users-setting/roles/new" data-testid="add-role">
+          <i class="pi pi-plus" aria-hidden="true"></i>
+          <span>Add role</span>
+        </a>
+      }
+    </div>
     <div class="tabs" role="tablist" aria-label="User and permission">
       <a
         role="tab"
