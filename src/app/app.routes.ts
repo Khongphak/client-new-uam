@@ -13,8 +13,7 @@ export const routes: Routes = [
   {
     path: 'pdpaconsent',
     title: 'Personal data consent · UAM',
-    loadComponent: () =>
-      import('./access/consent-page/consent-page').then((m) => m.ConsentPage),
+    loadComponent: () => import('./access/consent-page/consent-page').then((m) => m.ConsentPage),
   },
   {
     path: 'forbidden',
@@ -37,6 +36,15 @@ export const routes: Routes = [
         canActivate: [roleGuard(ACCESS_POLICY.report)],
         loadComponent: () =>
           import('./reporting/report-page/report-page').then((m) => m.ReportPage),
+      },
+      {
+        path: 'setting/system-setting',
+        title: 'System Setting · UAM',
+        canActivate: [roleGuard(ACCESS_POLICY['system-setting'])],
+        loadComponent: () =>
+          import('./system-catalog/system-setting-page/system-setting-page').then(
+            (m) => m.SystemSettingPage,
+          ),
       },
       {
         path: '',
