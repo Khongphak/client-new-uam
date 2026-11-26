@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { of } from 'rxjs';
 
+import { SignOut } from '../../access/sign-out';
 import { UserProfile } from '../../shared/interfaces';
 import { Shell } from './shell';
 import { SHELL_PROFILE } from './shell-profile';
@@ -50,6 +52,7 @@ const profile: UserProfile = {
 describe('Shell', () => {
   let queries: FakeMediaQuery[];
   let phone: boolean;
+  const signOutRun = vi.fn(() => of(undefined));
   const original = window.matchMedia;
 
   async function setup(p: UserProfile | null = profile) {
@@ -72,6 +75,7 @@ describe('Shell', () => {
           },
         ]),
         { provide: SHELL_PROFILE, useValue: () => p },
+        { provide: SignOut, useValue: { run: signOutRun } },
       ],
     });
     const harness = await RouterTestingHarness.create('/home');
@@ -91,6 +95,7 @@ describe('Shell', () => {
     new Promise<void>((r) => setTimeout(r, 5)).then(() => flush(f));
 
   beforeEach(() => {
+    signOutRun.mockClear();
     phone = false;
   });
   afterEach(() => {
@@ -232,8 +237,12 @@ describe('Shell', () => {
     expect(el.textContent).not.toContain('Logout');
     (q(el, 'shell-user-toggle') as HTMLButtonElement).click();
     await flush(fixture);
-    const logout = q(el, 'shell-logout') as HTMLAnchorElement;
+    const logout = q(el, 'shell-logout') as HTMLButtonElement;
     expect(logout.textContent).toContain('Logout');
-    expect(logout.getAttribute('href')).toBe('/login');
+    expect(signOutRun).not.toHaveBeenCalled();
+    logout.click();
+    await flush(fixture);
+    expect(signOutRun).toHaveBeenCalledOnce();
+    expect(q(el, 'shell-logout')).toBeNull();
   });
 });
