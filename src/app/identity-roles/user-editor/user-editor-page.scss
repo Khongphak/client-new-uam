@@ -125,6 +125,10 @@ h1 {
 .grid.lookup {
   grid-template-columns: minmax(16rem, 28rem) auto;
   align-items: end;
+  justify-content: start;
+}
+.table-scroll {
+  overflow-x: auto;
 }
 .field {
   display: flex;
