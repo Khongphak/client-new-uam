@@ -69,7 +69,7 @@ export function toUserView(user: UserRecord, detail: UserRoleDetail): UserView {
       return {
         id: s.id,
         name: s.systemName,
-        subtitle: `Role: ${s.roleName} · ${menus.length} menus`,
+        subtitle: `Role: ${s.roleName} · ${menus.length} ${menus.length === 1 ? 'menu' : 'menus'}`,
         open: i === 0,
         menus,
       };

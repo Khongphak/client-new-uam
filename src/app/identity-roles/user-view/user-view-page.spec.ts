@@ -78,7 +78,7 @@ describe('UserViewPage', () => {
     expect(approvers).toEqual(['1Somchai Khemthong', '2Wichai Boonmee', '3Not set']);
     expect(el.querySelector('u-approvers input')).toBeNull();
     expect(q('systems')!.textContent).toContain('Claim System');
-    expect(q('systems')!.textContent).toContain('Role: Claim Officer · 1 menus');
+    expect(q('systems')!.textContent).toContain('Role: Claim Officer · 1 menu');
     expect(q('systems')!.textContent).toContain('Claim Register');
     expect(q('edit-user')!.getAttribute('href')).toBe('/setting/users-setting/users/5/edit');
   });

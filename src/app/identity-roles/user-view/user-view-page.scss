@@ -96,7 +96,7 @@ h1 {
     row-gap: 0.75rem;
   }
   .title {
-    flex-basis: calc(100% - 7rem);
+    flex: 1 1 0;
   }
   .edit {
     margin-left: 0;
