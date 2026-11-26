@@ -1,0 +1,79 @@
+<div class="phead">
+  <div class="phead-in">
+    <div class="top">
+      <u-back link="/setting/users-setting" fragment="users" label="Back to User & Permission" />
+      @if (user.hasValue()) {
+        @let u = user.value();
+        <p-avatar class="avatar" shape="circle" size="large" [label]="u.initials" />
+        <div class="title">
+          <h1 data-testid="user-name">{{ u.name }}</h1>
+          <div class="meta">
+            <u-status [active]="u.active" />
+            <span data-testid="user-role">{{ u.role }}</span>
+          </div>
+        </div>
+        <a pButton class="edit" data-testid="edit-user" [routerLink]="editLink()">
+          <i class="pi pi-pencil" aria-hidden="true"></i>
+          <span>Edit user</span>
+        </a>
+      } @else {
+        <h1>User details</h1>
+      }
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  @if (invalidId()) {
+    <div class="card" data-testid="not-found">
+      <u-state kind="empty" icon="pi-user" heading="User not found" message="This user doesn’t exist or the link is wrong." />
+    </div>
+  } @else if (user.hasValue()) {
+    @let u = user.value();
+    <div class="two">
+      <section class="card pad" aria-label="User information">
+        <h2 class="card-title">User information</h2>
+        <u-facts cols [items]="u.facts" />
+      </section>
+      <section class="card pad" aria-label="Approvers">
+        <h2 class="card-title">Approvers</h2>
+        <p class="hint">From Active Directory. To change them, update the manager in AD.</p>
+        <u-approvers [names]="u.approvers" />
+      </section>
+    </div>
+
+    <section aria-label="User roles" class="systems">
+      <h2 class="section-title">
+        Systems and roles <span class="count">({{ u.systems.length }})</span>
+      </h2>
+      <div class="card clip" data-testid="systems">
+        @for (s of u.systems; track s.id) {
+          <u-accordion icon="pi-server" [title]="s.name" [subtitle]="s.subtitle" [open]="s.open">
+            @for (m of s.menus; track $index) {
+              <u-perm-row [name]="m.name" [group]="m.group ?? undefined" [functional]="m.functions" />
+            } @empty {
+              <p class="hint">No menus for this role.</p>
+            }
+          </u-accordion>
+        } @empty {
+          <u-state kind="empty" icon="pi-server" heading="No systems yet" message="This user has no system access." />
+        }
+      </div>
+    </section>
+  } @else if (user.error()) {
+    <div class="card" data-testid="load-error">
+      <u-state
+        kind="error"
+        heading="We couldn’t load this user"
+        message="The server didn’t answer. Try again. If it keeps happening, contact IT Support."
+      >
+        <button pButton uStateActions type="button" data-testid="retry-btn" (click)="user.reload()">
+          <i class="pi pi-refresh" aria-hidden="true"></i>
+          <span>Try again</span>
+        </button>
+      </u-state>
+    </div>
+  } @else {
+    <div class="card"><u-state kind="loading" [rows]="6" /></div>
+  }
+</div>
