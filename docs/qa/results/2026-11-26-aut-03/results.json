@@ -1,0 +1,416 @@
+[
+ {
+  "build": "demo",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-007",
+  "step": "open /home signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-007",
+  "step": "open /report signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Freport",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-007",
+  "step": "open /pdpaconsent signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fpdpaconsent",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-007",
+  "step": "open /login public",
+  "expected": "/login",
+  "actual": "/login",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-007",
+  "step": "open /notfound public",
+  "expected": "/notfound",
+  "actual": "/notfound",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-009",
+  "step": "login isConsent=true (returnUrl=/home)",
+  "expected": "/home",
+  "actual": "/home",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-008",
+  "step": "reload on /home keeps session",
+  "expected": "/home + shell visible",
+  "actual": "/home shell=1",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-008",
+  "step": "storage holds no sso session id / token",
+  "expected": "no \"sid-1\"/\"demo-session\"/token",
+  "actual": "[\"{\\\"profile\\\":{\\\"userId\\\":1,\\\"userName\\\":\\\"admin.user\\\",\\\"firstName\\\":\\\"Demo\\\",\\\"lastName\\\":\\\"User1\\\",\\\"position\\\":\\\"Tester\\\",\\\"uamRole\\\":\\\"ADMIN\\\",\\\"systemAdm",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-008",
+  "step": "new browser context /home",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "phone390",
+  "tc": "TC-AUT-007",
+  "step": "open /home signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "phone390",
+  "tc": "TC-AUT-007",
+  "step": "open /report signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Freport",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "phone390",
+  "tc": "TC-AUT-007",
+  "step": "open /pdpaconsent signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fpdpaconsent",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "phone390",
+  "tc": "TC-AUT-007",
+  "step": "open /login public",
+  "expected": "/login",
+  "actual": "/login",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "phone390",
+  "tc": "TC-AUT-007",
+  "step": "open /notfound public",
+  "expected": "/notfound",
+  "actual": "/notfound",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "phone390",
+  "tc": "TC-AUT-009",
+  "step": "login isConsent=true (returnUrl=/home)",
+  "expected": "/home",
+  "actual": "/home",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "phone390",
+  "tc": "TC-AUT-008",
+  "step": "reload on /home keeps session",
+  "expected": "/home + shell visible",
+  "actual": "/home shell=1",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "phone390",
+  "tc": "TC-AUT-008",
+  "step": "storage holds no sso session id / token",
+  "expected": "no \"sid-1\"/\"demo-session\"/token",
+  "actual": "[\"{\\\"profile\\\":{\\\"userId\\\":1,\\\"userName\\\":\\\"admin.user\\\",\\\"firstName\\\":\\\"Demo\\\",\\\"lastName\\\":\\\"User1\\\",\\\"position\\\":\\\"Tester\\\",\\\"uamRole\\\":\\\"ADMIN\\\",\\\"systemAdm",
+  "pass": true
+ },
+ {
+  "build": "demo",
+  "vp": "phone390",
+  "tc": "TC-AUT-008",
+  "step": "new browser context /home",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-007",
+  "step": "open /home signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-007",
+  "step": "open /report signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Freport",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-007",
+  "step": "open /pdpaconsent signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fpdpaconsent",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-007",
+  "step": "open /login public",
+  "expected": "/login",
+  "actual": "/login",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-007",
+  "step": "open /notfound public",
+  "expected": "/notfound",
+  "actual": "/notfound",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-009",
+  "step": "login isConsent=true (returnUrl=/home)",
+  "expected": "/home",
+  "actual": "/home",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-008",
+  "step": "reload on /home keeps session",
+  "expected": "/home + shell visible",
+  "actual": "/home shell=1",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-008",
+  "step": "storage holds no sso session id / token",
+  "expected": "no \"sid-1\"/\"demo-session\"/token",
+  "actual": "[\"{\\\"profile\\\":{\\\"userId\\\":1,\\\"userName\\\":\\\"prod.user\\\",\\\"firstName\\\":\\\"Prod\\\",\\\"lastName\\\":\\\"User\\\",\\\"position\\\":\\\"QA\\\",\\\"uamRole\\\":\\\"ADMIN\\\",\\\"systemAdmin\\\":f",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-008",
+  "step": "new browser context /home",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-009",
+  "step": "login isConsent=false",
+  "expected": "/pdpaconsent",
+  "actual": "/pdpaconsent?returnUrl=%2Freport",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-006",
+  "step": "open /home before consent",
+  "expected": "/pdpaconsent",
+  "actual": "/pdpaconsent?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-006",
+  "step": "reload on consent page keeps consent page",
+  "expected": "/pdpaconsent",
+  "actual": "/pdpaconsent?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-006",
+  "step": "accept → returnUrl",
+  "expected": "/home",
+  "actual": "/home",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "desktop1440",
+  "tc": "TC-AUT-006",
+  "step": "/pdpaconsent after accepting",
+  "expected": "/home",
+  "actual": "/home",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-007",
+  "step": "open /home signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-007",
+  "step": "open /report signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Freport",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-007",
+  "step": "open /pdpaconsent signed-out",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fpdpaconsent",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-007",
+  "step": "open /login public",
+  "expected": "/login",
+  "actual": "/login",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-007",
+  "step": "open /notfound public",
+  "expected": "/notfound",
+  "actual": "/notfound",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-009",
+  "step": "login isConsent=true (returnUrl=/home)",
+  "expected": "/home",
+  "actual": "/home",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-008",
+  "step": "reload on /home keeps session",
+  "expected": "/home + shell visible",
+  "actual": "/home shell=1",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-008",
+  "step": "storage holds no sso session id / token",
+  "expected": "no \"sid-1\"/\"demo-session\"/token",
+  "actual": "[\"{\\\"profile\\\":{\\\"userId\\\":1,\\\"userName\\\":\\\"prod.user\\\",\\\"firstName\\\":\\\"Prod\\\",\\\"lastName\\\":\\\"User\\\",\\\"position\\\":\\\"QA\\\",\\\"uamRole\\\":\\\"ADMIN\\\",\\\"systemAdmin\\\":f",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-008",
+  "step": "new browser context /home",
+  "expected": "/login",
+  "actual": "/login?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-009",
+  "step": "login isConsent=false",
+  "expected": "/pdpaconsent",
+  "actual": "/pdpaconsent?returnUrl=%2Freport",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-006",
+  "step": "open /home before consent",
+  "expected": "/pdpaconsent",
+  "actual": "/pdpaconsent?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-006",
+  "step": "reload on consent page keeps consent page",
+  "expected": "/pdpaconsent",
+  "actual": "/pdpaconsent?returnUrl=%2Fhome",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-006",
+  "step": "accept → returnUrl",
+  "expected": "/home",
+  "actual": "/home",
+  "pass": true
+ },
+ {
+  "build": "prod",
+  "vp": "phone390",
+  "tc": "TC-AUT-006",
+  "step": "/pdpaconsent after accepting",
+  "expected": "/home",
+  "actual": "/home",
+  "pass": true
+ }
+]

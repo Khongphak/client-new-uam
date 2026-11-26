@@ -31,6 +31,7 @@ describe('ConsentPage', () => {
   let navigate: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
+    sessionStorage.clear();
     getLatestVersion = vi.fn(() => of(consent));
     accept = vi.fn(() => of(undefined));
     logout = vi.fn(() => of(undefined));
@@ -159,10 +160,19 @@ describe('ConsentPage', () => {
     fixture.destroy();
   });
 
-  it('without a session it sends the user to /login and calls nothing', async () => {
+  it('has no redirect of its own without a session — /pdpaconsent is protected by consentGuard', async () => {
     TestBed.inject(Session).clear();
     await render();
-    expect(navigate).toHaveBeenCalledWith('/login');
+    expect(navigate).not.toHaveBeenCalled();
     expect(getLatestVersion).not.toHaveBeenCalled();
+  });
+
+  it('marks consent accepted in the session after a successful accept', async () => {
+    TestBed.inject(Session).signIn('AD', 'sess-1', TestBed.inject(Session).profile(), false);
+    const { q, click } = await render();
+    expect(TestBed.inject(Session).consented()).toBe(false);
+    await click(q('consent-check').querySelector('input') as HTMLElement);
+    await click(q('consent-agree'));
+    expect(TestBed.inject(Session).consented()).toBe(true);
   });
 });
