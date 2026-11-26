@@ -39,4 +39,13 @@ describe('drawer URL', () => {
       id: null,
     });
   });
+
+  it('reads a menu drawer link (id is the numeric menu id)', () => {
+    expect(drawerFromParams(params({ drawer: 'menu', mode: 'edit', id: '12' }))).toEqual({
+      kind: 'menu',
+      mode: 'edit',
+      id: '12',
+    });
+    expect(drawerFromParams(params({ drawer: 'menu', mode: 'view' }))).toBeNull();
+  });
 });
