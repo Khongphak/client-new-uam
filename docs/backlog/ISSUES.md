@@ -53,3 +53,7 @@
 | UAM-DEMO-02 | #61 | 3 | Demo mock ส่วนที่เหลือ: Menus, SystemToSystem, Reports, role menu ต่อ role + ต่อกับ typed client |
 | UAM-API-02 | #65 | 3 | HTTP interceptors: header/cookie, refresh token, session หมดอายุ (functional interceptors) |
 | UAM-OPS-02 | #70 | 3 | สคริปต์สร้าง docs/backlog/status.json จาก label ของ issue |
+| UAM-HOM-03 | #89 | 6 | Home: ค้นหา + ตัวกรองชนิดระบบ + empty-search |
+| UAM-HOM-04 | #90 | 6 | Home: บันทึก access history ตอนคลิกการ์ดระบบ |
+| UAM-AUT-03 | #91 | 6 | auth guard + คง session ข้ามการรีโหลด (เริ่มที่ /home) |
+| UAM-HOM-05 | #92 | 6 | Home: เก็บกวาดเล็กน้อยหลัง HOM-01 |

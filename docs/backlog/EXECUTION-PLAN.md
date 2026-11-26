@@ -72,6 +72,10 @@
 | [UAM-USR-02](items/UAM-USR-02.md) | Role details (View) | 3 | 🟡 P2 | UAM-USR-01, UAM-FND-06 |
 | [UAM-USR-03](items/UAM-USR-03.md) | User details (View) | 3 | 🟡 P2 | UAM-USR-01, UAM-FND-06 |
 | [UAM-HOM-02](items/UAM-HOM-02.md) | Home: สถานะ loading / empty ("Data not found") / error | 2 | 🟢 P3 | UAM-HOM-01, UAM-FND-04 |
+| [UAM-AUT-03](items/UAM-AUT-03.md) | auth guard + คง session ข้ามการรีโหลด (เริ่มที่ /home) | 5 | 🟠 P1 | UAM-AUT-01, UAM-HOM-01 |
+| [UAM-HOM-03](items/UAM-HOM-03.md) | Home: ค้นหา + ตัวกรองชนิดระบบ + empty-search | 3 | 🟡 P2 | UAM-HOM-01 |
+| [UAM-HOM-04](items/UAM-HOM-04.md) | Home: บันทึก access history ตอนคลิกการ์ดระบบ | 1 | 🟡 P2 | UAM-HOM-01 |
+| [UAM-HOM-05](items/UAM-HOM-05.md) | Home: เก็บกวาดเล็กน้อยหลัง HOM-01 | 1 | 🟢 P3 | UAM-HOM-01 |
 
 ## 🌊 Wave 7
 
