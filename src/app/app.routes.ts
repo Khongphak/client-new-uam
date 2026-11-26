@@ -1,5 +1,8 @@
 import { Routes } from '@angular/router';
 
+import { ACCESS_POLICY } from './access/role-access';
+import { roleGuard } from './core/guards/role-guard';
+
 // Every feature is lazy-loaded (ADR-0001) to stay inside the initial bundle budget.
 export const routes: Routes = [
   {
@@ -27,6 +30,13 @@ export const routes: Routes = [
         path: 'home',
         title: 'Home · UAM',
         loadComponent: () => import('./home/home-page/home-page').then((m) => m.HomePage),
+      },
+      {
+        path: 'report',
+        title: 'Report · UAM',
+        canActivate: [roleGuard(ACCESS_POLICY.report)],
+        loadComponent: () =>
+          import('./reporting/report-page/report-page').then((m) => m.ReportPage),
       },
       {
         path: '',
