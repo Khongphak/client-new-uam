@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { Location } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  signal,
+} from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -6,8 +15,16 @@ import { createTableView, FILTER_ALL, UTableFooter, UTableToolbar } from '../../
 import type { TableFilterDef, TableView } from '../../shared/table';
 import { UState } from '../../shared/ui/state';
 import { UStatus } from '../../shared/ui/status';
+import { UToastService } from '../../shared/ui/toast';
 import { MenuScreenApi } from '../api/menu-screen-api';
 import { SystemApi } from '../api/system-api';
+import { SystemDrawer, SystemDrawerMode, SystemSaved } from '../system-drawer/system-drawer';
+import {
+  CLOSED_DRAWER_QUERY,
+  DrawerState,
+  drawerFromParams,
+  drawerQuery,
+} from './drawer-url';
 import {
   menuRow,
   s2sRow,
@@ -54,7 +71,7 @@ const name = (row: SettingRow) => row.name;
 /** System Setting: System / Menu / System to System tables, searched and filtered in the browser. */
 @Component({
   selector: 'app-system-setting-page',
-  imports: [UTableToolbar, UTableFooter, UState, UStatus],
+  imports: [UTableToolbar, UTableFooter, UState, UStatus, SystemDrawer],
   templateUrl: './system-setting-page.html',
   styleUrl: './system-setting-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,6 +81,9 @@ export class SystemSettingPage {
   readonly #menus = inject(MenuScreenApi);
   readonly #router = inject(Router);
   readonly #route = inject(ActivatedRoute);
+  readonly #location = inject(Location);
+  readonly #toast = inject(UToastService);
+  readonly #host = inject<ElementRef<HTMLElement>>(ElementRef);
 
   protected readonly tabs = TABS;
 
@@ -135,23 +155,106 @@ export class SystemSettingPage {
   );
   protected readonly failed = computed(() => this.#resource().error() !== undefined);
 
-  /**
-   * Row last opened with View / Edit (highlighted like the artboard's `sel` row). UAM-SYS-02..04 show the drawer
-   * for it; until then the buttons only mark the row.
-   */
-  protected readonly opened = signal<{
-    tab: SettingTabId;
-    mode: 'view' | 'edit';
-    key: string;
-  } | null>(null);
+  /** Menu / System-to-System rows only mark the row until UAM-SYS-03 / -04 bring their drawers. */
+  protected readonly opened = signal<{ tab: SettingTabId; key: string } | null>(null);
+
+  readonly #queryParams = toSignal(this.#route.queryParamMap, {
+    initialValue: this.#route.snapshot.queryParamMap,
+  });
+  /** The drawer shown, read from `?drawer=&mode=&id=` so a deep link, refresh and Back all work. */
+  protected readonly drawer = computed<DrawerState | null>(() =>
+    drawerFromParams(this.#queryParams()),
+  );
+  protected readonly owners = computed(() => [
+    ...new Set(this.#systemRows().map((r) => r.cells[0]).filter(Boolean)),
+  ]);
+
+  /** True once this page pushed a history entry for the drawer, so closing can go Back instead of stacking another. */
+  #pushed = false;
+  /** Name of the system just created: its row gets the highlight and the focus when the table is reloaded. */
+  readonly #created = signal<string | null>(null);
+
+  constructor() {
+    effect(() => {
+      if (this.drawer() === null) this.#pushed = false;
+    });
+    effect(() => {
+      const name = this.#created();
+      if (name === null || this.#systemRes.isLoading()) return;
+      const row = this.#systemRows().find((r) => r.name === name);
+      this.#created.set(null);
+      if (!row) return;
+      this.opened.set({ tab: 'system', key: row.key });
+      queueMicrotask(() =>
+        this.#host.nativeElement
+          .querySelector<HTMLElement>(`[data-testid="row-${row.key}"] button.link`)
+          ?.focus(),
+      );
+    });
+  }
 
   protected open(mode: 'view' | 'edit', row: SettingRow): void {
-    this.opened.set({ tab: this.tab().id, mode, key: row.key });
+    if (this.tab().id === 'system' && row.code) {
+      this.#show({ kind: 'system', mode, id: row.code });
+    } else {
+      this.opened.set({ tab: this.tab().id, key: row.key });
+    }
+  }
+
+  protected openAdd(): void {
+    if (this.tab().id === 'system') this.#show({ kind: 'system', mode: 'add', id: null });
   }
 
   protected isOpened(row: SettingRow): boolean {
     const o = this.opened();
+    const d = this.drawer();
+    if (d?.kind === 'system' && this.tab().id === 'system') return d.id !== null && d.id === row.code;
     return o !== null && o.tab === this.tab().id && o.key === row.key;
+  }
+
+  /** Opening pushes a history entry (Back closes the drawer); View → Edit replaces it. */
+  #show(state: DrawerState): void {
+    const replace = this.drawer() !== null;
+    this.#pushed = true;
+    void this.#router.navigate([], {
+      relativeTo: this.#route,
+      queryParams: drawerQuery(state),
+      preserveFragment: true,
+      replaceUrl: replace,
+    });
+  }
+
+  protected toEdit(): void {
+    const d = this.drawer();
+    if (d) this.#show({ ...d, mode: 'edit' as SystemDrawerMode });
+  }
+
+  protected closeDrawer(): void {
+    if (this.#pushed) {
+      this.#location.back();
+      return;
+    }
+    void this.#router.navigate([], {
+      relativeTo: this.#route,
+      queryParams: CLOSED_DRAWER_QUERY,
+      queryParamsHandling: 'merge',
+      preserveFragment: true,
+      replaceUrl: true,
+    });
+  }
+
+  protected onSaved(saved: SystemSaved): void {
+    this.closeDrawer();
+    this.#systemRes.reload();
+    if (saved.mode === 'add') {
+      this.#created.set(saved.systemName);
+      this.#toast.success(
+        'System created',
+        `Access token: ${saved.accessTokenTime} min · Refresh token: ${saved.refreshTokenTime} min. You can change these later in Edit.`,
+      );
+    } else {
+      this.#toast.success('System saved');
+    }
   }
 
   protected selectTab(tab: SettingTab): void {

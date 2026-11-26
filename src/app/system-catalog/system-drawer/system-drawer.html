@@ -1,0 +1,222 @@
+<u-drawer [heading]="heading()" (closed)="closed.emit()">
+  <div #body data-testid="system-drawer">
+    @if (loading()) {
+      <u-state kind="loading" label="Loading" [rows]="3" />
+    } @else if (loadFailed()) {
+      <u-state
+        kind="error"
+        heading="Couldn’t load this record"
+        message="Check your connection and try again."
+      >
+        <button
+          uStateActions
+          type="button"
+          class="p-button p-component"
+          data-testid="drawer-retry"
+          (click)="retry()"
+        >
+          <span class="p-button-label">Try again</span>
+        </button>
+      </u-state>
+    } @else if (notFound()) {
+      <u-state
+        kind="empty"
+        heading="This record doesn’t exist"
+        message="It may have been removed, or the link is wrong."
+      />
+    } @else if (mode() === 'view') {
+      @if (record(); as r) {
+        <p class="mb-3"><u-status [active]="active()" /></p>
+        <u-facts [items]="facts()" />
+      }
+    } @else if (showForm()) {
+      <form class="sys-form" novalidate (submit)="$event.preventDefault(); save()">
+        @if (banner(); as text) {
+          <div class="banner" role="alert" data-testid="drawer-banner">
+            <b>Couldn’t save the system</b><br />{{ text }}
+          </div>
+        }
+
+        @if (mode() === 'edit') {
+          <div class="field">
+            <label for="f-id">System ID</label>
+            <input id="f-id" class="p-inputtext p-component" [value]="record()?.systemId" disabled />
+          </div>
+        }
+
+        <div class="field">
+          <label for="f-n">System name <span class="req">*</span></label>
+          <input
+            id="f-n"
+            data-field="systemName"
+            class="p-inputtext p-component"
+            autocomplete="off"
+            [value]="draft().systemName"
+            [attr.aria-invalid]="errors().systemName ? true : null"
+            (input)="set('systemName', $any($event.target).value)"
+          />
+          @if (errors().systemName; as e) {
+            <span class="err" role="alert" data-testid="err-systemName">{{ e }}</span>
+          }
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="f-t">System type <span class="req">*</span></label>
+            <select
+              id="f-t"
+              data-field="type"
+              class="p-inputtext p-component"
+              [value]="draft().type"
+              (change)="set('type', $any($event.target).value)"
+            >
+              <option value="" [selected]="draft().type === ''">Select a type</option>
+              @for (t of typeOptions(); track t) {
+                <option [value]="t" [selected]="t === draft().type">{{ t }}</option>
+              }
+            </select>
+            @if (errors().type; as e) {
+              <span class="err" role="alert">{{ e }}</span>
+            }
+          </div>
+          <div class="field">
+            <label for="f-o">Owner <span class="req">*</span></label>
+            <input
+              id="f-o"
+              data-field="ownerName"
+              class="p-inputtext p-component"
+              list="f-o-list"
+              autocomplete="off"
+              [value]="draft().ownerName"
+              (input)="set('ownerName', $any($event.target).value)"
+            />
+            <datalist id="f-o-list">
+              @for (o of ownerOptions(); track o) {
+                <option [value]="o"></option>
+              }
+            </datalist>
+            @if (errors().ownerName; as e) {
+              <span class="err" role="alert">{{ e }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-d">Description</label>
+          <textarea
+            id="f-d"
+            data-field="description"
+            class="p-inputtext p-component"
+            rows="3"
+            [value]="draft().description"
+            (input)="set('description', $any($event.target).value)"
+          ></textarea>
+          @if (errors().description; as e) {
+            <span class="err" role="alert">{{ e }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="f-u">System URL <span class="req">*</span></label>
+          <input
+            id="f-u"
+            data-field="url"
+            class="p-inputtext p-component"
+            autocomplete="off"
+            [value]="draft().url"
+            (input)="set('url', $any($event.target).value)"
+          />
+          @if (errors().url; as e) {
+            <span class="err" role="alert">{{ e }}</span>
+          }
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="f-k">Access token (min) <span class="req">*</span></label>
+            <input
+              id="f-k"
+              data-field="accessTokenTime"
+              class="p-inputtext p-component"
+              inputmode="numeric"
+              [value]="draft().accessTokenTime"
+              (input)="set('accessTokenTime', $any($event.target).value)"
+            />
+            @if (errors().accessTokenTime; as e) {
+              <span class="err" role="alert">{{ e }}</span>
+            }
+          </div>
+          <div class="field">
+            <label for="f-r">Refresh token (min) <span class="req">*</span></label>
+            <input
+              id="f-r"
+              data-field="refreshTokenTime"
+              class="p-inputtext p-component"
+              inputmode="numeric"
+              [value]="draft().refreshTokenTime"
+              (input)="set('refreshTokenTime', $any($event.target).value)"
+            />
+            @if (errors().refreshTokenTime; as e) {
+              <span class="err" role="alert">{{ e }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="lbl" id="f-icon-lbl">System icon <span class="req">*</span></span>
+          <div class="icongrid" role="radiogroup" aria-labelledby="f-icon-lbl" data-field="imageId" tabindex="-1">
+            @for (i of iconOptions(); track i.id) {
+              <button
+                type="button"
+                class="ic-opt"
+                role="radio"
+                [class.on]="draft().imageId === i.id"
+                [attr.aria-checked]="draft().imageId === i.id"
+                [attr.aria-label]="i.name"
+                [title]="i.name"
+                (click)="set('imageId', i.id)"
+              >
+                <img [src]="i.src" alt="" width="22" height="22" />
+              </button>
+            }
+          </div>
+          @if (errors().imageId; as e) {
+            <span class="err" role="alert">{{ e }}</span>
+          }
+        </div>
+
+        @if (mode() === 'edit') {
+          <u-switch-row
+            label="Active"
+            hint="An inactive item can’t be used by roles or users."
+            [(checked)]="active"
+          />
+        }
+      </form>
+    }
+  </div>
+
+  <div uDrawerFooter>
+    @if (mode() === 'view') {
+      <button type="button" class="p-button p-component p-button-secondary" data-testid="drawer-close" (click)="closed.emit()">
+        <span class="p-button-label">Close</span>
+      </button>
+      @if (record()) {
+        <button type="button" class="p-button p-component" data-testid="drawer-edit" (click)="editRequested.emit()">
+          <i class="pi pi-pencil" aria-hidden="true"></i><span class="p-button-label">Edit</span>
+        </button>
+      }
+    } @else if (showForm()) {
+      <button type="button" class="p-button p-component p-button-secondary" data-testid="drawer-cancel" (click)="closed.emit()">
+        <span class="p-button-label">Cancel</span>
+      </button>
+      <button type="button" class="p-button p-component" data-testid="drawer-save" [disabled]="saving()" (click)="save()">
+        <span class="p-button-label">Save</span>
+      </button>
+    } @else {
+      <button type="button" class="p-button p-component p-button-secondary" data-testid="drawer-close" (click)="closed.emit()">
+        <span class="p-button-label">Close</span>
+      </button>
+    }
+  </div>
+</u-drawer>
