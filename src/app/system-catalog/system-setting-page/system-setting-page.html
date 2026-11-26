@@ -1,0 +1,157 @@
+<div class="phead">
+  <div class="phead-in">
+    <div class="phead-top">
+      <h1>System Setting</h1>
+      <!-- The Add drawer is UAM-SYS-02 (System), -03 (Menu), -04 (System to System). -->
+      <button type="button" class="p-button p-component" data-testid="add-btn" disabled>
+        <i class="pi pi-plus" aria-hidden="true"></i>
+        <span class="p-button-label">{{ tab().addLabel }}</span>
+      </button>
+    </div>
+    <div class="tabs" role="tablist" aria-label="System setting">
+      @for (t of tabs; track t.id) {
+        <button
+          type="button"
+          role="tab"
+          class="tab"
+          [class.is-active]="tab().id === t.id"
+          [attr.aria-selected]="tab().id === t.id"
+          [attr.data-testid]="'tab-' + t.id"
+          (click)="selectTab(t)"
+        >
+          <span>{{ t.label }}</span>
+          <span class="count" [attr.data-testid]="'count-' + t.id">{{ counts()[t.id] }}</span>
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="tcard">
+    <u-table-toolbar [view]="view()" [searchPlaceholder]="tab().searchPlaceholder" />
+
+    @if (loading()) {
+      <u-state kind="loading" label="Loading" [rows]="4" />
+    } @else if (failed()) {
+      <u-state
+        kind="error"
+        heading="Could not load the list"
+        message="Check your connection and try again."
+      >
+        <button
+          uStateActions
+          type="button"
+          class="p-button p-component"
+          data-testid="retry-btn"
+          (click)="retry()"
+        >
+          <span class="p-button-label">Try again</span>
+        </button>
+      </u-state>
+    } @else {
+      @let v = view();
+      @if (v.total() === 0) {
+        <p class="empty" data-testid="empty-result">
+          @if (v.hasActive()) {
+            No result matches. Change the search or reset the filters.
+          } @else {
+            Nothing here yet.
+          }
+        </p>
+      } @else {
+        <div class="only-desk table-wrap">
+          <table class="dt" [attr.data-testid]="'table-' + tab().id">
+            <thead>
+              <tr>
+                <th scope="col">{{ tab().nameHeading }}</th>
+                @for (h of tab().headings; track h) {
+                  <th scope="col">{{ h }}</th>
+                }
+                <th scope="col">Status</th>
+                <th scope="col">Updated</th>
+                <th scope="col"><span class="sr">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of v.pageRows(); track r.key) {
+                <tr [class.sel]="isOpened(r)" [attr.data-testid]="'row-' + r.key">
+                  <td>
+                    <div class="name-cell">
+                      @if (tab().id !== 'system-to-system') {
+                        <span class="tile" aria-hidden="true">
+                          @if (r.icon) {
+                            <img [src]="r.icon" alt="" width="22" height="22" />
+                          } @else {
+                            <i class="pi pi-th-large"></i>
+                          }
+                        </span>
+                      }
+                      <span>
+                        <button type="button" class="link" (click)="open('view', r)">
+                          {{ r.name }}
+                        </button>
+                        @if (r.code) {
+                          <small>{{ r.code }}</small>
+                        }
+                      </span>
+                    </div>
+                  </td>
+                  @for (c of r.cells; track $index) {
+                    <td>{{ c }}</td>
+                  }
+                  <td><u-status [active]="r.active" /></td>
+                  <td class="nowrap">{{ r.updated }}</td>
+                  <td>
+                    <div class="row-actions">
+                      <button
+                        type="button"
+                        class="p-button p-component p-button-text p-button-sm p-button-icon-only"
+                        [attr.aria-label]="'View ' + r.name"
+                        data-testid="view-btn"
+                        (click)="open('view', r)"
+                      >
+                        <i class="pi pi-eye" aria-hidden="true"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="p-button p-component p-button-text p-button-sm p-button-icon-only"
+                        [attr.aria-label]="'Edit ' + r.name"
+                        data-testid="edit-btn"
+                        (click)="open('edit', r)"
+                      >
+                        <i class="pi pi-pencil" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <div class="only-mob list">
+          @for (r of v.pageRows(); track r.key) {
+            <button type="button" class="m-row" [class.sel]="isOpened(r)" (click)="open('view', r)">
+              @if (tab().id !== 'system-to-system') {
+                <span class="tile" aria-hidden="true">
+                  @if (r.icon) {
+                    <img [src]="r.icon" alt="" width="22" height="22" />
+                  } @else {
+                    <i class="pi pi-th-large"></i>
+                  }
+                </span>
+              }
+              <span class="m-main">
+                <b>{{ r.name }}</b>
+                <span class="m-sub">{{ r.cells.join(' · ') }}</span>
+              </span>
+              <u-status [active]="r.active" />
+            </button>
+          }
+        </div>
+      }
+      <u-table-footer [view]="v" />
+    }
+  </div>
+</div>

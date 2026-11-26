@@ -13,6 +13,8 @@ describe('HttpErrorDialogs', () => {
   let fixture: ReturnType<typeof TestBed.createComponent<HttpErrorDialogs>>;
 
   beforeEach(async () => {
+
+    sessionStorage.clear(); // Session persists across reloads (UAM-AUT-03); keep tests independent
     fixture = TestBed.createComponent(HttpErrorDialogs);
     state = TestBed.inject(HttpErrorDialogState);
     session = TestBed.inject(Session);
