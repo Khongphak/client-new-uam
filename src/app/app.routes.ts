@@ -18,6 +18,11 @@ export const routes: Routes = [
     loadComponent: () => import('./layout/shell/shell').then((m) => m.Shell),
     children: [
       {
+        path: 'home',
+        title: 'Home · UAM',
+        loadComponent: () => import('./home/home-page/home-page').then((m) => m.HomePage),
+      },
+      {
         path: '',
         title: 'UAM',
         loadComponent: () =>
