@@ -1,3 +1,5 @@
+import { ACCESS_POLICY, canAccess } from '../../access/role-access';
+
 export interface ShellMenuItem {
   readonly id: string;
   readonly label: string;
@@ -28,17 +30,12 @@ const setting = (children: readonly ShellMenuItem[]): ShellMenuItem => ({
   children,
 });
 
-/** Sidebar entries per role (docs/design-spec/README.md, "สิทธิ์ตาม route"). A super admin sees everything. */
+/** Sidebar entries for a user: each destination is kept only if the shared access policy allows it (Home is for any signed-in user). */
 export function buildShellMenu(role: string, systemAdmin: boolean): readonly ShellMenuItem[] {
-  if (systemAdmin || role === 'ADMIN') {
-    return [HOME, setting([SYSTEM_SETTING, USER_PERMISSION]), REPORT];
-  }
-  switch (role) {
-    case 'DEVELOPER':
-      return [HOME, setting([SYSTEM_SETTING])];
-    case 'AUDIT':
-      return [HOME, REPORT];
-    default:
-      return [HOME];
-  }
+  const allowed = (item: ShellMenuItem): boolean =>
+    canAccess(ACCESS_POLICY[item.id as keyof typeof ACCESS_POLICY] ?? [], role, systemAdmin);
+  const settingChildren = [SYSTEM_SETTING, USER_PERMISSION].filter(allowed);
+  return [HOME, ...(settingChildren.length ? [setting(settingChildren)] : []), REPORT].filter(
+    (item) => item.id === 'home' || item.id === 'setting' || allowed(item),
+  );
 }
