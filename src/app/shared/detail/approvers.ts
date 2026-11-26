@@ -27,7 +27,7 @@ const SLOTS = [1, 2, 3] as const;
       list-style: none;
       margin: 0;
       padding: 0;
-      border: 1px solid var(--hair);
+      border: 1px solid var(--uam-line);
       border-radius: 0.75rem;
       overflow: hidden;
       max-width: 34rem;

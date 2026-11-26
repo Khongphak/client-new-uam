@@ -46,7 +46,7 @@ export function countMenuStats(tree: readonly RoleMenuItem[]): MenuStats {
     :host {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      border: 1px solid var(--hair);
+      border: 1px solid var(--uam-line);
       border-radius: 0.75rem;
       margin: var(--sp-3) 0 var(--sp-4);
     }

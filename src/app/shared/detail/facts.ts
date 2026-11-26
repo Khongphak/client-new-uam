@@ -92,7 +92,7 @@ export interface FactItem {
     ul.is-prose .u-facts__v {
       font-weight: 400;
       line-height: 1.7;
-      color: var(--ink);
+      color: var(--uam-ink);
       max-width: 46rem;
     }
   `,
