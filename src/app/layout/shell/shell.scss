@@ -242,11 +242,17 @@
   display: flex;
   align-items: center;
   gap: var(--sp-2);
+  width: 100%;
   min-height: 2.75rem;
   padding: 0 var(--sp-3);
+  border: 0;
   border-radius: 0.5rem;
+  background: transparent;
   color: var(--uam-ink);
+  font: inherit;
+  text-align: left;
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     background: #e2edff;
