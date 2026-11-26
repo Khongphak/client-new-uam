@@ -61,6 +61,9 @@
 | [UAM-HOM-01](items/UAM-HOM-01.md) | Home: การ์ดระบบ (`u-sys-grid`/`u-sys-card`) | 3 | 🟡 P2 | UAM-SHL-01, UAM-FND-06 |
 | [UAM-SHL-03](items/UAM-SHL-03.md) | กติกาของ route `/setting` (เด้งไปหน้าลูกแรกที่มีสิทธิ์) | 2 | 🟡 P2 | UAM-SHL-02 |
 | [UAM-RPT-02](items/UAM-RPT-02.md) | Report: แจ้งผู้ใช้เมื่อดาวน์โหลดไม่สำเร็จ (toast) | 1 | 🟢 P3 | UAM-RPT-01, UAM-FND-04 |
+| [UAM-DEMO-03](items/UAM-DEMO-03.md) | Demo จำลอง error ผ่าน interceptor chain เดียวกับของจริง | 3 | 🟡 P2 | UAM-DEMO-01, UAM-API-02, UAM-ERR-03 |
+| [UAM-ERR-08](items/UAM-ERR-08.md) | ตัดสินใจ: Try again ของ dialog network/server ให้ replay request (รอผู้ใช้/PM ตัดสิน) | 3 | 🟢 P3 | UAM-ERR-03 + คำตัดสิน |
+| [UAM-RPT-03](items/UAM-RPT-03.md) | Report: เก็บกวาดหลัง RPT-01 (token, tabpanel/ลูกศร, ยืนยัน dateFrom/dateTo) | 2 | 🟢 P3 | UAM-RPT-01 |
 
 ## 🌊 Wave 6
 
@@ -72,7 +75,7 @@
 | [UAM-USR-02](items/UAM-USR-02.md) | Role details (View) | 3 | 🟡 P2 | UAM-USR-01, UAM-FND-06 |
 | [UAM-USR-03](items/UAM-USR-03.md) | User details (View) | 3 | 🟡 P2 | UAM-USR-01, UAM-FND-06 |
 | [UAM-HOM-02](items/UAM-HOM-02.md) | Home: สถานะ loading / empty ("Data not found") / error | 2 | 🟢 P3 | UAM-HOM-01, UAM-FND-04 |
-| [UAM-AUT-03](items/UAM-AUT-03.md) | auth guard + คง session ข้ามการรีโหลด (เริ่มที่ /home) | 5 | 🟠 P1 | UAM-AUT-01, UAM-HOM-01 |
+| [UAM-AUT-03](items/UAM-AUT-03.md) | auth guard + คง session ข้ามการรีโหลด (เริ่มที่ /home) + ส่งต่อจาก AUT-02 (consent guard/redirect) | 5 | 🟠 P1 | UAM-AUT-01, UAM-HOM-01 |
 | [UAM-HOM-03](items/UAM-HOM-03.md) | Home: ค้นหา + ตัวกรองชนิดระบบ + empty-search | 3 | 🟡 P2 | UAM-HOM-01 |
 | [UAM-HOM-04](items/UAM-HOM-04.md) | Home: บันทึก access history ตอนคลิกการ์ดระบบ | 1 | 🟡 P2 | UAM-HOM-01 |
 | [UAM-HOM-05](items/UAM-HOM-05.md) | Home: เก็บกวาดเล็กน้อยหลัง HOM-01 | 1 | 🟢 P3 | UAM-HOM-01 |

@@ -51,5 +51,8 @@
   "UAM-HOM-03": 89,
   "UAM-HOM-04": 90,
   "UAM-AUT-03": 91,
-  "UAM-HOM-05": 92
+  "UAM-HOM-05": 92,
+  "UAM-DEMO-03": 97,
+  "UAM-ERR-08": 98,
+  "UAM-RPT-03": 99
 }

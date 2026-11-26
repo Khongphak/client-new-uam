@@ -47,6 +47,9 @@
 | [UAM-HOM-01](items/UAM-HOM-01.md) | Home: การ์ดระบบ (`u-sys-grid`/`u-sys-card`) | ✨ feature | 🟡 **P2** | 67 | 3 | W5 | UAM-SHL-01, UAM-FND-06 |
 | [UAM-SHL-03](items/UAM-SHL-03.md) | กติกาของ route `/setting` (เด้งไปหน้าลูกแรกที่มีสิทธิ์) | ✨ feature | 🟡 **P2** | 58 | 2 | W5 | UAM-SHL-02 |
 | [UAM-RPT-02](items/UAM-RPT-02.md) | Report: แจ้งผู้ใช้เมื่อดาวน์โหลดไม่สำเร็จ (toast) | ✨ feature | 🟢 **P3** | 49 | 1 | W5 | UAM-RPT-01, UAM-FND-04 |
+| [UAM-DEMO-03](items/UAM-DEMO-03.md) | Demo จำลอง error ผ่าน interceptor chain เดียวกับของจริง | ✨ feature | 🟡 **P2** | 67 | 3 | W5 | UAM-DEMO-01, UAM-API-02, UAM-ERR-03 |
+| [UAM-ERR-08](items/UAM-ERR-08.md) | ตัดสินใจ: Try again ของ dialog network/server ให้ replay request (รอผู้ใช้/PM ตัดสิน) | 🎨 design | 🟢 **P3** | 37 | 3 | W5 | UAM-ERR-03 |
+| [UAM-RPT-03](items/UAM-RPT-03.md) | Report: เก็บกวาดหลัง RPT-01 (token, tabpanel/ลูกศร, ยืนยัน dateFrom/dateTo) | 🧹 chore | 🟢 **P3** | 28 | 2 | W5 | UAM-RPT-01 |
 | [UAM-SYS-02](items/UAM-SYS-02.md) | Drawer ของ System (ดู/เพิ่ม/แก้ไข/setup) + รูปแบบ URL สำหรับ deep link | ✨ feature | 🔴 **P0** | 95 | 5 | W6 | UAM-SYS-01, UAM-ERR-03, UAM-QA-01 |
 | [UAM-ROL-01](items/UAM-ROL-01.md) | Role editor: p-steps 3 ขั้น + ขั้น Role info | ✨ feature | 🔴 **P0** | 87 | 3 | W6 | UAM-USR-01, UAM-FND-06, UAM-QA-01 |
 | [UAM-USR-04](items/UAM-USR-04.md) | Edit user: 3 แท็บ (Profile & access / Systems & roles / Permission preview) | ✨ feature | 🟠 **P1** | 82 | 8 | W6 | UAM-USR-01, UAM-FND-03, UAM-FND-06, UAM-QA-01 |

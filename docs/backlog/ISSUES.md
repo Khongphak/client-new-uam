@@ -57,3 +57,6 @@
 | UAM-HOM-04 | #90 | 6 | Home: บันทึก access history ตอนคลิกการ์ดระบบ |
 | UAM-AUT-03 | #91 | 6 | auth guard + คง session ข้ามการรีโหลด (เริ่มที่ /home) |
 | UAM-HOM-05 | #92 | 6 | Home: เก็บกวาดเล็กน้อยหลัง HOM-01 |
+| UAM-DEMO-03 | #97 | 5 | Demo จำลอง error ผ่าน interceptor chain เดียวกับของจริง |
+| UAM-ERR-08 | #98 | 5 | ตัดสินใจ: Try again ของ dialog network/server ให้ replay request (รอผู้ใช้/PM ตัดสิน) |
+| UAM-RPT-03 | #99 | 5 | Report: เก็บกวาดหลัง RPT-01 (token, tabpanel/ลูกศร, ยืนยัน dateFrom/dateTo) |
