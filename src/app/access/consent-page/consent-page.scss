@@ -1,0 +1,138 @@
+:host {
+  display: block;
+}
+
+.consent {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--uam-ground);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  height: var(--uam-menu-height);
+  padding: 0 2rem;
+  background: #fff;
+  border-bottom: 1px solid var(--uam-line);
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--uam-navy);
+}
+
+.who {
+  color: var(--uam-muted);
+}
+
+.body {
+  flex: 1;
+  width: 100%;
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  h1 {
+    margin: 0 0 var(--sp-1);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--uam-navy);
+  }
+
+  p {
+    margin: 0;
+    color: var(--uam-muted);
+  }
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--uam-line);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.text,
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rich {
+  color: var(--uam-ink-2);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+
+  &.heading {
+    color: var(--uam-navy);
+    font-size: 1.0625rem;
+    font-weight: 700;
+  }
+}
+
+.bar {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  border-top: 1px solid var(--uam-line);
+  padding: 1rem 1.5rem;
+}
+
+.bar-in {
+  max-width: 50rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.agree {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .top {
+    padding: 0 1rem;
+  }
+
+  .body {
+    padding: 1.25rem 1rem 0.5rem;
+  }
+
+  .bar-in {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    button {
+      min-height: 2.75rem;
+      justify-content: center;
+    }
+  }
+}
