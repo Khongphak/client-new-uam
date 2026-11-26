@@ -1,0 +1,117 @@
+<div class="login">
+  <section class="hero">
+    <span class="brand">Phillip Life</span>
+    <div class="pitch">
+      <h1>One sign-in for every system you use at work.</h1>
+      <p class="more">
+        Open your systems, manage who can access what, and review access history in one place.
+      </p>
+    </div>
+    <p class="more help">
+      Need help? <a href="mailto:ITSupport@philliplife.com">ITSupport@philliplife.com</a>
+    </p>
+  </section>
+
+  <section class="formside">
+    <form
+      class="form"
+      data-testid="login-form"
+      aria-labelledby="login-title"
+      (submit)="submit(); $event.preventDefault()"
+    >
+      <div class="heading">
+        <h2 id="login-title">Sign in</h2>
+        <p>Use your company (AD) account.</p>
+      </div>
+
+      @if (error(); as message) {
+        <p-message
+          severity="error"
+          icon="pi pi-times-circle"
+          role="alert"
+          data-testid="login-error"
+        >
+          {{ message }}
+        </p-message>
+      }
+
+      <div class="field">
+        <label for="login-username">Username</label>
+        <input
+          id="login-username"
+          pInputText
+          data-testid="login-username"
+          type="text"
+          name="username"
+          autocomplete="username"
+          autocapitalize="none"
+          spellcheck="false"
+          [class.p-invalid]="invalid()"
+          [value]="username()"
+          (input)="edit('username', $any($event.target).value)"
+        />
+      </div>
+
+      <div class="field">
+        <label for="login-password">Password</label>
+        <div class="pwwrap">
+          <input
+            id="login-password"
+            pInputText
+            data-testid="login-password"
+            name="password"
+            autocomplete="current-password"
+            [type]="showPassword() ? 'text' : 'password'"
+            [class.p-invalid]="invalid()"
+            [value]="password()"
+            (input)="edit('password', $any($event.target).value)"
+          />
+          <button
+            type="button"
+            class="pwtoggle"
+            data-testid="login-password-toggle"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+            [attr.aria-pressed]="showPassword()"
+            (click)="showPassword.set(!showPassword())"
+          >
+            <i
+              class="pi"
+              [class.pi-eye]="!showPassword()"
+              [class.pi-eye-slash]="showPassword()"
+              aria-hidden="true"
+            ></i>
+          </button>
+        </div>
+        @if (invalid()) {
+          <span class="err">Check the password, or reset it with IT Support.</span>
+        }
+      </div>
+
+      <label class="remember" data-testid="login-remember-label">
+        <p-checkbox
+          data-testid="login-remember"
+          name="remember"
+          [binary]="true"
+          [ngModel]="remember()"
+          (ngModelChange)="remember.set($event)"
+        />
+        Remember my username on this device
+      </label>
+
+      <button
+        pButton
+        type="submit"
+        class="submit"
+        data-testid="login-submit"
+        [disabled]="!canSubmit()"
+      >
+        {{ busy() ? 'Signing in…' : 'Sign in' }}
+      </button>
+
+      <p class="support">
+        Locked out or forgot your password?
+        <a href="mailto:ITSupport@philliplife.com">Contact IT Support</a>
+      </p>
+    </form>
+  </section>
+</div>
