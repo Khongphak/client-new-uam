@@ -53,6 +53,34 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'setting/users-setting/roles/new',
+        title: 'Add role · UAM',
+        canActivate: [roleGuard(ACCESS_POLICY['user-permission'])],
+        loadComponent: () =>
+          import('./identity-roles/role-editor/role-editor-page').then((m) => m.RoleEditorPage),
+      },
+      {
+        path: 'setting/users-setting/users/:id/edit',
+        title: 'Edit user · UAM',
+        canActivate: [roleGuard(ACCESS_POLICY['user-permission'])],
+        loadComponent: () =>
+          import('./identity-roles/user-editor/user-editor-page').then((m) => m.UserEditorPage),
+      },
+      {
+        path: 'setting/users-setting/roles/:id',
+        title: 'Role details · UAM',
+        canActivate: [roleGuard(ACCESS_POLICY['user-permission'])],
+        loadComponent: () =>
+          import('./identity-roles/role-view/role-view-page').then((m) => m.RoleViewPage),
+      },
+      {
+        path: 'setting/users-setting/users/:id',
+        title: 'User details · UAM',
+        canActivate: [roleGuard(ACCESS_POLICY['user-permission'])],
+        loadComponent: () =>
+          import('./identity-roles/user-view/user-view-page').then((m) => m.UserViewPage),
+      },
+      {
         path: 'setting/system-setting',
         title: 'System Setting · UAM',
         canActivate: [roleGuard(ACCESS_POLICY['system-setting'])],

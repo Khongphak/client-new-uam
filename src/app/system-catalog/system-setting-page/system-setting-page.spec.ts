@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -5,6 +6,8 @@ import { of, throwError } from 'rxjs';
 import { routes } from '../../app.routes';
 import { MenuScreenRecord, SystemRecord, SystemToSystemListItem } from '../../shared/interfaces';
 import { MenuScreenApi } from '../api/menu-screen-api';
+import { UToastService } from '../../shared/ui/toast';
+import { MasterDataApi } from '../api/master-data-api';
 import { SystemApi } from '../api/system-api';
 import { SystemSettingPage } from './system-setting-page';
 
@@ -57,10 +60,16 @@ const S2S = [
   },
 ] as SystemToSystemListItem[];
 
-async function render(fragment?: string, systemsResult = of(SYSTEMS)) {
+async function render(fragment?: string, systemsResult = of(SYSTEMS), url = '') {
   const systemApi = {
     getAll: vi.fn(() => systemsResult),
     getAllSystemToSystem: vi.fn(() => of(S2S)),
+    getById: vi.fn((id: string) => of(SYSTEMS.filter((x) => x.systemId === id))),
+    add: vi.fn(() => of(undefined)),
+  };
+  const masterApi = {
+    getGeneralData: vi.fn(() => of([{ value: 'Web' }])),
+    getIcons: vi.fn(() => of([{ id: 1, category: 'Systems', name: 'Shield', data: 'PHN2Zy8+' }])),
   };
   const menuApi = { getAll: vi.fn(() => of(MENUS)) };
   TestBed.configureTestingModule({
@@ -68,9 +77,13 @@ async function render(fragment?: string, systemsResult = of(SYSTEMS)) {
       provideRouter([]),
       { provide: SystemApi, useValue: systemApi },
       { provide: MenuScreenApi, useValue: menuApi },
+      { provide: MasterDataApi, useValue: masterApi },
     ],
   });
-  if (fragment) await TestBed.inject(Router).navigate([], { fragment });
+  // The real app starts the router; this also makes it follow Back (popstate) in the tests.
+  TestBed.inject(Router).initialNavigation();
+  if (url) await TestBed.inject(Router).navigateByUrl(url);
+  else if (fragment) await TestBed.inject(Router).navigate([], { fragment });
   const fixture = TestBed.createComponent(SystemSettingPage);
   await fixture.whenStable();
   const el = fixture.nativeElement as HTMLElement;
@@ -88,7 +101,14 @@ async function render(fragment?: string, systemsResult = of(SYSTEMS)) {
   };
   const rows = () => Array.from(el.querySelectorAll('tbody tr'));
   const heads = () => Array.from(el.querySelectorAll('thead th')).map((h) => h.textContent!.trim());
-  return { fixture, el, q, click, type, rows, heads, systemApi, menuApi };
+  const router = TestBed.inject(Router);
+  const back = async () => {
+    TestBed.inject(Location).back();
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    await fixture.whenStable();
+  };
+  const drawer = () => document.body.querySelector('[data-testid="system-drawer"]');
+  return { fixture, el, q, click, type, rows, heads, systemApi, menuApi, router, drawer, back };
 }
 
 describe('SystemSettingPage', () => {
@@ -194,5 +214,101 @@ describe('SystemSettingPage', () => {
     q('view-btn')!.click();
     await fixture.whenStable();
     expect(rows()[0].classList.contains('sel')).toBe(true);
+  });
+
+  describe('System drawer (URL)', () => {
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('opens from a deep link and highlights the row', async () => {
+      const { drawer, rows, systemApi } = await render(
+        undefined,
+        of(SYSTEMS),
+        '/?drawer=system&mode=view&id=SYS-002#system-setup',
+      );
+      expect(drawer()).not.toBeNull();
+      expect(systemApi.getById).toHaveBeenCalledWith('SYS-002');
+      expect(rows()[1].classList.contains('sel')).toBe(true);
+    });
+
+    it('ignores an unknown or incomplete drawer link', async () => {
+      const { drawer } = await render(undefined, of(SYSTEMS), '/?drawer=system&mode=edit');
+      expect(drawer()).toBeNull();
+    });
+
+    it('View puts the drawer in the URL and keeps the tab fragment', async () => {
+      const { q, fixture, router, drawer } = await render('system-setup');
+      q('view-btn')!.click();
+      await fixture.whenStable();
+      expect(router.url).toContain('drawer=system');
+      expect(router.url).toContain('mode=view');
+      expect(router.url).toContain('id=SYS-001');
+      expect(router.url).toContain('#system-setup');
+      expect(drawer()).not.toBeNull();
+    });
+
+    it('browser Back closes the drawer', async () => {
+      const { q, fixture, router, drawer, back } = await render();
+      q('view-btn')!.click();
+      await fixture.whenStable();
+      await back();
+      expect(router.url).not.toContain('drawer');
+      expect(drawer()).toBeNull();
+    });
+
+    it('Close goes back to the table, and View → Edit replaces the entry', async () => {
+      const { q, fixture, router, drawer, back } = await render();
+      q('view-btn')!.click();
+      await fixture.whenStable();
+      (document.body.querySelector('[data-testid="drawer-edit"]') as HTMLElement).click();
+      await fixture.whenStable();
+      expect(router.url).toContain('mode=edit');
+      (document.body.querySelector('[data-testid="drawer-cancel"]') as HTMLElement).click();
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await fixture.whenStable();
+      expect(drawer()).toBeNull();
+      expect(router.url).not.toContain('drawer');
+    });
+
+    it('Add system opens the add drawer; only the System tab has it for now', async () => {
+      const { q, click, router, drawer, back, fixture } = await render();
+      await click('add-btn');
+      expect(router.url).toContain('mode=add');
+      expect(drawer()).not.toBeNull();
+      await back();
+      await TestBed.inject(Router).navigateByUrl('/#menu');
+      await fixture.whenStable();
+      expect((q('add-btn') as HTMLButtonElement).disabled).toBe(true);
+    });
+
+    it('after creating: closes, toasts the token times, reloads the table and focuses the new row', async () => {
+      const { click, systemApi, router, drawer, fixture } = await render();
+      const toast = vi.spyOn(TestBed.inject(UToastService), 'success');
+      await click('add-btn');
+      const fill = (sel: string, v: string) => {
+        const el = document.body.querySelector(sel) as HTMLInputElement;
+        el.value = v;
+        el.dispatchEvent(new Event(el.tagName === 'SELECT' ? 'change' : 'input'));
+      };
+      fill('#f-n', 'Legacy Billing');
+      fill('#f-t', 'Web');
+      fill('#f-o', 'Finance');
+      fill('#f-u', 'https://x.test');
+      fill('#f-k', '30');
+      fill('#f-r', '480');
+      (document.body.querySelector('.ic-opt') as HTMLElement).click();
+      await fixture.whenStable();
+      (document.body.querySelector('[data-testid="drawer-save"]') as HTMLElement).click();
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await fixture.whenStable();
+      expect(systemApi.add).toHaveBeenCalled();
+      expect(toast).toHaveBeenCalledWith(
+        'System created',
+        'Access token: 30 min · Refresh token: 480 min. You can change these later in Edit.',
+      );
+      expect(systemApi.getAll).toHaveBeenCalledTimes(2);
+      expect(drawer()).toBeNull();
+      expect(router.url).not.toContain('drawer');
+      expect(document.activeElement?.textContent?.trim()).toBe('Legacy Billing');
+    });
   });
 });
