@@ -18,12 +18,13 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('renders only a router-outlet as the shell', async () => {
+  it('renders the router-outlet and the HTTP error dialog host', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const host = fixture.nativeElement as HTMLElement;
     expect(host.querySelector('router-outlet')).not.toBeNull();
-    expect(host.children.length).toBe(1);
+    expect(host.children.length).toBe(2);
+    expect(host.querySelector('u-http-error-dialogs')).not.toBeNull();
   });
 });
 

@@ -23,6 +23,7 @@ import { RESULT_CODE } from '../../shared/interfaces';
 import { Session } from '../session';
 import { API_BASE_URL, CLIENT_ID } from './api-config';
 import { ApiException, errorFromHttp } from './api-error';
+import { errorDialogInterceptor } from './http-error-dialog';
 
 const REFRESH_PATH = 'v1/auth/refresh-token';
 const LOGIN_PATH = 'v1/auth/login';
@@ -156,8 +157,9 @@ const isBare401 = (err: unknown): boolean =>
   err.status === 401 &&
   !(typeof err.error === 'object' && err.error !== null && 'errorCode' in err.error);
 
-/** Order matters: the session guard sits outside refresh and retry so it sees the final outcome. */
+/** Order matters: the dialog reporter and the session guard sit outside refresh and retry so they see the final outcome. */
 export const apiInterceptors: HttpInterceptorFn[] = [
+  errorDialogInterceptor,
   headersInterceptor,
   sessionInterceptor,
   refreshInterceptor,
