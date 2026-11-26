@@ -20,4 +20,16 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'notfound',
+    title: 'Page not found · UAM',
+    loadComponent: () =>
+      import('./layout/not-found-page/not-found-page').then((m) => m.NotFoundPage),
+  },
+  {
+    path: '**',
+    title: 'Page not found · UAM',
+    loadComponent: () =>
+      import('./layout/not-found-page/not-found-page').then((m) => m.NotFoundPage),
+  },
 ];
