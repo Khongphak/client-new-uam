@@ -71,6 +71,7 @@
 | [UAM-ROL-03](items/UAM-ROL-03.md) | Role editor: ขั้น Permissions (ตารางเดียว + เลือกทั้งหมด) | ✨ feature | 🔴 **P0** | 85 | 5 | W8 | UAM-ROL-02 |
 | [UAM-SYS-05](items/UAM-SYS-05.md) | ถอด route action ของ System Setting ทั้ง 10 ตัว + redirect ลิงก์เก่า | 🧹 chore | 🟢 **P3** | 48 | 2 | W8 | UAM-SYS-02, UAM-SYS-03, UAM-SYS-04, UAM-ERR-04 |
 | [UAM-ROL-04](items/UAM-ROL-04.md) | Role editor: บันทึก/แมป payload + ตรวจ regression | 🧪 test | 🟠 **P1** | 77 | 3 | W9 | UAM-ROL-03, UAM-QA-01 |
+| [UAM-ROL-05](items/UAM-ROL-05.md) | Role editor: โหมดแก้ไข (route roles/:id/edit + ปุ่ม Edit role ที่หน้า Role details) | ✨ feature | 🟡 **P2** | 62 | 5 | W9 | UAM-ROL-03, UAM-USR-02 |
 | [UAM-RSP-01](items/UAM-RSP-01.md) | Responsive/phone (390px) ของทุกหน้าหลัก | ✨ feature | 🟡 **P2** | 65 | 5 | W10 | UAM-AUT-01, UAM-AUT-02, UAM-HOM-01, UAM-SYS-05, UAM-USR-06, UAM-ROL-04, UAM-RPT-01 |
 | [UAM-ERR-06](items/UAM-ERR-06.md) | ข้อผิดพลาดชื่อซ้ำ 40301 (ALREADY_EXISTED) ใน System drawer และ Role editor | ✨ feature | 🟢 **P3** | 48 | 2 | W10 | UAM-DSN-01, UAM-SYS-02, UAM-ROL-04 |
 | [UAM-A11Y-01](items/UAM-A11Y-01.md) | Accessibility audit บน Angular จริง (WCAG 2.1 AA) | 🧪 test | 🟡 **P2** | 57 | 3 | W11 | UAM-RSP-01 |
