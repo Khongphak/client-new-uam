@@ -118,7 +118,7 @@
 
 | # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
 |---|---|---|---|---|
-| 1 | DEVELOPER เปิด `/setting/users-setting` | แสดงหน้า 403 "No access" (ไม่ใช่ "Looks like you are lost") | | ☐ |
+| 1 | DEVELOPER เปิด `/setting/users-setting` | แสดงหน้า 403 heading "You don’t have access to this page" (ไม่ใช่ 404 "This page doesn’t exist") — ⛔ ทดสอบได้เมื่อมี route `/setting/*` (UAM-USR-01/SYS-01) | | ☐ |
 | 2 | AUDIT เปิด `/setting/system-setting` | หน้า 403 | | ☐ |
 | 3 | USER เปิด `/report` | หน้า 403 | | ☐ |
 | 4 | AUDIT เปิด `/report` | เปิดได้ปกติ | | ☐ |

@@ -7,14 +7,13 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MessageModule } from 'primeng/message';
 import { EMPTY, finalize } from 'rxjs';
 
-import { CLIENT_ID } from '../../core/api/api-config';
 import { HOME_URL, safeReturnUrl } from '../../core/guards/auth-guard';
 import { Session } from '../../core/session';
 import { UDialog } from '../../shared/ui/dialog';
 import { USkel } from '../../shared/ui/skeleton';
 import { UState } from '../../shared/ui/state';
-import { AuthApi } from '../api/auth-api';
 import { ConsentApi } from '../api/consent-api';
+import { SignOut } from '../sign-out';
 
 const MESSAGE = {
   loadFailed: 'We couldn’t load the consent text. Try again, or contact IT Support.',
@@ -31,11 +30,10 @@ const MESSAGE = {
 })
 export class ConsentPage {
   readonly #consentApi = inject(ConsentApi);
-  readonly #authApi = inject(AuthApi);
+  readonly #signOut = inject(SignOut);
   readonly #session = inject(Session);
   readonly #router = inject(Router);
   readonly #route = inject(ActivatedRoute);
-  readonly #clientId = inject(CLIENT_ID);
 
   protected readonly profile = this.#session.profile;
   protected readonly messages = MESSAGE;
@@ -82,14 +80,7 @@ export class ConsentPage {
     const profile = this.profile();
     if (!profile || this.leaving()) return;
     this.leaving.set(true);
-    const done = () => {
-      this.#session.clear();
-      this.asking.set(false);
-      void this.#router.navigateByUrl('/login');
-    };
-    // The session is cleared even if the server could not be told (the user chose to leave).
-    this.#authApi
-      .logout({ Username: profile.userName, ClientId: this.#clientId })
-      .subscribe({ next: done, error: done });
+    // SignOut clears the session even if the server could not be told (the user chose to leave).
+    this.#signOut.run().subscribe({ complete: () => this.asking.set(false) });
   }
 }
