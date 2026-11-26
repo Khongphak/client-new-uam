@@ -1,0 +1,73 @@
+<div class="phead">
+  <div class="phead-in">
+    <u-back [link]="backLink" fragment="roles" label="Back to User & Permission" />
+    <div class="title">
+      @if (loaded(); as v) {
+        <h1>{{ v.role.roleName }}</h1>
+        <div class="meta">
+          <u-status [active]="v.role.status === 'Active'" />
+          <u-meta-ico icon="pi-server">{{ v.role.systemName }}</u-meta-ico>
+        </div>
+      } @else {
+        <h1>Role details</h1>
+      }
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  @if (data.isLoading() && !loaded()) {
+    <div class="card"><u-state kind="loading" [rows]="5" /></div>
+  } @else if (notFound()) {
+    <div class="card" data-testid="role-not-found">
+      <u-state
+        kind="empty"
+        icon="pi-id-card"
+        heading="We couldn’t find this role"
+        message="It may have been removed. Go back to the list and pick another role."
+      />
+    </div>
+  } @else if (failed()) {
+    <div class="card" data-testid="load-error">
+      <u-state
+        kind="error"
+        heading="We couldn’t load this role"
+        message="The server didn’t answer. Try again. If it keeps happening, contact IT Support."
+      >
+        <button pButton uStateActions type="button" data-testid="retry-btn" (click)="reload()">
+          <i class="pi pi-refresh" aria-hidden="true"></i>
+          <span>Try again</span>
+        </button>
+      </u-state>
+    </div>
+  } @else if (loaded(); as v) {
+    <div class="two">
+      <section class="card info" aria-label="Role information">
+        <h2 class="card-title">Role information</h2>
+        <u-stats [items]="stats()" label="Role size" />
+        <u-facts [items]="facts()" />
+      </section>
+
+      <section class="menus" aria-label="Menus and permissions">
+        <div>
+          <h2 class="section-title">Menus and permissions</h2>
+          <p class="hint">{{ summary() }}</p>
+        </div>
+        @for (s of v.menu.sections; track $index) {
+          <div class="card group" [style.margin-left.rem]="s.depth * 1.5" data-testid="menu-section">
+            <u-group-head
+              [title]="s.path ?? 'Top level (no group)'"
+              [icon]="s.path === null ? 'pi-home' : 'pi-folder-open'"
+              [hint]="s.menus.length + ' menus'"
+            />
+            @for (m of s.menus; track $index) {
+              <u-perm-row flush [name]="m.name" [functional]="m.functional" [granted]="m.granted" />
+            }
+          </div>
+        } @empty {
+          <div class="card"><u-state kind="empty" heading="No menus in this role" /></div>
+        }
+      </section>
+    </div>
+  }
+</div>
