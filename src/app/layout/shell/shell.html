@@ -38,16 +38,16 @@
         </button>
         @if (userMenuOpen()) {
           <div class="user-popup" role="menu">
-            <a
+            <button
+              type="button"
               class="user-popup__item"
               role="menuitem"
-              href="/login"
               data-testid="shell-logout"
-              (click)="onNavigate()"
+              (click)="logout()"
             >
               <i class="pi pi-sign-out" aria-hidden="true"></i>
               <span>Logout</span>
-            </a>
+            </button>
           </div>
         }
       </div>
