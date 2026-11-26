@@ -39,6 +39,15 @@ export const routes: Routes = [
           import('./reporting/report-page/report-page').then((m) => m.ReportPage),
       },
       {
+        path: 'setting/users-setting',
+        title: 'User & Permission · UAM',
+        canActivate: [roleGuard(ACCESS_POLICY['user-permission'])],
+        loadComponent: () =>
+          import('./identity-roles/user-permission/user-permission-page').then(
+            (m) => m.UserPermissionPage,
+          ),
+      },
+      {
         path: '',
         title: 'UAM',
         loadComponent: () =>

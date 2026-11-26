@@ -1,0 +1,64 @@
+:host {
+  display: block;
+}
+.phead {
+  background: #fff;
+  border-bottom: 1px solid var(--uam-line);
+}
+.phead-in {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 1.25rem 2rem 0;
+}
+h1 {
+  margin: 0 0 1.125rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--uam-navy);
+  line-height: 1.3;
+}
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tab {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0 1rem;
+  margin-bottom: -1px;
+  border-bottom: 3px solid transparent;
+  color: var(--uam-muted);
+  text-decoration: none;
+}
+.tab:hover {
+  color: var(--uam-navy);
+  background: #f8fafc;
+}
+.tab.is-active {
+  color: var(--uam-navy);
+  border-bottom-color: var(--uam-navy);
+  font-weight: 700;
+}
+.content {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 2.5rem;
+}
+.card {
+  background: #fff;
+  border: 1px solid var(--uam-line);
+  border-radius: 0.75rem;
+}
+@media (max-width: 767px) {
+  .phead-in {
+    padding: 1rem 1rem 0;
+  }
+  .content {
+    padding: 1rem;
+  }
+}
