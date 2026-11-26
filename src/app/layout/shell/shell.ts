@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
 
+import { SignOut } from '../../access/sign-out';
 import { buildShellMenu } from './shell-menu';
 import { SHELL_PROFILE } from './shell-profile';
 
@@ -24,6 +25,7 @@ const PHONE_QUERY = '(max-width: 767.98px)';
 export class Shell {
   private readonly router = inject(Router);
   private readonly profile = inject(SHELL_PROFILE);
+  private readonly signOut = inject(SignOut);
 
   protected readonly isPhone = toSignal(
     inject(BreakpointObserver)
@@ -73,6 +75,11 @@ export class Shell {
   protected onNavigate(): void {
     if (this.isPhone()) this.sidebarOpen.set(false);
     this.userMenuOpen.set(false);
+  }
+
+  protected logout(): void {
+    this.onNavigate();
+    this.signOut.run().subscribe();
   }
 
   protected onEscape(): void {

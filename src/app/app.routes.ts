@@ -53,6 +53,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'setting/users-setting/roles/:id',
+        title: 'Role details · UAM',
+        canActivate: [roleGuard(ACCESS_POLICY['user-permission'])],
+        loadComponent: () =>
+          import('./identity-roles/role-view/role-view-page').then((m) => m.RoleViewPage),
+      },
+      {
         path: 'setting/users-setting/users/:id',
         title: 'User details · UAM',
         canActivate: [roleGuard(ACCESS_POLICY['user-permission'])],
