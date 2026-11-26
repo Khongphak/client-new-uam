@@ -16,3 +16,17 @@ body {
   outline: 2px solid var(--uam-blue);
   outline-offset: 2px;
 }
+
+// u-dialog actions on a phone: full-width buttons, stacked (primary on top is handled by the dialog footer).
+// Kept here, not in a component `styles` block: that made `ng test` hang after the run (UAM-ERR-04).
+@media (max-width: 480px) {
+  p-button[uDialogActions] {
+    display: block;
+    width: 100%;
+
+    .p-button {
+      width: 100%;
+      min-height: 2.75rem;
+    }
+  }
+}

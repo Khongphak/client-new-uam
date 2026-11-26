@@ -34,7 +34,13 @@ describe('status dialogs (UAM-ERR-04)', () => {
     host = fixture.componentInstance;
     await fixture.whenStable();
   });
-  afterEach(() => fixture.destroy());
+  afterEach(async () => {
+    // Close first: an open p-dialog owns overlay/animation timers that keep the test worker alive.
+    host.confirmOpen.set(false);
+    host.failOpen.set(false);
+    await fixture.whenStable();
+    fixture.destroy();
+  });
 
   it('confirm dialog names the record and keeps both buttons', async () => {
     host.confirmOpen.set(true);

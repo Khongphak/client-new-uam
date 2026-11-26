@@ -38,18 +38,6 @@ export function inactiveFailDetail(error: ApiError): UDialogDetail | null {
       />
     </u-dialog>
   `,
-  styles: `
-    @media (max-width: 480px) {
-      p-button {
-        display: block;
-        width: 100%;
-      }
-      p-button ::ng-deep .p-button {
-        width: 100%;
-        min-height: 2.75rem;
-      }
-    }
-  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UInactiveConfirm {
@@ -92,18 +80,6 @@ export class UInactiveConfirm {
       />
       <p-button uDialogActions data-testid="inactive-retry" label="Try again" (onClick)="tryAgain()" />
     </u-dialog>
-  `,
-  styles: `
-    @media (max-width: 480px) {
-      p-button {
-        display: block;
-        width: 100%;
-      }
-      p-button ::ng-deep .p-button {
-        width: 100%;
-        min-height: 2.75rem;
-      }
-    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
