@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+.phead {
+  background: #fff;
+  border-bottom: 1px solid var(--uam-line);
+}
+.phead-in {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 1.25rem 2rem;
+}
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--uam-navy);
+  line-height: 1.3;
+}
+.sub {
+  margin: 0.25rem 0 0;
+  color: var(--uam-muted);
+}
+.content {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+}
+@media (max-width: 767px) {
+  .phead-in {
+    padding: 1rem 1.25rem;
+  }
+  h1 {
+    font-size: 1.375rem;
+  }
+  .content {
+    padding: 1rem 1.25rem 1.5rem;
+  }
+}

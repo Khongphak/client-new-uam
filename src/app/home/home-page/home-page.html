@@ -1,0 +1,28 @@
+<div class="phead">
+  <div class="phead-in">
+    <h1>Welcome back, {{ firstName() }}</h1>
+    @if (summary(); as s) {
+      <p class="sub" data-testid="home-summary">{{ s }}</p>
+    }
+  </div>
+</div>
+<section class="content" aria-label="Your systems">
+  <u-sys-grid data-testid="home-grid">
+    @for (s of systems.value(); track s.id) {
+      <a
+        uSysCard
+        [href]="s.systemUrl"
+        external
+        [name]="s.systemName"
+        [description]="s.description"
+        [owner]="s.ownerName"
+        [type]="s.systemType"
+        [icon]="s.data ? undefined : 'pi pi-th-large'"
+      >
+        @if (s.data) {
+          <img [src]="'data:image/png;base64,' + s.data" alt="" width="24" height="24" />
+        }
+      </a>
+    }
+  </u-sys-grid>
+</section>
