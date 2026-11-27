@@ -10,6 +10,10 @@ const homeSystems = env('20000', [{ systemId: 1, systemName: 'Example System A',
 const roleTree = fx('get-role-menu-by-role-id.response').data;
 const userDetail = fx('get-user-by-id.response').data;
 const ad = fx('ad-search.response').data;
+const mn = (roleMenuId, menuId, parentId, screenName, permission, functional = '[add,view,edit,delete]') => ({ id: roleMenuId, roleId: 100, roleMenuId, menuId, parentId, groupName: null, screenName, sortOrder: roleMenuId, permission, functional, imageGroupId: 1, groupMenus: [] });
+const gp = (roleMenuId, name, kids) => ({ id: roleMenuId, roleId: 100, roleMenuId, menuId: 0, parentId: 0, groupName: name, screenName: null, sortOrder: roleMenuId, permission: null, functional: null, imageGroupId: 1, groupMenus: kids.map((k) => ({ ...k, parentId: roleMenuId })) });
+/** 2 top-level menus + 2 groups holding 3 menus => Menus 5, Groups 2, Top level 2 */
+export const richTree = [mn(1, 11, 0, 'Top Menu One', '[add,view]'), gp(2, 'Group A', [mn(3, 12, 2, 'Inner A1', '[view]')]), mn(4, 13, 0, 'Top Menu Two', '[]'), gp(5, 'Group B', [mn(6, 14, 5, 'Inner B1', '[add,view,edit,delete]'), mn(7, 15, 5, 'Inner B2', '[view,edit]')])];
 const ICONS = [1, 2, 3, 4].map((i) => ({ id: i, category: 'Systems', name: 'Icon ' + i, data: 'PHN2Zy8+', createdDate: '2025-01-01T00:00:00', createdBy: 'S' }));
 /** o: {consent, role, admin, userName, lists:'ok'|'abort'|'50001'|'empty', logout:'ok'|'abort'|'50001', saveFail:'40301'|'50001'} */
 export async function mock(p, o = {}) {
@@ -36,13 +40,13 @@ export async function mock(p, o = {}) {
     if (/get-all-users$/.test(path)) return lst(S.users);
     if (/get-all-uam-roles$/.test(path)) return j(env('20000', D.uamRoles));
     if (/get-icons$/.test(path)) return j(env('20000', ICONS));
-    if (/get-generalData$/.test(path)) return j(env('20000', [{ id: 1, name: 'add', type: 'function' }, { id: 2, name: 'view', type: 'function' }, { id: 3, name: 'edit', type: 'function' }]));
+    if (/get-generalData$/.test(path)) { const t = u.searchParams.get('type'); const v = t === 'systemType' ? ['Web Application', 'Mobile Application', 'API', 'Other'] : t === 'status' ? ['Active', 'Inactive'] : ['add', 'view', 'edit', 'delete', 'export']; return j(env('20000', v.map((x, i) => ({ id: i + 1, type: t, value: x, remark: null, createdDate: '2025-01-01T00:00:00', createdBy: 'S' })))); }
     if (/get-role$/.test(path)) return j(env('20000', S.roles.filter((x) => String(x.id) === u.searchParams.get('roleId'))));
-    if (/get-roleMenu-byRoleId$/.test(path)) return j(env('20000', roleTree));
+    if (/get-roleMenu-byRoleId$/.test(path)) return o.roleMenu === '50001' ? j(env('50001', null, 'DB down')) : j(env('20000', o.roleMenu === 'rich' ? richTree : o.roleMenu === 'empty' ? null : roleTree));
     if (/get-menuScreens-bySystemId$|get-menuRoleScreens-bySystemId$/.test(path)) return j(env('20000', []));
-    if (/get-user-byId$/.test(path)) { const id = +u.searchParams.get('userId'); const x = S.users.find((q) => q.id === id); return j(env('20000', { ...clone(userDetail), ...clone(x), uamRoleName: D.uamRoles.find((q) => q.id === x.uamRoleId)?.name, manager: '[Manager One,Manager Two]', systemRoles: clone(userDetail.systemRoles) })); }
-    if (/get-userRole-byId$/.test(path)) return j(env('20000', { userId: +u.searchParams.get('userId'), userSystems: [{ id: 12, systemId: S.systems[0].systemId, systemName: S.systems[0].systemName, roleId: 108, roleName: 'Example Role', menuRoleScreens: roleTree }] }));
-    if (/search-users-activeDirectory$/.test(path)) return j(env('20000', (body?.userName ?? '').toLowerCase().includes('none') ? [] : ad));
+    if (/get-user-byId$/.test(path)) { const id = +u.searchParams.get('userId'); const x = S.users.find((q) => q.id === id); if (!x) return j(env('40401', null, 'Not found')); return j(env('20000', { ...clone(userDetail), ...clone(x), uamRoleName: D.uamRoles.find((q) => q.id === x.uamRoleId)?.name, manager: o.manager ?? '[Manager One,Manager Two]', systemRoles: o.noSystems ? [] : [{ userSystemId: 12, systemId: S.systems[0].systemId, systemName: S.systems[0].systemName, roleId: 100, roleName: 'Role 1' }] })); }
+    if (/get-userRole-byId$/.test(path)) return j(env('20000', { userId: +u.searchParams.get('userId'), userSystems: [{ id: 12, systemId: S.systems[0].systemId, systemName: S.systems[0].systemName, roleId: 108, roleName: 'Example Role', menuRoleScreens: roleTree }].filter(() => !o.noSystems) }));
+    if (/search-users-activeDirectory$/.test(path)) return o.ad === 'abort' ? r.abort('connectionrefused') : j(env('20000', (body?.userName ?? '').toLowerCase().includes('none') ? [] : ad));
     if (/add-system$/.test(path) || /update-system$/.test(path)) {
       if (o.saveFail === '40301') return j(env('40301', null, 'Already existed'));
       if (o.saveFail === '50001') return j(env('50001', null, 'DB down'));

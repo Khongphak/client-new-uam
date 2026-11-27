@@ -1,0 +1,43 @@
+
+######## desktop — TC-USR-007/008/012 Edit user
+s1 tabs ["Profile & access","Systems & roles 1","Permission preview"] | Save disabled true | bar No changes yet
+switch element html <u-switch-row _ngcontent-ng-c2512188610="" label="Active" hint="Inactive users can’t sign in. Their history stays in reports." data-testid="switch-active" _nghost-ng-c2586479173=""><label _ngcontent-ng-c2586479173="" cla
+s2 after toggle Active: Save disabled false | bar 1 unsaved change
+s3 toggled back: Save disabled true | bar No changes yet
+admin switch + role card => bars: 1 unsaved change / 2 unsaved changes
+reverted both => bar No changes yet | Save disabled true
+systems tab rows 1 | Systems and roles (1) | Add system | System | Select a system | System A1 | System B2 | System C3 | Role | Select a role | Role 1 | Role 7 | Role 10 | Show menus
+add row -> rows 2 bar Complete or remove every system row to save. | Save disabled (incomplete row) true
+remove the new row -> bar No changes yet | Save disabled true
+s4 preview rows 1 | Permission preview | Everything this person gets from the systems and roles above. | System	Role	Group / Menu	Functions | System A1	Role 1	Group A / Example Screen	add · view
+hscroll false
+lookup enabled true
+s1 AD request [{"userName":"Testuser","email":null,"position":null,"department":null}] | status Found in AD
+s1 AD fields ["p1=Test(ro)","p2=User(ro)","p3=Tester(ro)","p4=Example Dept(ro)","p5=test.user@example.test(ro)","p6=5743(ro)"] | approvers Approvers | From Active Directory, in approval order. To change them, update the manager in AD. | 1 | Manager One | 2 | Manager Two | 3 | Not set
+typing into readonly Name -> value Test
+AD not found -> No user with this username in Active Directory. | fields ["First1","user1@example.test"]
+AD AD error -> Active Directory didn’t answer. Try again. | fields ["First1","user1@example.test"]
+s2 selected role [ 'uam-DEVELOPER' ] | bar 4 unsaved changes
+TC-USR-012 PUT 1 /v1/Users/update-user/1
+PUT body {"username":"Testuser","firstname":"Test","lastname":"User","fullName":"Test User","email":"test.user@example.test","department":"Example Dept","position":"Tester","phoneNo":"5743","uamRoleId":2,"isSuperAdmin":true,"status":"Inactive","manager":"[Manager One,Manager Two]","systemRoles":[{"userSystemId":12,"systemId":"00000000-0000-4000-8000-000000000001","systemName":"System A1","roleId":100,"roleName":"Role 1"}]}
+012 top-level keys == fixture? true | missing  | extra 
+012 systemRoles keys roleId,roleName,systemId,systemName,userSystemId fixture roleId,roleName,systemId,systemName,userSystemId | types username:string firstname:string lastname:string fullName:string email:string department:string position:string phoneNo:string uamRoleId:number isSuperAdmin:boolean status:string manager:string systemRoles:object
+012 values vs loaded record: username Testuser fullName Test User uamRoleId (DEVELOPER=2) 2 isSuperAdmin(was true->flip) true status Inactive manager [Manager One,Manager Two] systemRoles[0].userSystemId (12 echoed) 12
+after save url /setting/users-setting#users | toast "Changes saved" | GET list refetched true
+add row: system options 4 role options ["Select a role","Role 2","Role 5","Role 11"] | bar 1 unsaved change
+012b PUT systemRoles [{"userSystemId":12,"systemId":"00000000-0000-4000-8000-000000000001","systemName":"System A1","roleId":100,"roleName":"Role 1"},{"userSystemId":null,"systemId":"00000000-0000-4000-8000-000000000002","systemName":"System B2","roleId":101,"roleName":"Role 2"}]
+012c after removing the only existing row: bar No changes yet | Save disabled true
+012c remove row PUT systemRoles [] | url /setting/users-setting#users
+
+######## phone — TC-USR-007/008/012 Edit user
+s1 tabs ["Profile & access","Systems & roles 1","Permission preview"] | Save disabled true | bar No changes yet
+switch element html <u-switch-row _ngcontent-ng-c2512188610="" label="Active" hint="Inactive users can’t sign in. Their history stays in reports." data-testid="switch-active" _nghost-ng-c2586479173=""><label _ngcontent-ng-c2586479173="" cla
+s2 after toggle Active: Save disabled false | bar 1 unsaved change
+s3 toggled back: Save disabled true | bar No changes yet
+admin switch + role card => bars: 1 unsaved change / 2 unsaved changes
+reverted both => bar No changes yet | Save disabled true
+systems tab rows 1 | Systems and roles (1) | Add system | System | Select a system | System A1 | System B2 | System C3 | Role | Select a role | Role 1 | Role 7 | Role 10 | Show menus
+add row -> rows 2 bar Complete or remove every system row to save. | Save disabled (incomplete row) true
+remove the new row -> bar No changes yet | Save disabled true
+s4 preview rows 1 | Permission preview | Everything this person gets from the systems and roles above. | System	Role	Group / Menu	Functions | System A1	Role 1	Group A / Example Screen	add · view
+hscroll false

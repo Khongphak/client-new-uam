@@ -1,0 +1,112 @@
+
+########## SYSTEM SETTING desktop (prod+mock: 23 systems, 12 menus, 3 s2s)
+SYS nav via sidebar -> /setting/system-setting
+SYS-001 s1 tabs/counts: ["System\n23","Menu\n12","System to System\n3"] fragment: /setting/system-setting hscroll false
+SYS-001 s2/s3 tab=system url=/setting/system-setting#system-setup heads=["System name","Owner","Type","Status","Updated","Actions"] rows=10 footer="Showing 1 to 10 of 23 entries" paginator-pages=3
+SYS-001 s2/s3 tab=menu url=/setting/system-setting#menu heads=["Menu name","System","Functions","Status","Updated","Actions"] rows=10 footer="Showing 1 to 10 of 12 entries" paginator-pages=2
+SYS-001 s2/s3 tab=system-to-system url=/setting/system-setting#system-to-system heads=["Source system","Target system","Status","Updated","Actions"] rows=3 footer="Showing 1 to 3 of 3 entries" paginator-pages=1
+SYS-001 accessTokenTime column anywhere? false (known deviation: not in S2S list answer)
+SYS fragment #menu active tab: Menu 12
+SYS reload keeps tab: Menu 12 /setting/system-setting#menu
+SYS-002 s1 search "System A": footer Showing 1 to 1 of 1 entries rows 1 counts [ '23', '12', '3' ] (total was [ '23', '12', '3' ] )
+SYS-002 s2 filter labels: ["Owner","System type","Status"] button: Filters
+SYS-002 filter options: {"f-owner":["All","Owner Three","Owner Two","Test Owner"],"f-type":["All","API","Mobile Application","Web Application"],"f-status":["All","Active","Inactive"]}
+SYS-002 s3 one filter: footer Showing 1 to 8 of 8 entries
+SYS-002 s3 owner+status: footer Showing 1 to 6 of 6 entries filter btn: Filters 2
+SYS-002 s4 after Reset: footer Showing 1 to 10 of 23 entries search value "" filter btn: Filters reset visible 0
+SYS-002 s5 backend requests during search/filter/reset: 0 []
+SYS no-match: No result matches. Change the search or reset the filters.
+SYS paging page2 footer: Showing 11 to 20 of 23 entries
+SYS filters on tab menu ["System","Status"]
+SYS filters on tab system-to-system ["Source system","Target system","Status"]
+SYS empty list: Nothing here yet.
+SYS 50001 inline error: [
+  'Could not load the list | Check your connection and try again. | Try again'
+] dialogs 1
+SYS-009 s1 DEVELOPER system-setting -> /setting/system-setting add btn enabled? true (disabled until SYS-02..04) tabs ["System\n23","Menu\n12","System to System\n3"]
+SYS-009 s2 DEVELOPER users-setting -> /forbidden
+SYS-009 demo dev.user: /setting/system-setting [ 'System 4', 'Menu 8', 'System to System 2' ] | sidebar items: ["Phillip Life","Home","System Setting"]
+
+########## USER & PERMISSION desktop
+USR-001 s1 tabs: ["Roles\n12","Users\n14"] url /setting/users-setting active Roles 12 hscroll false
+USR-001 s2 Roles heads: ["Role","System","Description","Status","Updated"] footer Showing 1 to 10 of 12 entries sample row: Role 1 System A1 Desc Active 11 Feb 2025 by Tester
+USR-001 s3 url /setting/users-setting#users Users heads: ["User","Email","Ext. number","Department","UAM role","Status","Updated"] footer Showing 1 to 10 of 14 entries sample: FL First1 Last1 user1 user1@example.test IT Center ADMIN Active 30 Jan 2025 by Tester
+USR-001 s3 forbidden words in table text (systems count / Last login / menus count): none
+USR-001 s4 status element: {"html":"<span _ngcontent-ng-c1968190692=\"\" aria-hidden=\"true\" class=\"dot\"></span>Active","text":"Active","bg":"rgb(27, 107, 67)"}
+tab hrefs /setting/users-setting#roles /setting/users-setting#users
+USR-003 s1 users tab url: /setting/users-setting#users
+USR-003 s2 after reload tab: Users 14 /setting/users-setting#users
+USR-003 s3 #roles active: Roles 12
+#users active: Users 14
+#bogus active: Roles 12 /setting/users-setting#bogus
+history back -> /setting/users-setting#users Users 14
+USR-002 filters: {"f-department":["All","Claims","IT Center","Underwriting"],"f-uamRole":["All","ADMIN","AUDIT","DEVELOPER","USER"],"f-status":["All","Active","Inactive"]} tab counts ["Roles\n12","Users\n14"]
+USR-002 dept=Claims footer Showing 1 to 5 of 5 entries
+USR-002 +UAM role=ADMIN footer Showing 1 to 1 of 1 entries empty? 0
+USR-002 +status=Active footer Showing 1 to 1 of 1 entries filter btn Filters 3 tab counts ["Roles\n12","Users\n14"]
+USR-002 reset footer Showing 1 to 10 of 14 entries btn Filters
+USR-002 backend requests during filter/reset: 0
+USR no-match text: No user matches. Change the search or reset the filters.
+USR 50001: [
+  'We couldn’t load roles | The server didn’t answer. Try again. If it keeps happening, contact IT Support. | Try again'
+] dialogs 1
+USR empty: No roles yet
+
+Create a role first. A user can only get access to a system through a role.
+DEMO users tab footer Showing 1 to 5 of 5 entries tabs ["Roles\n4","Users\n5"] ext requests []
+
+########## SYSTEM SETTING phone (prod+mock: 23 systems, 12 menus, 3 s2s)
+SYS nav via drawer -> /setting/system-setting
+SYS-001 s1 tabs/counts: ["System\n23","Menu\n12","System to System\n3"] fragment: /setting/system-setting hscroll false
+SYS-001 s2/s3 tab=system url=/setting/system-setting#system-setup heads="phone-list" rows=0 footer="Showing 1 to 10 of 23 entries" paginator-pages=3
+SYS-001 s2/s3 tab=menu url=/setting/system-setting#menu heads="phone-list" rows=0 footer="Showing 1 to 10 of 12 entries" paginator-pages=2
+SYS-001 s2/s3 tab=system-to-system url=/setting/system-setting#system-to-system heads="phone-list" rows=0 footer="Showing 1 to 3 of 3 entries" paginator-pages=1
+SYS-001 accessTokenTime column anywhere? false (known deviation: not in S2S list answer)
+SYS fragment #menu active tab: Menu 12
+SYS reload keeps tab: Menu 12 /setting/system-setting#menu
+SYS-002 s1 search "System A": footer Showing 1 to 1 of 1 entries rows n/a counts [ '23', '12', '3' ] (total was [ '23', '12', '3' ] )
+SYS-002 s2 filter labels: ["Owner","System type","Status"] button: Filters
+SYS-002 filter options: {"f-owner":["All","Owner Three","Owner Two","Test Owner"],"f-type":["All","API","Mobile Application","Web Application"],"f-status":["All","Active","Inactive"]}
+SYS-002 s3 one filter: footer Showing 1 to 8 of 8 entries
+SYS-002 s3 owner+status: footer Showing 1 to 6 of 6 entries filter btn: Filters 2
+SYS-002 s4 after Reset: footer Showing 1 to 10 of 23 entries search value "" filter btn: Filters reset visible 0
+SYS-002 s5 backend requests during search/filter/reset: 0 []
+SYS no-match: No result matches. Change the search or reset the filters.
+SYS paging page2 footer: Showing 11 to 20 of 23 entries
+SYS filters on tab menu ["System","Status"]
+SYS filters on tab system-to-system ["Source system","Target system","Status"]
+SYS empty list: Nothing here yet.
+SYS 50001 inline error: [
+  'Could not load the list | Check your connection and try again. | Try again'
+] dialogs 1
+SYS-009 s1 DEVELOPER system-setting -> /setting/system-setting add btn enabled? true (disabled until SYS-02..04) tabs ["System\n23","Menu\n12","System to System\n3"]
+SYS-009 s2 DEVELOPER users-setting -> /forbidden
+SYS-009 demo dev.user: /setting/system-setting [ 'System 4', 'Menu 8', 'System to System 2' ] | sidebar items: 
+
+########## USER & PERMISSION phone
+USR-001 s1 tabs: ["Roles\n12","Users\n14"] url /setting/users-setting active Roles 12 hscroll false
+USR-001 s2 Roles heads: "(phone list)" footer Showing 1 to 10 of 12 entries sample row: Role 1 | System A1 | Active | Role 2 | System B2 | Active | Role 3 | System C3 | Active | Role 4 | System A1 | Inactive | Role 5 | System B2 | Active | Role 6 | System C3 | Active | Role 7 | System A1 | Active | Role 8 | System B2 | Inactive | Role 9 | System C3 | Active | Role 10 | System A1 | Acti
+USR-001 s3 url /setting/users-setting#users Users heads: "(phone list)" footer Showing 1 to 10 of 14 entries sample: FL | First1 Last1 | IT Center | ADMIN | Active | FL | First2 Last2 | Claims | DEVELOPER | Active | FL | First3 Last3 | Underwriting | AUDIT | Inactive | FL | First4 Last4 | IT Center | USER | Active | FL | First5 Last5 | Claims | ADMIN | Active | FL | First6 Last6 | Underwriting | DEVELOPER | Inacti
+USR-001 s3 forbidden words in table text (systems count / Last login / menus count): none
+USR-001 s4 status element: {"html":"<span _ngcontent-ng-c1968190692=\"\" aria-hidden=\"true\" class=\"dot\"></span>Active","text":"Active","bg":"rgb(27, 107, 67)"}
+tab hrefs /setting/users-setting#roles /setting/users-setting#users
+USR-003 s1 users tab url: /setting/users-setting#users
+USR-003 s2 after reload tab: Users 14 /setting/users-setting#users
+USR-003 s3 #roles active: Roles 12
+#users active: Users 14
+#bogus active: Roles 12 /setting/users-setting#bogus
+history back -> /setting/users-setting#users Users 14
+USR-002 filters: {"f-department":["All","Claims","IT Center","Underwriting"],"f-uamRole":["All","ADMIN","AUDIT","DEVELOPER","USER"],"f-status":["All","Active","Inactive"]} tab counts ["Roles\n12","Users\n14"]
+USR-002 dept=Claims footer Showing 1 to 5 of 5 entries
+USR-002 +UAM role=ADMIN footer Showing 1 to 1 of 1 entries empty? 0
+USR-002 +status=Active footer Showing 1 to 1 of 1 entries filter btn Filters 3 tab counts ["Roles\n12","Users\n14"]
+USR-002 reset footer Showing 1 to 10 of 14 entries btn Filters
+USR-002 backend requests during filter/reset: 0
+USR no-match text: No user matches. Change the search or reset the filters.
+USR 50001: [
+  'We couldn’t load roles | The server didn’t answer. Try again. If it keeps happening, contact IT Support. | Try again'
+] dialogs 1
+USR empty: No roles yet
+
+Create a role first. A user can only get access to a system through a role.
+DEMO users tab footer Showing 1 to 5 of 5 entries tabs ["Roles\n4","Users\n5"] ext requests []

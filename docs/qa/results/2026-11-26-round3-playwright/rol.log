@@ -1,0 +1,35 @@
+
+######## desktop — TC-ROL-001 Role editor
+Add role button present 1 text Add role
+s1 url /setting/users-setting/roles/new
+desktop steps visible true | step labels ["1\nRole info","1\nRole info","2\nMenus & groups","2\nMenus & groups","3\nPermissions","3\nPermissions"] | progress bar visible false | Role infoStep 1 of 3
+s3 Next with empty -> step shown still step1 | errors ["Select a system.","Enter a role name."] | aria-invalid 2
+s2 Next -> step2 true | progress Menus & groupsStep 2 of 3 | title QA Role | sub System B2
+step3 reached true | Next button on last step 0 | PermissionsStep 3 of 3
+s2 Back to step1: system 00000000-0000-4000-8000-000000000002 name QA Role desc desc 123
+clear name + Next -> blocked true ["Enter a role name."]
+click step 3 header while step1 invalid -> on step1 (blocked)
+role-name maxlength attr null len 300
+hscroll false
+Cancel -> /setting/users-setting#roles | writes 0
+
+######## phone — TC-ROL-001 Role editor
+Add role button present 1 text Add role
+s1 url /setting/users-setting/roles/new
+desktop steps visible false | step labels ["1Role info","1Role info","2Menus & groups","2Menus & groups","3Permissions","3Permissions"] | progress bar visible true | Role info / Step 1 of 3
+s3 Next with empty -> step shown still step1 | errors ["Select a system.","Enter a role name."] | aria-invalid 2
+s2 Next -> step2 true | progress Menus & groups / Step 2 of 3 | title QA Role | sub System B2
+step3 reached true | Next button on last step 0 | Permissions / Step 3 of 3
+s2 Back to step1: system 00000000-0000-4000-8000-000000000002 name QA Role desc desc 123
+clear name + Next -> blocked true ["Enter a role name."]
+role-name maxlength attr null len 300
+hscroll false
+Cancel -> /setting/users-setting#roles | writes 0
+DEVELOPER /roles/new -> /forbidden
+AUDIT /roles/new -> /forbidden
+DEMO desktop role view /setting/users-setting/roles/108 ission | Report | Example Role | Active | Example System A | Role information | 1 | Menus | 1 | Groups | 0 | Top level | System | Example System A | Role name | Example Role | Description | Example | Updated | 11 Feb 2025 by System | Menus and permissions | 0 top-level menus · 1 groups · 1 menus in groups. Crossed-out 
+DEMO desktop user view /setting/users-setting/users/1 ission | Report | DA | Demo admin.user | Active | ADMIN | Edit user | User information | Username | admin.user | Name – Surname | Demo admin.user | Email | admin.user@example.test | Extension number | — | Position | Tester | Department | IT Center | UAM role | ADMIN | System Admin | No | Updated | 30 Jan 2025 by Testus
+DEMO desktop user edit /setting/users-setting/users/1/edit No changes yet
+DEMO phone role view /setting/users-setting/roles/108  level | System | Example System A | Role name | Example Role | Description | Example | Updated | 11 Feb 2025 by System | Menus and permissions | 0 top-level menus · 1 groups · 1 menus in groups. Crossed-out functions exist on the menu but this role doesn’t get them. | Group A | 1 menus | Example Screen | Add | View | 
+DEMO phone user view /setting/users-setting/users/1  Name – Surname | Demo admin.user | Email | admin.user@example.test | Extension number | — | Position | Tester | Department | IT Center | UAM role | ADMIN | System Admin | No | Updated | 30 Jan 2025 by Testuser | Approvers | From Active Directory. To change them, update the manager in AD. | 1 | Manager One | 2 | Manage
+DEMO phone user edit /setting/users-setting/users/1/edit No changes yet

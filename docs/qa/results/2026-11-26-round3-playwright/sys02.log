@@ -1,0 +1,96 @@
+
+######## desktop — TC-SYS-003
+first row id 00000000-0000-4000-8000-000000000001 url /setting/system-setting
+s1 url /setting/system-setting?drawer=system&mode=view&id=00000000-0000-4000-8000-000000000001 | drawer open true | side/right? x=250 w=0 vw=1440
+s1 drawer text Active | System ID | 00000000-0000-4000-8000-000000000001 | System type | Web Application | Owner | Test Owner | Description | x | System URL | https://s.example.test/ | Access token | 30 min | Refresh token | 60 min | Updated | 10 Jan 2025 by Tester
+s2 after reload url /setting/system-setting?drawer=system&mode=view&id=00000000-0000-4000-8000-000000000001 | drawer open true | same record true
+s3 after Back url /setting/system-setting | drawer open false | table rows 20
+Forward -> drawer open true /setting/system-setting?drawer=system&mode=view&id=00000000-0000-4000-8000-000000000001
+Close btn -> url /setting/system-setting open false
+Esc -> open false /setting/system-setting
+s4 new tab deep link unauth -> /login?returnUrl=%2Fsetting%2Fsystem-setting%3Fdrawer%3Dsystem%26mode%3Dview%26id%3D00000000-0000-4000-8000-000000000001
+s4 after login url /setting/system-setting?drawer=system&mode=view&id=00000000-0000-4000-8000-000000000001 | drawer open true | record true
+deep link edit mode (same tab, full load) -> /setting/system-setting?drawer=system&mode=edit&id=00000000-0000-4000-8000-000000000001#system-setup open true form fields 8
+deep link add mode -> /setting/system-setting?drawer=system&mode=add#system-setup open true form fields 8
+bad link ?drawer=system&mode=view&id=00000000-0000-4000-8000-0000000000ff -> /setting/system-setting?drawer=system&mode=view&id=00000000-0000-4000-8000-0000000000ff | drawer open true | This record doesn’t exist | It may have been removed, or the link is wrong. | table 20
+bad link ?drawer=system&mode=view -> /setting/system-setting?drawer=system&mode=view | drawer open false | (no drawer) | table 20
+bad link ?drawer=system&mode=bogus&id=00000000-0000-4000-8000-000000000001 -> /setting/system-setting?drawer=system&mode=bogus&id=00000000-0000-4000-8000-000000000001 | drawer open false | (no drawer) | table 20
+bad link ?drawer=menu&mode=view&id=1 -> /setting/system-setting?drawer=menu&mode=view&id=1 | drawer open false | (no drawer) | table 20
+
+######## phone — TC-SYS-003
+first row id 00000000-0000-4000-8000-000000000001 url /setting/system-setting
+s1 url /setting/system-setting?drawer=system&mode=view&id=00000000-0000-4000-8000-000000000001 | drawer open true | side/right? x=0 w=0 vw=390
+s1 drawer text Active | System ID | 00000000-0000-4000-8000-000000000001 | System type | Web Application | Owner | Test Owner | Description | x | System URL | https://s.example.test/ | Access token | 30 min | Refresh token | 60 min | Updated | 10 Jan 2025 by Tester
+s2 after reload url /setting/system-setting?drawer=system&mode=view&id=00000000-0000-4000-8000-000000000001 | drawer open true | same record true
+s3 after Back url /setting/system-setting | drawer open false | table rows 20
+Forward -> drawer open true /setting/system-setting?drawer=system&mode=view&id=00000000-0000-4000-8000-000000000001
+Close btn -> url /setting/system-setting open false
+Esc -> open false /setting/system-setting
+s4 new tab deep link unauth -> /login?returnUrl=%2Fsetting%2Fsystem-setting%3Fdrawer%3Dsystem%26mode%3Dview%26id%3D00000000-0000-4000-8000-000000000001
+s4 after login url /setting/system-setting?drawer=system&mode=view&id=00000000-0000-4000-8000-000000000001 | drawer open true | record true
+deep link edit mode (same tab, full load) -> /setting/system-setting?drawer=system&mode=edit&id=00000000-0000-4000-8000-000000000001#system-setup open true form fields 8
+deep link add mode -> /setting/system-setting?drawer=system&mode=add#system-setup open true form fields 8
+bad link ?drawer=system&mode=view&id=00000000-0000-4000-8000-0000000000ff -> /setting/system-setting?drawer=system&mode=view&id=00000000-0000-4000-8000-0000000000ff | drawer open true | This record doesn’t exist | It may have been removed, or the link is wrong. | table 20
+bad link ?drawer=system&mode=view -> /setting/system-setting?drawer=system&mode=view | drawer open false | (no drawer) | table 20
+bad link ?drawer=system&mode=bogus&id=00000000-0000-4000-8000-000000000001 -> /setting/system-setting?drawer=system&mode=bogus&id=00000000-0000-4000-8000-000000000001 | drawer open false | (no drawer) | table 20
+bad link ?drawer=menu&mode=view&id=1 -> /setting/system-setting?drawer=menu&mode=view&id=1 | drawer open false | (no drawer) | table 20
+
+######## desktop — TC-SYS-004 (add) / TC-SYS-005 (edit)
+counter before 23
+s1 Add -> url /setting/system-setting?drawer=system&mode=add open true fields 8
+empty Save -> errors [
+  'Required',
+  'Required',
+  'Required',
+  'Required',
+  'Required',
+  'Required',
+  'Pick an icon to save.'
+] | requests []
+s2 add requests 1 {"type":"Web Application","systemName":"QA System Z","description":"Created by QA","url":"https://qa.example.test/","ownerName":"QA Owner","imageId":2,"status":"Active","accessTokenTime":15,"refreshTokenTime":45}
+s3 payload keys == fixture keys? true fixture keys type,systemName,description,url,ownerName,imageId,status,accessTokenTime,refreshTokenTime
+typeof checks type:string systemName:string description:string url:string ownerName:string imageId:number status:string accessTokenTime:number refreshTokenTime:number | name trimmed(DEV-2)? true
+after save: url /setting/system-setting drawer open false | toast "System created | Access token: 15 min · Refresh token: 45 min. You can change these later in Edit." | counter 24 | first row QA System Z | 00000000-0000-4000-8000-000000000900 | 	QA Owner	Web Application	 | Active	01 Jun 2025
+GET list refetched after save? true
+edit PUT 1 {"id":900,"systemId":"00000000-0000-4000-8000-000000000900","type":"Web Application","systemName":"QA System Z renamed","description":"Created by QA","url":"https://qa.example.test/","ownerName":"QA Owner","imageId":2,"status":"Active","accessTokenTime":20,"refreshTokenTime":45,"createdDate":"2025-06-01T00:00:00","createdBy":"me","updatedDate":"2025-06-01T00:00:00","updatedBy":"me"}
+PUT payload keys == fixture keys? true missing  extra 
+after edit save: url /setting/system-setting open false | toast "System saved" | first row QA System Z renamed | 00000000-0000-4000-8000-000000000900 | 	QA Owner	Web Application	 | Active	02 Jun 2025	
+s2 Cancel with unsaved change -> open false dialog? 0 url /setting/system-setting writes 0
+toggle Active -> PUT status ["Inactive"]
+40301 duplicate -> drawer open true | banner "(none)" | dialog [] | toast ""
+50001 -> drawer open true | banner "Couldn’t save the system\nDB down" | dialog ["Something went wrong | The server couldn’t finish your request. Try again in a moment. If ","Something went wrong | The server couldn’t finish your request. Try again in a moment. If "] | toast ""
+hscroll false
+
+######## phone — TC-SYS-004 (add) / TC-SYS-005 (edit)
+counter before 23
+s1 Add -> url /setting/system-setting?drawer=system&mode=add open true fields 8
+empty Save -> errors [
+  'Required',
+  'Required',
+  'Required',
+  'Required',
+  'Required',
+  'Required',
+  'Pick an icon to save.'
+] | requests []
+s2 add requests 1 {"type":"Web Application","systemName":"QA System Z","description":"Created by QA","url":"https://qa.example.test/","ownerName":"QA Owner","imageId":2,"status":"Active","accessTokenTime":15,"refreshTokenTime":45}
+s3 payload keys == fixture keys? true fixture keys type,systemName,description,url,ownerName,imageId,status,accessTokenTime,refreshTokenTime
+typeof checks type:string systemName:string description:string url:string ownerName:string imageId:number status:string accessTokenTime:number refreshTokenTime:number | name trimmed(DEV-2)? true
+after save: url /setting/system-setting drawer open false | toast "System created | Access token: 15 min · Refresh token: 45 min. You can change these later in Edit." | counter 24 | first row  QA System Z 00000000-0000-4000-8000-000000000900QA OwnerWeb ApplicationActive01 Jun 2025
+GET list refetched after save? true
+edit PUT 1 {"id":900,"systemId":"00000000-0000-4000-8000-000000000900","type":"Web Application","systemName":"QA System Z renamed","description":"Created by QA","url":"https://qa.example.test/","ownerName":"QA Owner","imageId":2,"status":"Active","accessTokenTime":20,"refreshTokenTime":45,"createdDate":"2025-06-01T00:00:00","createdBy":"me","updatedDate":"2025-06-01T00:00:00","updatedBy":"me"}
+PUT payload keys == fixture keys? true missing  extra 
+after edit save: url /setting/system-setting open false | toast "System saved" | first row  QA System Z renamed 00000000-0000-4000-8000-000000000900QA OwnerWeb ApplicationActive02 Jun 2025
+s2 Cancel with unsaved change -> open false dialog? 0 url /setting/system-setting writes 0
+toggle Active -> PUT status ["Inactive"]
+40301 duplicate -> drawer open true | banner "(none)" | dialog [] | toast ""
+50001 -> drawer open true | banner "Couldn’t save the system\nDB down" | dialog ["Something went wrong | The server couldn’t finish your request. Try again in a moment. If ","Something went wrong | The server couldn’t finish your request. Try again in a moment. If "] | toast ""
+hscroll false
+
+######## desktop — TC-SYS-009
+Add button enabled? true | nav Home | Setting | System Setting
+s1 DEVELOPER add -> POST 1 toast "System created\nAccess token: 10 min · Refresh token: 20 min." open false
+s1 DEVELOPER edit -> PUT 1 toast "System saved"
+s2 DEVELOPER /setting/users-setting -> /forbidden eed it, ask a UAM admin to change your role. | Back to Home | Contact IT Support
+AUDIT deep link add -> /forbidden
+USER deep link add -> /forbidden

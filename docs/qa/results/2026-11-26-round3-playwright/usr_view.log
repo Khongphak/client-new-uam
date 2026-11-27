@@ -1,0 +1,50 @@
+
+######## desktop — TC-USR-004 Role details
+s1 click role name; href /setting/users-setting/roles/100
+url /setting/users-setting/roles/100
+s1 page text USER ACCESS MANAGEMENT | Test | ADMIN | Phillip Life | Home | Setting | System Setting | User & Permission | Report | Role 1 | Active | System A1 | Role information | 5 | Menus | 2 | Groups | 2 | Top level | System | System A1 | Role name | Role 1 | Description | Desc | Updated | 11 Feb 2025 by Tester | Menus and permissions | 2 top-level menus · 2 groups · 3 menus in groups. Crossed-out functions exist on the menu but this role doesn’t get them. | Top level (no group) | 2 menus | Top Menu One | Add | View | Edit | Delete | Top Menu Two | Add | View | Edit | Delete | Group A | 1 menus | Inner A1 | Add | View | Edit | Delete | Group B | 2 menus | Inner B1 | Add | View | Edit | Delete | Inner B2 | Add | View | Edit | Delete
+stat elements []
+s2 stats expected Menus 5 / Groups 2 / Top level 2; page says: 5 | Menus | 2 | Groups | 2 | Top level
+s2 summary sentence 2 top-level menus · 2 groups · 3 menus in groups. Crossed-out functions exist on the menu but this role doesn’t get them. 
+read-only: inputs/checkboxes/switches in tree 0 | icons in info list 4 | hscroll false
+crossed-out functions ["Edit","Delete","Add","View","Edit","Delete","Add","Edit","Delete","Add","Delete"]
+buttons/links on page [] | Edit role present? false
+expand toggles 0
+Back -> /setting/users-setting
+role with null menus -> USER ACCESS MANAGEMENT | Test | ADMIN | Phillip Life | Home | Setting | System Setting | User & Permission | Report | Role 1 | Active | System A1 | Role information | 0 | Menus | 0 | Groups | 0 | Top level | System | System A1 | Role name | Role 1 | Description | Desc | Updated | 11 Feb 2025 by Tester | Menus and permissions | 0 top-level menus · 0 groups · 0 menus in groups. Crossed-out functions
+unknown role -> | System Setting | User & Permission | Report | Role details | We couldn’t find this role | It may have been removed. Go back to the list and pick another role. http://localhost:4301/setting/users-setting/roles/99999
+menus 50001 -> We couldn’t load this role | The server didn’t answer. Try again. If it keeps happening, contact IT Support. | Try again | Something went wrong | The server couldn’t finish your request. Try again in a moment. If this keeps happening, contact IT Support. | Error | 50001 · DB down | Close | Try again
+DEVELOPER role view -> /forbidden
+
+######## phone — TC-USR-004 Role details
+s1 click role name; href /setting/users-setting/roles/100
+url /setting/users-setting/roles/100
+s1 page text UAM | Role 1 | Active | System A1 | Role information | 5 | Menus | 2 | Groups | 2 | Top level | System | System A1 | Role name | Role 1 | Description | Desc | Updated | 11 Feb 2025 by Tester | Menus and permissions | 2 top-level menus · 2 groups · 3 menus in groups. Crossed-out functions exist on the menu but this role doesn’t get them. | Top level (no group) | 2 menus | Top Menu One | Add | View | Edit | Delete | Top Menu Two | Add | View | Edit | Delete | Group A | 1 menus | Inner A1 | Add | View | Edit | Delete | Group B | 2 menus | Inner B1 | Add | View | Edit | Delete | Inner B2 | Add | View | Edit | Delete
+stat elements []
+s2 stats expected Menus 5 / Groups 2 / Top level 2; page says: 5 | Menus | 2 | Groups | 2 | Top level
+s2 summary sentence 2 top-level menus · 2 groups · 3 menus in groups. Crossed-out functions exist on the menu but this role doesn’t get them. 
+read-only: inputs/checkboxes/switches in tree 0 | icons in info list 4 | hscroll false
+crossed-out functions ["Edit","Delete","Add","View","Edit","Delete","Add","Edit","Delete","Add","Delete"]
+buttons/links on page [] | Edit role present? false
+expand toggles 0
+
+######## desktop — TC-USR-005 User details
+s1 href /setting/users-setting/users/1
+url /setting/users-setting/users/1
+page text USER ACCESS MANAGEMENT | Test | ADMIN | Phillip Life | Home | Setting | System Setting | User & Permission | Report | FL | First1 Last1 | Active | ADMIN | Edit user | User information | Username | user1 | Name – Surname | First1 Last1 | Email | user1@example.test | Extension number | — | Position | P | Department | IT Center | UAM role | ADMIN | System Admin | No | Updated | 30 Jan 2025 by Tester | Approvers | From Active Directory. To change them, update the manager in AD. | 1 | Manager One | 2 | Manager Two | 3 | Not set | Systems and roles (1) | System A1 | Role: Example Role · 1 menu | Group A / Example Screen | add | view
+cards layout ["User information: x=282 y=189 w=551","Approvers: x=857 y=189 w=551"]
+s2 Approvers text Approvers | From Active Directory. To change them, update the manager in AD. | 1 | Manager One | 2 | Manager Two | 3 | Not set | inputs 0 | hscroll false
+Edit user link /setting/users-setting/users/1/edit | Export? 0 | systems section Systems and roles (1) | System A1 | Role: Example Role · 1 menu 
+Edit user -> /setting/users-setting/users/1/edit
+no managers, no systems -> tion | Username | user2 | Name – Surname | First2 Last2 | Email | user2@example.test | Extension number | 1234 | Position | P | Department | Claims | UAM role | DEVELOPER | System Admin | No | Updated | 30 Jan 2025 by Tester | Approvers | From Active Directory. To change them, update the manager in AD. | 1 | Not set | 2 | Not set | 3 | Not set | Systems and roles (0) | No systems yet | This user has no system access.
+unknown user -> rt | User details | We couldn’t load this user | The server didn’t answer. Try again. If it keeps happening, contact IT Support. | Try again
+DEVELOPER user view -> /forbidden
+
+######## phone — TC-USR-005 User details
+s1 href /setting/users-setting/users/1
+url /setting/users-setting/users/1
+page text UAM | FL | First1 Last1 | Active | ADMIN | Edit user | User information | Username | user1 | Name – Surname | First1 Last1 | Email | user1@example.test | Extension number | — | Position | P | Department | IT Center | UAM role | ADMIN | System Admin | No | Updated | 30 Jan 2025 by Tester | Approvers | From Active Directory. To change them, update the manager in AD. | 1 | Manager One | 2 | Manager Two | 3 | Not set | Systems and roles (1) | System A1 | Role: Example Role · 1 menu | Group A / Example Screen | add | view
+cards layout ["User information: x=16 y=231 w=358","Approvers: x=16 y=934 w=358"]
+s2 Approvers text Approvers | From Active Directory. To change them, update the manager in AD. | 1 | Manager One | 2 | Manager Two | 3 | Not set | inputs 0 | hscroll false
+Edit user link /setting/users-setting/users/1/edit | Export? 0 | systems section Systems and roles (1) | System A1 | Role: Example Role · 1 menu 
+Edit user -> /setting/users-setting/users/1/edit

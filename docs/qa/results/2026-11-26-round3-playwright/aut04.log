@@ -25,3 +25,98 @@ direct /setting/users-setting -> /login?returnUrl=%2Fsetting%2Fusers-setting sto
 direct /report -> /login?returnUrl=%2Freport storage [] dataCalls 0
 direct /setting/users-setting/roles/new -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew storage [] dataCalls 0
 in-app pushState /home -> /login?returnUrl=%2Fhome
+after Back -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew []
+after reload -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew
+re-login -> /home user Test ["uam.session"]
+
+== prod/desktop/logout-50001
+after login /home {"session":["uam.session"],"local":["uam.rememberedUsername"],"cookie":""}
+session has secrets? false
+after Logout url /login {"session":[],"local":["uam.rememberedUsername"],"cookie":""}
+logout requests [{"method":"POST","path":"/v1/auth/logout","query":"","body":{"Username":"testuser","ClientId":""}}]
+direct /home -> /login?returnUrl=%2Fhome storage [] dataCalls 0
+direct /setting/system-setting -> /login?returnUrl=%2Fsetting%2Fsystem-setting storage [] dataCalls 0
+direct /setting/users-setting -> /login?returnUrl=%2Fsetting%2Fusers-setting storage [] dataCalls 0
+direct /report -> /login?returnUrl=%2Freport storage [] dataCalls 0
+direct /setting/users-setting/roles/new -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew storage [] dataCalls 0
+in-app pushState /home -> /login?returnUrl=%2Fhome
+after Back -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew []
+after reload -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew
+re-login -> /home user Test ["uam.session"]
+
+== demo/desktop/logout-ok
+after login /home {"session":["uam.session"],"local":["uam.rememberedUsername"],"cookie":""}
+session has secrets? false
+after Logout url /login {"session":[],"local":["uam.rememberedUsername"],"cookie":""}
+direct /home -> /login?returnUrl=%2Fhome storage [] dataCalls n/a
+direct /setting/system-setting -> /login?returnUrl=%2Fsetting%2Fsystem-setting storage [] dataCalls n/a
+direct /setting/users-setting -> /login?returnUrl=%2Fsetting%2Fusers-setting storage [] dataCalls n/a
+direct /report -> /login?returnUrl=%2Freport storage [] dataCalls n/a
+direct /setting/users-setting/roles/new -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew storage [] dataCalls n/a
+in-app pushState /home -> /login?returnUrl=%2Fhome
+after Back -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew []
+after reload -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew
+re-login -> /home user Demo ["uam.session"]
+
+== prod/phone/logout-ok
+after login /home {"session":["uam.session"],"local":["uam.rememberedUsername"],"cookie":""}
+session has secrets? false
+after Logout url /login {"session":[],"local":["uam.rememberedUsername"],"cookie":""}
+logout requests [{"method":"POST","path":"/v1/auth/logout","query":"","body":{"Username":"testuser","ClientId":""}}]
+direct /home -> /login?returnUrl=%2Fhome storage [] dataCalls 0
+direct /setting/system-setting -> /login?returnUrl=%2Fsetting%2Fsystem-setting storage [] dataCalls 0
+direct /setting/users-setting -> /login?returnUrl=%2Fsetting%2Fusers-setting storage [] dataCalls 0
+direct /report -> /login?returnUrl=%2Freport storage [] dataCalls 0
+direct /setting/users-setting/roles/new -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew storage [] dataCalls 0
+in-app pushState /home -> /login?returnUrl=%2Fhome
+after Back -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew []
+after reload -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew
+re-login -> /home user Test ["uam.session"]
+
+== prod/phone/logout-abort
+after login /home {"session":["uam.session"],"local":["uam.rememberedUsername"],"cookie":""}
+session has secrets? false
+after Logout url /login {"session":[],"local":["uam.rememberedUsername"],"cookie":""}
+logout requests [{"method":"POST","path":"/v1/auth/logout","query":"","body":{"Username":"testuser","ClientId":""}}]
+direct /home -> /login?returnUrl=%2Fhome storage [] dataCalls 0
+direct /setting/system-setting -> /login?returnUrl=%2Fsetting%2Fsystem-setting storage [] dataCalls 0
+direct /setting/users-setting -> /login?returnUrl=%2Fsetting%2Fusers-setting storage [] dataCalls 0
+direct /report -> /login?returnUrl=%2Freport storage [] dataCalls 0
+direct /setting/users-setting/roles/new -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew storage [] dataCalls 0
+in-app pushState /home -> /login?returnUrl=%2Fhome
+after Back -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew []
+after reload -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew
+re-login -> /home user Test ["uam.session"]
+
+== prod/phone/logout-50001
+after login /home {"session":["uam.session"],"local":["uam.rememberedUsername"],"cookie":""}
+session has secrets? false
+after Logout url /login {"session":[],"local":["uam.rememberedUsername"],"cookie":""}
+logout requests [{"method":"POST","path":"/v1/auth/logout","query":"","body":{"Username":"testuser","ClientId":""}}]
+direct /home -> /login?returnUrl=%2Fhome storage [] dataCalls 0
+direct /setting/system-setting -> /login?returnUrl=%2Fsetting%2Fsystem-setting storage [] dataCalls 0
+direct /setting/users-setting -> /login?returnUrl=%2Fsetting%2Fusers-setting storage [] dataCalls 0
+direct /report -> /login?returnUrl=%2Freport storage [] dataCalls 0
+direct /setting/users-setting/roles/new -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew storage [] dataCalls 0
+in-app pushState /home -> /login?returnUrl=%2Fhome
+after Back -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew []
+after reload -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew
+re-login -> /home user Test ["uam.session"]
+
+== demo/phone/logout-ok
+after login /home {"session":["uam.session"],"local":["uam.rememberedUsername"],"cookie":""}
+session has secrets? false
+after Logout url /login {"session":[],"local":["uam.rememberedUsername"],"cookie":""}
+direct /home -> /login?returnUrl=%2Fhome storage [] dataCalls n/a
+direct /setting/system-setting -> /login?returnUrl=%2Fsetting%2Fsystem-setting storage [] dataCalls n/a
+direct /setting/users-setting -> /login?returnUrl=%2Fsetting%2Fusers-setting storage [] dataCalls n/a
+direct /report -> /login?returnUrl=%2Freport storage [] dataCalls n/a
+direct /setting/users-setting/roles/new -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew storage [] dataCalls n/a
+in-app pushState /home -> /login?returnUrl=%2Fhome
+after Back -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew []
+after reload -> /login?returnUrl=%2Fsetting%2Fusers-setting%2Froles%2Fnew
+re-login -> /home user Demo ["uam.session"]
+
+== logout from /setting/system-setting -> /login
+Back -> /login?returnUrl=%2Fsetting%2Fsystem-setting
+Back2 -> /login?returnUrl=%2Fhome

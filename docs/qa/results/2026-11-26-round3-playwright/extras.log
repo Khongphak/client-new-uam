@@ -1,0 +1,12 @@
+desktop view -> Edit url /setting/system-setting?drawer=system&mode=edit&id=… form fields 8
+desktop Back from edit -> /setting/system-setting | open false | form fields 0
+desktop Add then Back -> open false /setting/system-setting
+desktop hscroll with drawer false
+desktop drawer on S2S tab fragment -> /setting/system-setting?drawer=system&mode=view&id=…#system-to-system | open true | active tab [ 'System to System\n3' ]
+phone view -> Edit url /setting/system-setting?drawer=system&mode=edit&id=… form fields 8
+phone Back from edit -> /setting/system-setting | open false | form fields 0
+phone Add then Back -> open false /setting/system-setting
+phone hscroll with drawer false
+phone drawer on S2S tab fragment -> /setting/system-setting?drawer=system&mode=view&id=…#system-to-system | open true | active tab [ 'System to System\n3' ]
+role-name 300 chars + Next -> step2? true []
+whitespace-only name + Next -> blocked ["Enter a role name."]

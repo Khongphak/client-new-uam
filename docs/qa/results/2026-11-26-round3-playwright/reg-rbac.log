@@ -1,0 +1,41 @@
+
+#### DEMO desktop
+admin.user sidebar: ["Phillip Life","Home","Report"]
+  direct: {"/home":"/home => Home","/setting/system-setting":"/setting/system-setting => SystemSetting","/setting/users-setting":"/setting/users-setting => ?","/report":"/report => Report","/setting":"/setting => 404","/setting/nope":"/setting/nope => 404"}
+  spa: {"/setting/users-setting":"?","/setting/system-setting":"SystemSetting","/report":"Report"}
+dev.user sidebar: ["Phillip Life","Home"]
+  direct: {"/home":"/home => Home","/setting/system-setting":"/setting/system-setting => SystemSetting","/setting/users-setting":"/forbidden => 403","/report":"/forbidden => 403","/setting":"/setting => 404","/setting/nope":"/setting/nope => 404"}
+  spa: {"/setting/users-setting":"403","/setting/system-setting":"SystemSetting","/report":"403"}
+audit.user sidebar: ["Phillip Life","Home","Report"]
+  direct: {"/home":"/home => Home","/setting/system-setting":"/forbidden => 403","/setting/users-setting":"/forbidden => 403","/report":"/report => Report","/setting":"/setting => 404","/setting/nope":"/setting/nope => 404"}
+  spa: {"/setting/users-setting":"403","/setting/system-setting":"403","/report":"Report"}
+plain.user sidebar: ["Phillip Life","Home"]
+  direct: {"/home":"/home => Home","/setting/system-setting":"/forbidden => 403","/setting/users-setting":"/forbidden => 403","/report":"/forbidden => 403","/setting":"/setting => 404","/setting/nope":"/setting/nope => 404"}
+  spa: {"/setting/users-setting":"403","/setting/system-setting":"403","/report":"403"}
+super.user sidebar: ["Phillip Life","Home","Report"]
+  direct: {"/home":"/home => Home","/setting/system-setting":"/setting/system-setting => SystemSetting","/setting/users-setting":"/setting/users-setting => ?","/report":"/report => Report","/setting":"/setting => 404","/setting/nope":"/setting/nope => 404"}
+  spa: {"/setting/users-setting":"?","/setting/system-setting":"SystemSetting","/report":"Report"}
+
+#### DEMO phone
+admin.user sidebar: "(phone: drawer closed)"
+  direct: {"/home":"/home => Home","/setting/system-setting":"/setting/system-setting => SystemSetting","/setting/users-setting":"/setting/users-setting => ?","/report":"/report => Report","/setting":"/setting => 404","/setting/nope":"/setting/nope => 404"}
+  spa: {"/setting/users-setting":"?","/setting/system-setting":"SystemSetting","/report":"Report"}
+dev.user sidebar: "(phone: drawer closed)"
+  direct: {"/home":"/home => Home","/setting/system-setting":"/setting/system-setting => SystemSetting","/setting/users-setting":"/forbidden => 403","/report":"/forbidden => 403","/setting":"/setting => 404","/setting/nope":"/setting/nope => 404"}
+  spa: {"/setting/users-setting":"403","/setting/system-setting":"SystemSetting","/report":"403"}
+audit.user sidebar: "(phone: drawer closed)"
+  direct: {"/home":"/home => Home","/setting/system-setting":"/forbidden => 403","/setting/users-setting":"/forbidden => 403","/report":"/report => Report","/setting":"/setting => 404","/setting/nope":"/setting/nope => 404"}
+  spa: {"/setting/users-setting":"403","/setting/system-setting":"403","/report":"Report"}
+plain.user sidebar: "(phone: drawer closed)"
+  direct: {"/home":"/home => Home","/setting/system-setting":"/forbidden => 403","/setting/users-setting":"/forbidden => 403","/report":"/forbidden => 403","/setting":"/setting => 404","/setting/nope":"/setting/nope => 404"}
+  spa: {"/setting/users-setting":"403","/setting/system-setting":"403","/report":"403"}
+super.user sidebar: "(phone: drawer closed)"
+  direct: {"/home":"/home => Home","/setting/system-setting":"/setting/system-setting => SystemSetting","/setting/users-setting":"/setting/users-setting => ?","/report":"/report => Report","/setting":"/setting => 404","/setting/nope":"/setting/nope => 404"}
+  spa: {"/setting/users-setting":"?","/setting/system-setting":"SystemSetting","/report":"Report"}
+
+#### PROD+mock, direct URL with reload (restored session), desktop
+ADMIN  {"/setting/system-setting":"/setting/system-setting => SystemSetting","/setting/users-setting":"/setting/users-setting => ?","/report":"/report => Report"}
+DEVELOPER  {"/setting/system-setting":"/setting/system-setting => SystemSetting","/setting/users-setting":"/forbidden => 403","/report":"/forbidden => 403"}
+AUDIT  {"/setting/system-setting":"/forbidden => 403","/setting/users-setting":"/forbidden => 403","/report":"/report => Report"}
+USER  {"/setting/system-setting":"/forbidden => 403","/setting/users-setting":"/forbidden => 403","/report":"/forbidden => 403"}
+USER (systemAdmin) {"/setting/system-setting":"/setting/system-setting => SystemSetting","/setting/users-setting":"/setting/users-setting => ?","/report":"/report => Report"}

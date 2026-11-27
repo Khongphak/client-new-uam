@@ -1,0 +1,125 @@
+
+###### desktop
+AUT-007 s1 /home -> /login?returnUrl=%2Fhome
+AUT-007 s1 /setting/system-setting -> /login?returnUrl=%2Fsetting%2Fsystem-setting
+AUT-007 s1 /setting/users-setting -> /login?returnUrl=%2Fsetting%2Fusers-setting
+AUT-007 s1 /report -> /login?returnUrl=%2Freport
+AUT-007 s1 /pdpaconsent -> /login?returnUrl=%2Fpdpaconsent
+AUT-007 s1 /home?x=1 -> /login?returnUrl=%2Fhome%3Fx%3D1
+AUT-007 s1 / -> /login
+AUT-007 s2 /login -> /login Phillip Life | One sign-in for every system you use at work. | Open your systems
+AUT-007 s2 /notfound -> /notfound Phillip Life | 404 | This page doesn’t exist | The link may be old, or the addre
+AUT-007 s2 /forbidden -> /forbidden Phillip Life | 403 | You don’t have access to this page | Your UAM role can’t op
+AUT-007 s2 /zzz -> /zzz Phillip Life | 404 | This page doesn’t exist | The link may be old, or the addre
+AUT-007 spa /home -> /login?returnUrl=%2Fhome
+AUT-007 spa /report -> /login?returnUrl=%2Freport
+AUT-007 spa /pdpaconsent -> /login?returnUrl=%2Fpdpaconsent
+API calls while unauthenticated (should be none to data endpoints): []
+AUT-009 s1 login isConsent=false -> /pdpaconsent
+AUT-006 s1 direct /home -> /pdpaconsent?returnUrl=%2Fhome | has Welcome: false
+AUT-006 s1 direct /report -> /pdpaconsent?returnUrl=%2Freport | has Welcome: false
+AUT-006 s1 direct /setting/system-setting -> /pdpaconsent?returnUrl=%2Fsetting%2Fsystem-setting | has Welcome: false
+AUT-006 s1 direct /setting/users-setting -> /pdpaconsent?returnUrl=%2Fsetting%2Fusers-setting | has Welcome: false
+AUT-006 spa /home -> /pdpaconsent?returnUrl=%2Fhome
+AUT-006 spa /report -> /pdpaconsent?returnUrl=%2Freport
+consent page still shown: /pdpaconsent Phillip Life | Test User · ADMIN | Personal data consent | Read how your data is used in UAM. You need to agree before y
+consent returnUrl=//evil.test -> /pdpaconsent?returnUrl=%2F%2Fevil.test
+agree enabled after tick: false
+AUT-004 s4 agree -> /home | Welcome: true
+after consent reload /home -> /home
+AUT-006 returnUrl carried: /pdpaconsent?returnUrl=%2Freport
+AUT-005 s1 dialog: [
+  'Decline and sign out? | You can’t use UAM until you agree. | Go back | Decline and sign out'
+]
+AUT-005 s2 go back -> /pdpaconsent
+AUT-005 s3 sign out -> /login calls logout: true
+after sign out, sessionStorage keys: []
+after sign-out /home -> /login?returnUrl=%2Fhome
+AUT-009 s2 login isConsent=true -> /home | cards: 1
+consented user opens /pdpaconsent -> /home
+AUT-008 s1 before reload /home
+AUT-008 s1 after reload -> /home | Welcome: true | cards: 1 | topbar: USER ACCESS MANAGEMENT | Test | ADMIN
+AUT-008 reload/deep-link /report -> /report
+AUT-008 reload/deep-link /setting/system-setting -> /setting/system-setting
+storage after login: {"s":{"uam.session":"{\"profile\":{\"userId\":1,\"userName\":\"testuser\",\"firstName\":\"Test\",\"lastName\":\"User\",\"position\":\"Tester\",\"uamRole\":\"ADMIN\",\"systemAdmin\":false,\"userType\":\"AD\"},\"consented\":true}"},"l":["uam.rememberedUsername"],"c":""}
+API requests across reload: ["POST /v1/auth/login","GET /v1/Home/get-userSystems","GET /v1/Home/get-userSystems","GET /v1/Home/get-userSystems","GET /v1/Home/get-userSystems","GET /v1/Systems/get-all-systems","GET /v1/Systems/get-all-systems","GET /v1/Menus/get-all-menuScreens","GET /v1/SystemToSystem/get-all-system-to-system"]
+signed-in user opens /login -> /login
+after logout -> /login
+AUT-008 after logout reload /home -> /login?returnUrl=%2Fhome
+AUT-008 s2 new tab /home -> /login?returnUrl=%2Fhome
+AUT-008 s2b second tab same browser /home -> /login?returnUrl=%2Fhome
+AUT-002 envelope 40101 -> /login | Username or password is incorrect. Check them and try again. | invalid: 2
+returnUrl: unauth /report -> /login?returnUrl=%2Freport
+returnUrl: after login -> /report
+open-redirect //evil.test after login -> /home
+open-redirect https://evil.test after login -> /home
+AUT-003 type password -> password hscroll false
+
+###### phone
+AUT-007 s1 /home -> /login?returnUrl=%2Fhome
+AUT-007 s1 /setting/system-setting -> /login?returnUrl=%2Fsetting%2Fsystem-setting
+AUT-007 s1 /setting/users-setting -> /login?returnUrl=%2Fsetting%2Fusers-setting
+AUT-007 s1 /report -> /login?returnUrl=%2Freport
+AUT-007 s1 /pdpaconsent -> /login?returnUrl=%2Fpdpaconsent
+AUT-007 s1 /home?x=1 -> /login?returnUrl=%2Fhome%3Fx%3D1
+AUT-007 s1 / -> /login
+AUT-007 s2 /login -> /login Phillip Life | One sign-in for every system you use at work. | Sign in | Use you
+AUT-007 s2 /notfound -> /notfound Phillip Life | 404 | This page doesn’t exist | The link may be old, or the addre
+AUT-007 s2 /forbidden -> /forbidden Phillip Life | 403 | You don’t have access to this page | Your UAM role can’t op
+AUT-007 s2 /zzz -> /zzz Phillip Life | 404 | This page doesn’t exist | The link may be old, or the addre
+AUT-007 spa /home -> /login?returnUrl=%2Fhome
+AUT-007 spa /report -> /login?returnUrl=%2Freport
+AUT-007 spa /pdpaconsent -> /login?returnUrl=%2Fpdpaconsent
+API calls while unauthenticated (should be none to data endpoints): []
+AUT-009 s1 login isConsent=false -> /pdpaconsent
+AUT-006 s1 direct /home -> /pdpaconsent?returnUrl=%2Fhome | has Welcome: false
+AUT-006 s1 direct /report -> /pdpaconsent?returnUrl=%2Freport | has Welcome: false
+AUT-006 s1 direct /setting/system-setting -> /pdpaconsent?returnUrl=%2Fsetting%2Fsystem-setting | has Welcome: false
+AUT-006 s1 direct /setting/users-setting -> /pdpaconsent?returnUrl=%2Fsetting%2Fusers-setting | has Welcome: false
+AUT-006 spa /home -> /pdpaconsent?returnUrl=%2Fhome
+AUT-006 spa /report -> /pdpaconsent?returnUrl=%2Freport
+consent page still shown: /pdpaconsent Phillip Life | Test User · ADMIN | Personal data consent | Read how your data is used in UAM. You need to agree before y
+consent returnUrl=//evil.test -> /pdpaconsent?returnUrl=%2F%2Fevil.test
+agree enabled after tick: false
+AUT-004 s4 agree -> /home | Welcome: true
+after consent reload /home -> /home
+AUT-006 returnUrl carried: /pdpaconsent?returnUrl=%2Freport
+AUT-005 s1 dialog: [
+  'Decline and sign out? | You can’t use UAM until you agree. | Go back | Decline and sign out'
+]
+AUT-005 s2 go back -> /pdpaconsent
+AUT-005 s3 sign out -> /login calls logout: true
+after sign out, sessionStorage keys: []
+after sign-out /home -> /login?returnUrl=%2Fhome
+AUT-009 s2 login isConsent=true -> /home | cards: 1
+consented user opens /pdpaconsent -> /home
+AUT-008 s1 before reload /home
+AUT-008 s1 after reload -> /home | Welcome: true | cards: 1 | topbar: UAM
+AUT-008 reload/deep-link /report -> /report
+AUT-008 reload/deep-link /setting/system-setting -> /setting/system-setting
+storage after login: {"s":{"uam.session":"{\"profile\":{\"userId\":1,\"userName\":\"testuser\",\"firstName\":\"Test\",\"lastName\":\"User\",\"position\":\"Tester\",\"uamRole\":\"ADMIN\",\"systemAdmin\":false,\"userType\":\"AD\"},\"consented\":true}"},"l":["uam.rememberedUsername"],"c":""}
+API requests across reload: ["POST /v1/auth/login","GET /v1/Home/get-userSystems","GET /v1/Home/get-userSystems","GET /v1/Home/get-userSystems","GET /v1/Home/get-userSystems","GET /v1/Systems/get-all-systems","GET /v1/Systems/get-all-systems","GET /v1/Menus/get-all-menuScreens","GET /v1/SystemToSystem/get-all-system-to-system"]
+signed-in user opens /login -> /login
+after logout -> /login
+AUT-008 after logout reload /home -> /login?returnUrl=%2Fhome
+AUT-008 s2 new tab /home -> /login?returnUrl=%2Fhome
+AUT-008 s2b second tab same browser /home -> /login?returnUrl=%2Fhome
+AUT-002 envelope 40101 -> /login | Username or password is incorrect. Check them and try again. | invalid: 2
+returnUrl: unauth /report -> /login?returnUrl=%2Freport
+returnUrl: after login -> /report
+open-redirect //evil.test after login -> /home
+open-redirect https://evil.test after login -> /home
+AUT-003 type password -> password hscroll false
+BUG-1 home abort dialogs before interaction: 0 after click: 1 | url /home | body: USER ACCESS MANAGEMENT | Test | ADMIN | Phillip Life | Home | Setting | Report | Welcome back, Test | Can’t reach the server | Check your connection, then try a
+BUG-1 home 40102 dialogs before interaction: 0 after click: 1 | url /home | body: USER ACCESS MANAGEMENT | Test | ADMIN | Phillip Life | Home | Setting | Report | Welcome back, Test | Your session has expired | Log in again to continue. Chang
+BUG-1 home 50000 dialogs before interaction: 0 after click: 1 | url /home | body: USER ACCESS MANAGEMENT | Test | ADMIN | Phillip Life | Home | Setting | Report | Welcome back, Test | Something went wrong | The server couldn’t finish your req
+BUG-1 after reload with failing API: dialogs 0 /home
+40102 dialog: [
+  'Your session has expired\n' +
+    '\n' +
+    'Log in again to continue. Changes you haven’t saved are lost.\n' +
+    '\n' +
+    'Log in again'
+]
+after Log in again -> /login []
+then /home -> /login?returnUrl=%2Fhome
