@@ -185,3 +185,51 @@
 | 3 | ยังไม่ล็อกอิน เปิด `/pdpaconsent` ตรงๆ | ถูกส่งไป `/login` โดย guard (ไม่ใช่ effect ในหน้า) | | ☐ |
 
 > 💡 ส่งต่อจากรีวิว PR #95 (UAM-AUT-02) — เรื่อง Esc บน dialog Decline รอคำตัดสิน ดู UAM-AUT-03 ข้อ (ค)
+
+## TC-AUT-010 — Logout: ล้าง session จริง แล้วเปิดหน้าที่ต้องล็อกอินไม่ได้
+
+| | |
+|---|---|
+| Backlog | UAM-AUT-04 |
+| Priority | P0 |
+| Phase ที่เริ่มทดสอบได้ | 2 |
+| Role | ทุก role |
+| Viewport | desktop, phone |
+| ประเภท | E2E |
+
+**Precondition**
+- ล็อกอินแล้ว (consent ยอมรับแล้ว) อยู่ใต้ shell เช่น `/home`; ทดสอบทั้ง demo build และ production build + จำลอง API (demo ไม่เห็น request เพราะ interceptor ตอบในโปรเซส — ข้อ 2/3 ตรวจบน production+mock)
+
+| # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
+|---|---|---|---|---|
+| 1 | กด Logout ใน shell | ไป `/login`; `sessionStorage` ไม่มี `uam.session` (`localStorage` เหลือได้เฉพาะ `uam.rememberedUsername` ของฟีเจอร์ Remember — ไม่ใช่ความลับ) | | ☐ |
+| 2 | ดู network ตอนกด Logout (production+mock) | มี `POST v1/auth/logout` 1 ครั้ง body `{Username, ClientId}` (payload เดิม) | | ☐ |
+| 3 | กด Logout ขณะ request logout ล้ม (abort หรือ `RESULT_CODE` 50001) | ยังล้าง session และไป `/login` เหมือนปกติ | | ☐ |
+| 4 | หลัง Logout เปิดตรง `/home`, `/setting/system-setting`, `/setting/users-setting`, `/report` | ถูกส่งไป `/login?returnUrl=…` ทุกหน้า และไม่มี request ไป data endpoint | | ☐ |
+| 5 | หลัง Logout กด Back / reload | ยังอยู่หน้า login ไม่เข้าแอปได้ | | ☐ |
+| 6 | Login ใหม่ | เข้า `/home` ได้ปกติ | | ☐ |
+
+> 💡 ที่มา: BUG-2 (QA รอบ 2) / issue #114 · Decline ที่หน้า consent ใช้ `SignOut` ตัวเดียวกัน (ครอบด้วย TC-AUT-005)
+
+## TC-AUT-011 — เปิด `/login` ขณะล็อกอินอยู่ ⏳ รอผู้ใช้ตัดสิน
+
+| | |
+|---|---|
+| Backlog | UAM-AUT-01 (ถ้าตัดสินให้ redirect จะเปิด item ใหม่) |
+| Priority | P2 |
+| Phase ที่เริ่มทดสอบได้ | 2 |
+| Role | ทุก role |
+| Viewport | desktop, phone |
+| ประเภท | E2E |
+
+**สถานะ: รอตัดสิน** — สเปกยังไม่ระบุว่าผู้ที่ล็อกอินอยู่แล้วเปิด `/login` ควรเห็นฟอร์มหรือถูกส่งไป `/home` (หรือ `/pdpaconsent` ถ้ายังไม่ยอมรับ consent) **ห้ามนับเป็น fail/pass จนกว่าผู้ใช้ตัดสิน** (QA NOTE-5)
+
+**พฤติกรรมปัจจุบัน (ตรวจจาก `src/app/app.routes.ts`):** route `login` ไม่มี guard จึงเปิดได้เสมอและเห็นฟอร์ม
+
+**Precondition**
+- ล็อกอินแล้ว อยู่ที่ `/home`
+
+| # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
+|---|---|---|---|---|
+| 1 | พิมพ์ `/login` ใน URL (หรือ Back ไปหน้า login) | **รอตัดสิน** — ทางเลือก (ก) คงเห็นฟอร์ม (ปัจจุบัน) · (ข) redirect ไป `/home` | | ⏳ |
+| 2 | (ถ้าเลือก ข) ล็อกอินแล้วแต่ยังไม่ยอมรับ consent เปิด `/login` | ไป `/pdpaconsent` | | ⏳ |

@@ -62,6 +62,7 @@
 | [UAM-HOM-03](items/UAM-HOM-03.md) | Home: ค้นหา + ตัวกรองชนิดระบบ + empty-search | ✨ feature | 🟡 **P2** | 57 | 3 | W6 | UAM-HOM-01 |
 | [UAM-HOM-04](items/UAM-HOM-04.md) | Home: บันทึก access history ตอนคลิกการ์ดระบบ | ✨ feature | 🟡 **P2** | 59 | 1 | W6 | UAM-HOM-01 |
 | [UAM-HOM-05](items/UAM-HOM-05.md) | Home: เก็บกวาดเล็กน้อยหลัง HOM-01 | 🧹 chore | 🟢 **P3** | 29 | 1 | W6 | UAM-HOM-01 |
+| [UAM-AUT-04](items/UAM-AUT-04.md) | Logout ไม่ล้าง session (regression จาก AUT-03): เรียก logout API + ล้าง session | 🐞 bug | 🔴 **P0** | 87 | 3 | W7 | UAM-AUT-03 |
 | [UAM-ROL-02](items/UAM-ROL-02.md) | Role editor: ขั้น Menus & groups (โครงเมนูเดียว ลากวาง) | ✨ feature | 🟠 **P1** | 82 | 8 | W7 | UAM-ROL-01 |
 | [UAM-SYS-03](items/UAM-SYS-03.md) | Drawer ของ Menu (ดู/เพิ่ม/แก้ไข) | ✨ feature | 🟡 **P2** | 67 | 3 | W7 | UAM-SYS-02 |
 | [UAM-SYS-04](items/UAM-SYS-04.md) | Drawer ของ System to System (ดู/เพิ่ม/แก้ไข) | ✨ feature | 🟡 **P2** | 67 | 3 | W7 | UAM-SYS-02 |
