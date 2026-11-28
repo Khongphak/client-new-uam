@@ -69,8 +69,7 @@ const name = (row: SettingRow) => row.name;
 /** System Setting: System / Menu / System to System tables, searched and filtered in the browser. */
 @Component({
   selector: 'app-system-setting-page',
-  imports: [UTableToolbar, UTableFooter, UState, UStatus, SystemDrawer, S2SDrawer],
-  imports: [UTableToolbar, UTableFooter, UState, UStatus, SystemDrawer, MenuDrawer],
+  imports: [UTableToolbar, UTableFooter, UState, UStatus, SystemDrawer, MenuDrawer, S2SDrawer],
   templateUrl: './system-setting-page.html',
   styleUrl: './system-setting-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
