@@ -18,15 +18,12 @@ import { UStatus } from '../../shared/ui/status';
 import { UToastService } from '../../shared/ui/toast';
 import { MenuScreenApi } from '../api/menu-screen-api';
 import { SystemApi } from '../api/system-api';
+import { S2SDrawer, S2SSaved, S2SSystemOption } from '../s2s-drawer/s2s-drawer';
 import { MenuDrawer, MenuSaved } from '../system-drawer/menu-drawer';
 import { SystemDrawer, SystemDrawerMode, SystemSaved } from '../system-drawer/system-drawer';
+import { CLOSED_DRAWER_QUERY, DrawerState, drawerFromParams, drawerQuery } from './drawer-url';
 import {
-  CLOSED_DRAWER_QUERY,
-  DrawerState,
-  drawerFromParams,
-  drawerQuery,
-} from './drawer-url';
-import {
+  formatUpdated,
   menuRow,
   s2sRow,
   SettingRow,
@@ -72,7 +69,7 @@ const name = (row: SettingRow) => row.name;
 /** System Setting: System / Menu / System to System tables, searched and filtered in the browser. */
 @Component({
   selector: 'app-system-setting-page',
-  imports: [UTableToolbar, UTableFooter, UState, UStatus, SystemDrawer, MenuDrawer],
+  imports: [UTableToolbar, UTableFooter, UState, UStatus, SystemDrawer, MenuDrawer, S2SDrawer],
   templateUrl: './system-setting-page.html',
   styleUrl: './system-setting-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -178,8 +175,36 @@ export class SystemSettingPage {
     return d.mode !== 'add' && !Number.isInteger(id) ? null : { mode: d.mode, id };
   });
   protected readonly owners = computed(() => [
-    ...new Set(this.#systemRows().map((r) => r.cells[0]).filter(Boolean)),
+    ...new Set(
+      this.#systemRows()
+        .map((r) => r.cells[0])
+        .filter(Boolean),
+    ),
   ]);
+
+  // --- System to System drawer (UAM-SYS-04) ---
+  /** The `s2s` drawer shown; a non-numeric id in the URL is not a drawer. */
+  protected readonly s2sDrawer = computed(() => {
+    const d = this.drawer();
+    if (d?.kind !== 's2s') return null;
+    const id = d.id === null ? null : Number(d.id);
+    return id !== null && !Number.isInteger(id) ? null : { mode: d.mode, id };
+  });
+  /** The pickers' systems: `systemId` is the UUId the API wants. */
+  protected readonly s2sSystems = computed<S2SSystemOption[]>(() =>
+    (this.#systemRes.hasValue() ? this.#systemRes.value() : []).map((r) => ({
+      id: r.systemId,
+      name: r.systemName,
+      active: (r.status ?? '').trim().toLowerCase() === 'active',
+    })),
+  );
+  /** "28 Oct 2026 by somchai.k" from the list row (the by-id answer has no audit fields). */
+  protected readonly s2sUpdated = computed(() => {
+    const id = this.s2sDrawer()?.id;
+    const item = (this.#s2sRes.hasValue() ? this.#s2sRes.value() : []).find((r) => r.id === id);
+    if (!item) return null;
+    return `${formatUpdated(item.updatedDate)}${item.updatedBy ? ` by ${item.updatedBy}` : ''}`;
+  });
 
   /** True once this page pushed a history entry for the drawer, so closing can go Back instead of stacking another. */
   #pushed = false;
@@ -208,6 +233,8 @@ export class SystemSettingPage {
   protected open(mode: 'view' | 'edit', row: SettingRow): void {
     if (this.tab().id === 'system' && row.code) {
       this.#show({ kind: 'system', mode, id: row.code });
+    } else if (this.tab().id === 'system-to-system') {
+      this.#show({ kind: 's2s', mode, id: row.key });
     } else if (this.tab().id === 'menu') {
       this.#show({ kind: 'menu', mode, id: row.key });
     } else {
@@ -217,13 +244,19 @@ export class SystemSettingPage {
 
   protected openAdd(): void {
     if (this.tab().id === 'system') this.#show({ kind: 'system', mode: 'add', id: null });
+    else if (this.tab().id === 'system-to-system')
+      this.#show({ kind: 's2s', mode: 'add', id: null });
     if (this.tab().id === 'menu') this.#show({ kind: 'menu', mode: 'add', id: null });
   }
 
   protected isOpened(row: SettingRow): boolean {
     const o = this.opened();
     const d = this.drawer();
-    if (d?.kind === 'system' && this.tab().id === 'system') return d.id !== null && d.id === row.code;
+    if (d?.kind === 'system' && this.tab().id === 'system')
+      return d.id !== null && d.id === row.code;
+    if (d?.kind === 's2s' && this.tab().id === 'system-to-system') return d.id === row.key;
+    if (d?.kind === 'system' && this.tab().id === 'system')
+      return d.id !== null && d.id === row.code;
     if (d?.kind === 'menu' && this.tab().id === 'menu') return d.id !== null && d.id === row.key;
     return o !== null && o.tab === this.tab().id && o.key === row.key;
   }
@@ -271,6 +304,15 @@ export class SystemSettingPage {
     } else {
       this.#toast.success('System saved');
     }
+  }
+
+  protected onS2SSaved(saved: S2SSaved): void {
+    this.closeDrawer();
+    this.#s2sRes.reload();
+    this.#toast.success(
+      saved.mode === 'add' ? 'Connection created' : 'Connection saved',
+      `${saved.sourceName} → ${saved.targetName} · Token time: ${saved.accessTokenTime} min`,
+    );
   }
 
   protected onMenuSaved(saved: MenuSaved): void {

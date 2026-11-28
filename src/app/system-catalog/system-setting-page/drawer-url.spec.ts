@@ -40,6 +40,20 @@ describe('drawer URL', () => {
     });
   });
 
+  it('reads the System to System drawer (id is the row id)', () => {
+    expect(drawerFromParams(params({ drawer: 's2s', mode: 'edit', id: '20' }))).toEqual({
+      kind: 's2s',
+      mode: 'edit',
+      id: '20',
+    });
+    expect(drawerFromParams(params({ drawer: 's2s', mode: 'add' }))).toEqual({
+      kind: 's2s',
+      mode: 'add',
+      id: null,
+    });
+    expect(drawerFromParams(params({ drawer: 's2s', mode: 'view' }))).toBeNull();
+  });
+
   it('reads a menu drawer link (id is the numeric menu id)', () => {
     expect(drawerFromParams(params({ drawer: 'menu', mode: 'edit', id: '12' }))).toEqual({
       kind: 'menu',
