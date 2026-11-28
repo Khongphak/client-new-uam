@@ -29,11 +29,11 @@
   "UAM-USR-02": "done",
   "UAM-USR-03": "done",
   "UAM-USR-04": "done",
-  "UAM-ROL-02": "todo",
+  "UAM-ROL-02": "done",
   "UAM-RSP-02": "todo",
-  "UAM-SYS-03": "todo",
+  "UAM-SYS-03": "done",
   "UAM-SYS-04": "todo",
-  "UAM-USR-05": "todo",
+  "UAM-USR-05": "done",
   "UAM-USR-06": "todo",
   "UAM-ROL-03": "todo",
   "UAM-SYS-05": "todo",
@@ -56,7 +56,8 @@
   "UAM-DEMO-03": "todo",
   "UAM-ERR-08": "todo",
   "UAM-RPT-03": "todo",
-  "UAM-ERR-09": "todo",
+  "UAM-ERR-09": "done",
   "UAM-OPS-03": "todo",
-  "UAM-ROL-05": "todo"
+  "UAM-ROL-05": "todo",
+  "UAM-AUT-04": "done"
 }

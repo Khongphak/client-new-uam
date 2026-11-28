@@ -63,3 +63,4 @@
 | UAM-ERR-09 | #106 | 5 | dialog error ไม่ขึ้นทันทีเมื่อ rxResource ของหน้า Home/Report ล้ม (BUG-1 จาก QA) |
 | UAM-OPS-03 | #103 | 0 | ng test ไม่ออกหลังรันเสร็จเมื่อคอมโพเนนต์มี styles (CI build-test ค้าง) |
 | UAM-ROL-05 | #116 | 9 | Role editor: โหมดแก้ไข (route roles/:id/edit + ปุ่ม Edit role ที่หน้า Role details) |
+| UAM-AUT-04 | #114 | 7 | Logout ไม่ล้าง session (regression จาก AUT-03): เรียก logout API + ล้าง session |

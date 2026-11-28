@@ -137,7 +137,7 @@
 |---|---|---|---|---|
 | 1 | เปิด Edit user | 3 แท็บ: Profile & access / Systems & roles / Permission preview; ปุ่ม Save changes ปิด | | ☐ |
 | 2 | สลับสวิตช์ Active | Save changes เปิด และแสดงจำนวนที่ยังไม่บันทึก | | ☐ |
-| 3 | แก้กลับเป็นค่าเดิม | ตัวนับกลับเป็น 0 / Save ปิด (ตามพฤติกรรมที่ตกลง) | | ☐ |
+| 3 | แก้กลับเป็นค่าเดิม | ตัวนับคำนวณจากความต่างกับค่าที่โหลดมา (ไม่สะสม) จึงกลับเป็น 0: ข้อความ "No changes yet" และ Save changes ปิด (1 รายการ = "1 unsaved change", ≥2 = "N unsaved changes") | | ☐ |
 | 4 | เปิดแท็บ Permission preview | แสดงตารางพรีวิวสิทธิ์จาก role ที่เลือก | | ☐ |
 
 ## TC-USR-008 — Edit user: AD lookup เติมช่องแบบอ่านอย่างเดียว
@@ -232,5 +232,9 @@
 
 | # | ขั้นตอน (Action) | ผลที่คาดหวัง (Expected) | ผลจริง | ผ่าน/ไม่ผ่าน |
 |---|---|---|---|---|
-| 1 | บันทึกผู้ใช้ใหม่/แก้ไข | body ที่ส่งตรงกับ fixture เดิมทุกฟิลด์ | | ☐ |
+| 1 | แก้ผู้ใช้แล้ว Save (`PUT v1/Users/update-user/{userId}`; ไม่มี `id` ใน body) | key ระดับบนของ body ตรงกับ fixture `add-user.request` ครบ ไม่เกิน ไม่ขาด และชนิดตรง (`fullName` camelCase, `firstname`/`lastname` ตัวพิมพ์เล็ก, `uamRoleId` เป็น number, `manager` เป็นสตริงลิสต์ที่ตัดช่องว่างและทิ้งช่องว่าง, `status` เป็น `Active`/`Inactive` ตามสวิตช์) | | ☐ |
+| 2 | ตรวจ `systemRoles` | แต่ละแถวมี 5 key (`userSystemId`, `systemId`, `systemName`, `roleId`, `roleName`); แถวเดิมส่ง `userSystemId` เดิม, แถวที่เพิ่มใหม่ส่ง `null`, แถวที่ลบต้องไม่อยู่ใน array (ลบหมด = `[]`); แถวที่ยังไม่ครบ system/role ไม่ถูกส่ง | | ☐ |
+| 3 | หลัง Save สำเร็จ | toast "Changes saved" · กลับ `#users` · ดึงรายการใหม่ | | ☐ |
+
+> ขอบเขต: ทดสอบฝั่ง **update** เท่านั้น — แอปยังไม่มี route สร้างผู้ใช้ใหม่ (`add-user` ใช้ builder เดียวกัน ครอบด้วย unit test) · เทียบกับ fixture/mock ได้เท่านั้น ยังไม่ได้เทียบ backend จริง
 

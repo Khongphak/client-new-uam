@@ -86,6 +86,7 @@
 
 | Code | งาน | Pts | Priority | ต้องเสร็จก่อน |
 |---|---|---|---|---|
+| [UAM-AUT-04](items/UAM-AUT-04.md) | Logout ไม่ล้าง session (regression จาก AUT-03): เรียก logout API + ล้าง session | 3 | 🔴 P0 | UAM-AUT-03 |
 | [UAM-ROL-02](items/UAM-ROL-02.md) | Role editor: ขั้น Menus & groups (โครงเมนูเดียว ลากวาง) | 8 | 🟠 P1 | UAM-ROL-01 |
 | [UAM-SYS-03](items/UAM-SYS-03.md) | Drawer ของ Menu (ดู/เพิ่ม/แก้ไข) | 3 | 🟡 P2 | UAM-SYS-02 |
 | [UAM-SYS-04](items/UAM-SYS-04.md) | Drawer ของ System to System (ดู/เพิ่ม/แก้ไข) | 3 | 🟡 P2 | UAM-SYS-02 |
