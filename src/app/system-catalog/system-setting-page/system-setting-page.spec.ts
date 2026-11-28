@@ -32,6 +32,10 @@ const SYSTEMS = [
 const MENUS = [
   {
     id: 10,
+    systemId: 'SYS-001',
+    url: '/claim',
+    imageId: 2,
+    description: null,
     systemName: 'Claim System',
     screenName: 'Claim Register',
     functional: '[view,add,edit,delete]',
@@ -41,6 +45,10 @@ const MENUS = [
   },
   {
     id: 11,
+    systemId: 'SYS-002',
+    url: '/policy',
+    imageId: 2,
+    description: null,
     systemName: 'Policy Admin',
     screenName: 'Policy Search',
     functional: '[view]',
@@ -71,7 +79,11 @@ async function render(fragment?: string, systemsResult = of(SYSTEMS), url = '') 
     getGeneralData: vi.fn(() => of([{ value: 'Web' }])),
     getIcons: vi.fn(() => of([{ id: 1, category: 'Systems', name: 'Shield', data: 'PHN2Zy8+' }])),
   };
-  const menuApi = { getAll: vi.fn(() => of(MENUS)) };
+  const menuApi = {
+    getAll: vi.fn(() => of(MENUS)),
+    getById: vi.fn((id: number) => of(MENUS.find((m) => m.id === id) ?? null)),
+    add: vi.fn(() => of(undefined)),
+  };
   TestBed.configureTestingModule({
     providers: [
       provideRouter([]),
@@ -108,7 +120,8 @@ async function render(fragment?: string, systemsResult = of(SYSTEMS), url = '') 
     await fixture.whenStable();
   };
   const drawer = () => document.body.querySelector('[data-testid="system-drawer"]');
-  return { fixture, el, q, click, type, rows, heads, systemApi, menuApi, router, drawer, back };
+  const menuDrawer = () => document.body.querySelector('[data-testid="menu-drawer"]');
+  return { fixture, el, q, click, type, rows, heads, systemApi, menuApi, router, drawer, menuDrawer, back };
 }
 
 describe('SystemSettingPage', () => {
@@ -269,13 +282,16 @@ describe('SystemSettingPage', () => {
       expect(router.url).not.toContain('drawer');
     });
 
-    it('Add system opens the add drawer; only the System tab has it for now', async () => {
+    it('Add system opens the add drawer; System and Menu tabs have it; System to System waits for UAM-SYS-04', async () => {
       const { q, click, router, drawer, back, fixture } = await render();
       await click('add-btn');
       expect(router.url).toContain('mode=add');
       expect(drawer()).not.toBeNull();
       await back();
       await TestBed.inject(Router).navigateByUrl('/#menu');
+      await fixture.whenStable();
+      expect((q('add-btn') as HTMLButtonElement).disabled).toBe(false);
+      await TestBed.inject(Router).navigateByUrl('/#system-to-system');
       await fixture.whenStable();
       expect((q('add-btn') as HTMLButtonElement).disabled).toBe(true);
     });
@@ -309,6 +325,58 @@ describe('SystemSettingPage', () => {
       expect(drawer()).toBeNull();
       expect(router.url).not.toContain('drawer');
       expect(document.activeElement?.textContent?.trim()).toBe('Legacy Billing');
+    });
+  });
+
+  describe('Menu drawer (URL)', () => {
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('opens a menu deep link with the menu id and shows only the menu drawer', async () => {
+      const { drawer, menuDrawer, menuApi, rows } = await render(
+        undefined,
+        of(SYSTEMS),
+        '/?drawer=menu&mode=view&id=11#menu',
+      );
+      expect(menuApi.getById).toHaveBeenCalledWith(11);
+      expect(menuDrawer()).not.toBeNull();
+      expect(drawer()).toBeNull();
+      expect(rows()[1].classList.contains('sel')).toBe(true);
+    });
+
+    it('ignores a menu link whose id is not a number', async () => {
+      const { menuDrawer } = await render(undefined, of(SYSTEMS), '/?drawer=menu&mode=view&id=abc#menu');
+      expect(menuDrawer()).toBeNull();
+    });
+
+    it('View / Edit / Add on the Menu tab put the drawer in the URL', async () => {
+      const { q, click, router, menuDrawer, back, fixture } = await render('menu');
+      q('view-btn')!.click();
+      await fixture.whenStable();
+      expect(router.url).toContain('drawer=menu');
+      expect(router.url).toContain('id=10');
+      expect(router.url).toContain('#menu');
+      expect(menuDrawer()).not.toBeNull();
+      await back();
+      await click('add-btn');
+      expect(router.url).toContain('drawer=menu');
+      expect(router.url).toContain('mode=add');
+      expect(menuDrawer()).not.toBeNull();
+    });
+
+    it('after saving: closes, toasts and reloads the Menu table', async () => {
+      const { q, menuDrawer, menuApi, router, fixture } = await render('menu');
+      menuApi.getAll.mockClear();
+      await router.navigateByUrl('/?drawer=menu&mode=edit&id=10#menu');
+      await fixture.whenStable();
+      const update = vi.fn(() => of(undefined));
+      (menuApi as unknown as { update: unknown }).update = update;
+      (document.body.querySelector('[data-testid="drawer-save"]') as HTMLElement).click();
+      await fixture.whenStable();
+      expect(update).toHaveBeenCalled();
+      expect(menuApi.getAll).toHaveBeenCalledTimes(1);
+      expect(menuDrawer()).toBeNull();
+      expect(router.url).not.toContain('drawer');
+      expect(q('count-menu')).not.toBeNull();
     });
   });
 });

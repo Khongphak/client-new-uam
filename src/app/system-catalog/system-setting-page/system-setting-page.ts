@@ -18,6 +18,7 @@ import { UStatus } from '../../shared/ui/status';
 import { UToastService } from '../../shared/ui/toast';
 import { MenuScreenApi } from '../api/menu-screen-api';
 import { SystemApi } from '../api/system-api';
+import { MenuDrawer, MenuSaved } from '../system-drawer/menu-drawer';
 import { SystemDrawer, SystemDrawerMode, SystemSaved } from '../system-drawer/system-drawer';
 import {
   CLOSED_DRAWER_QUERY,
@@ -71,7 +72,7 @@ const name = (row: SettingRow) => row.name;
 /** System Setting: System / Menu / System to System tables, searched and filtered in the browser. */
 @Component({
   selector: 'app-system-setting-page',
-  imports: [UTableToolbar, UTableFooter, UState, UStatus, SystemDrawer],
+  imports: [UTableToolbar, UTableFooter, UState, UStatus, SystemDrawer, MenuDrawer],
   templateUrl: './system-setting-page.html',
   styleUrl: './system-setting-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -155,7 +156,7 @@ export class SystemSettingPage {
   );
   protected readonly failed = computed(() => this.#resource().error() !== undefined);
 
-  /** Menu / System-to-System rows only mark the row until UAM-SYS-03 / -04 bring their drawers. */
+  /** System-to-System rows only mark the row until UAM-SYS-04 brings its drawer. */
   protected readonly opened = signal<{ tab: SettingTabId; key: string } | null>(null);
 
   readonly #queryParams = toSignal(this.#route.queryParamMap, {
@@ -165,6 +166,17 @@ export class SystemSettingPage {
   protected readonly drawer = computed<DrawerState | null>(() =>
     drawerFromParams(this.#queryParams()),
   );
+  protected readonly systemDrawer = computed(() => {
+    const d = this.drawer();
+    return d?.kind === 'system' ? d : null;
+  });
+  /** Menu drawer (UAM-SYS-03): `id` in the URL is the menu's numeric id; a non-number means "closed". */
+  protected readonly menuDrawer = computed(() => {
+    const d = this.drawer();
+    if (d?.kind !== 'menu') return null;
+    const id = d.id === null ? null : Number(d.id);
+    return d.mode !== 'add' && !Number.isInteger(id) ? null : { mode: d.mode, id };
+  });
   protected readonly owners = computed(() => [
     ...new Set(this.#systemRows().map((r) => r.cells[0]).filter(Boolean)),
   ]);
@@ -196,6 +208,8 @@ export class SystemSettingPage {
   protected open(mode: 'view' | 'edit', row: SettingRow): void {
     if (this.tab().id === 'system' && row.code) {
       this.#show({ kind: 'system', mode, id: row.code });
+    } else if (this.tab().id === 'menu') {
+      this.#show({ kind: 'menu', mode, id: row.key });
     } else {
       this.opened.set({ tab: this.tab().id, key: row.key });
     }
@@ -203,12 +217,14 @@ export class SystemSettingPage {
 
   protected openAdd(): void {
     if (this.tab().id === 'system') this.#show({ kind: 'system', mode: 'add', id: null });
+    if (this.tab().id === 'menu') this.#show({ kind: 'menu', mode: 'add', id: null });
   }
 
   protected isOpened(row: SettingRow): boolean {
     const o = this.opened();
     const d = this.drawer();
     if (d?.kind === 'system' && this.tab().id === 'system') return d.id !== null && d.id === row.code;
+    if (d?.kind === 'menu' && this.tab().id === 'menu') return d.id !== null && d.id === row.key;
     return o !== null && o.tab === this.tab().id && o.key === row.key;
   }
 
@@ -255,6 +271,12 @@ export class SystemSettingPage {
     } else {
       this.#toast.success('System saved');
     }
+  }
+
+  protected onMenuSaved(saved: MenuSaved): void {
+    this.closeDrawer();
+    this.#menuRes.reload();
+    this.#toast.success(saved.mode === 'add' ? 'Menu created' : 'Menu saved');
   }
 
   protected selectTab(tab: SettingTab): void {
