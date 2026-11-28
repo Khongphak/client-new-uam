@@ -1,6 +1,7 @@
 import { RoleRecord, UserRecord } from '../../shared/interfaces';
 import { parseListString } from '../../shared/list-string';
 import { MenuTreeNode } from '../api/role-menu-tree';
+import { USER_EDITOR_MESSAGES } from './user-editor-messages';
 import { ResolvedSystemRoles, resolveSystemRoles, UserFormValue } from '../api/user-mapper';
 
 /** Pure model of the Edit user screen (no Angular): what the form holds, how changes are counted and sent. */
@@ -88,20 +89,59 @@ export function countChanges(base: EditorState, current: EditorState): number {
   return n;
 }
 
-/** Keys of rows that cannot be saved: no system, no role, or a system that appears more than once. */
-export function invalidRows(rows: readonly EditorRow[]): Set<number> {
-  const bad = new Set<number>();
+export interface RowError {
+  readonly noSystem: boolean;
+  readonly noRole: boolean;
+  /** The system is already used by an earlier row. */
+  readonly duplicate: boolean;
+}
+
+/** Errors per row key (rows without errors are absent): no system, no role, or a system used again. */
+export function rowErrors(rows: readonly EditorRow[]): Map<number, RowError> {
+  const errors = new Map<number, RowError>();
   const seen = new Set<string>();
   for (const row of rows) {
-    if (row.systemId === null || row.roleId === null) {
-      bad.add(row.key);
-    } else if (seen.has(row.systemId)) {
-      bad.add(row.key);
-    } else {
-      seen.add(row.systemId);
-    }
+    const noSystem = row.systemId === null;
+    const noRole = row.roleId === null;
+    const duplicate = !noSystem && seen.has(row.systemId!);
+    if (!noSystem) seen.add(row.systemId!);
+    if (noSystem || noRole || duplicate) errors.set(row.key, { noSystem, noRole, duplicate });
   }
-  return bad;
+  return errors;
+}
+
+export interface ErrorSummary {
+  readonly title: string;
+  readonly items: readonly string[];
+}
+
+/** The list above the tabs: one line per problem, "Row n: …"; null when there is nothing to fix. */
+export function errorSummary(rows: readonly EditorRow[], errors: ReadonlyMap<number, RowError>): ErrorSummary | null {
+  const items: string[] = [];
+  let missing = false;
+  rows.forEach((row, i) => {
+    const e = errors.get(row.key);
+    if (!e) return;
+    if (e.noSystem) items.push(`Row ${i + 1}: select a system`);
+    if (e.noRole) items.push(`Row ${i + 1}: select a role`);
+    if (e.duplicate) items.push(`Row ${i + 1}: ${USER_EDITOR_MESSAGES.duplicateSystem}`);
+    missing ||= e.noSystem || e.noRole;
+  });
+  if (items.length === 0) return null;
+  // Duplicate lines keep their row order; the order of the design is system, role, duplicate per row.
+  return { title: missing ? USER_EDITOR_MESSAGES.requiredTitle : USER_EDITOR_MESSAGES.invalidTitle, items };
+}
+
+/** What a profile must have to be saved: the username and the AD fields the update body always carries. Phone is optional. */
+export function isProfileComplete(p: ProfileFields): boolean {
+  return [p.username, p.firstname, p.lastname, p.fullName, p.email, p.department, p.position].every(
+    (v) => v.trim() !== '',
+  );
+}
+
+/** Messages of a 422 `ModelState`, one per field. */
+export function validationItems(fields: Readonly<Record<string, string>>): string[] {
+  return Object.values(fields);
 }
 
 export function toFormValue(
