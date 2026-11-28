@@ -1,8 +1,13 @@
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { ErrorHandler, inject } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { HomeApi } from '../../access/api/home-api';
 import { routes } from '../../app.routes';
+import { errorDialogInterceptor } from '../../core/api/http-error-dialog';
+import { HttpErrorDialogs } from '../../core/api/http-error-dialogs';
 import { Session } from '../../core/session';
 import { UserProfile, UserSystemItem } from '../../shared/interfaces';
 import { HomePage } from './home-page';
@@ -87,5 +92,44 @@ describe('HomePage', () => {
   it('is registered at /home inside the shell', () => {
     const shell = routes.find((r) => r.path === '' && r.children);
     expect(shell?.children?.some((r) => r.path === 'home')).toBe(true);
+  });
+});
+
+describe('HomePage when the systems request fails (UAM-ERR-09)', () => {
+  it('opens the error dialog by itself, without throwing while rendering', async () => {
+    sessionStorage.clear();
+    const errors: unknown[] = [];
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(withInterceptors([errorDialogInterceptor])),
+        provideHttpClientTesting(),
+        { provide: ErrorHandler, useValue: { handleError: (e: unknown) => errors.push(e) } },
+        {
+          provide: HomeApi,
+          useFactory: () => {
+            const http = inject(HttpClient);
+            return { getUserSystems: () => http.get<UserSystemItem[]>('/systems') };
+          },
+        },
+      ],
+    });
+    TestBed.inject(Session).signIn('AD', 'sid', profile);
+    const page = TestBed.createComponent(HomePage);
+    page.detectChanges();
+    // Created last: TestBed keeps only the newest root element attached to the document.
+    const dialogs = TestBed.createComponent(HttpErrorDialogs);
+    TestBed.inject(HttpTestingController)
+      .expectOne('/systems')
+      .error(new ProgressEvent('error'), { status: 0 });
+    await page.whenStable();
+    await dialogs.whenStable();
+
+    expect(errors).toEqual([]);
+    await vi.waitFor(() =>
+      expect(
+        document.body.querySelector('[data-testid="u-dialog-heading"]')?.textContent,
+      ).toContain('Can’t reach the server'),
+    );
+    dialogs.destroy();
   });
 });

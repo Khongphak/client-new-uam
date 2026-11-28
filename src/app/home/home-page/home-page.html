@@ -8,7 +8,7 @@
 </div>
 <section class="content" aria-label="Your systems">
   <u-sys-grid data-testid="home-grid">
-    @for (s of systems.value(); track s.id) {
+    @for (s of items(); track s.id) {
       <a
         uSysCard
         [href]="s.systemUrl"

@@ -1,0 +1,193 @@
+<u-drawer [heading]="heading()" (closed)="closed.emit()">
+  <div #body data-testid="menu-drawer">
+    @if (loading()) {
+      <u-state kind="loading" label="Loading" [rows]="3" />
+    } @else if (loadFailed()) {
+      <u-state
+        kind="error"
+        heading="Couldn’t load this record"
+        message="Check your connection and try again."
+      >
+        <button
+          uStateActions
+          type="button"
+          class="p-button p-component"
+          data-testid="drawer-retry"
+          (click)="retry()"
+        >
+          <span class="p-button-label">Try again</span>
+        </button>
+      </u-state>
+    } @else if (notFound()) {
+      <u-state
+        kind="empty"
+        heading="This record doesn’t exist"
+        message="It may have been removed, or the link is wrong."
+      />
+    } @else if (mode() === 'view') {
+      @if (record()) {
+        <p class="mb-3"><u-status [active]="active()" /></p>
+        <u-facts [items]="facts()" />
+      }
+    } @else if (showForm()) {
+      <form class="sys-form" novalidate (submit)="$event.preventDefault(); save()">
+        @if (banner(); as text) {
+          <div class="banner" role="alert" data-testid="drawer-banner">
+            <b>Couldn’t save the menu</b><br />{{ text }}
+          </div>
+        }
+
+        @if (mode() === 'edit') {
+          <div class="field">
+            <label for="m-id">Menu ID</label>
+            <input id="m-id" class="p-inputtext p-component" [value]="record()?.id" disabled />
+          </div>
+        }
+
+        <div class="field">
+          <label for="m-s">System <span class="req">*</span></label>
+          <select
+            id="m-s"
+            data-field="systemId"
+            class="p-inputtext p-component"
+            [disabled]="mode() === 'edit'"
+            (change)="set('systemId', $any($event.target).value)"
+          >
+            <option value="" [selected]="draft().systemId === ''">Select a system</option>
+            @for (s of systemOptions(); track s.id) {
+              <option [value]="s.id" [selected]="s.id === draft().systemId">{{ s.name }}</option>
+            }
+          </select>
+          @if (mode() === 'edit') {
+            <span class="hint">The system can’t change after the menu is saved.</span>
+          }
+          @if (errors().systemId; as e) {
+            <span class="err" role="alert">{{ e }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="m-n">Menu name <span class="req">*</span></label>
+          <input
+            id="m-n"
+            data-field="screenName"
+            class="p-inputtext p-component"
+            autocomplete="off"
+            [value]="draft().screenName"
+            [attr.aria-invalid]="errors().screenName ? true : null"
+            (input)="set('screenName', $any($event.target).value)"
+          />
+          @if (errors().screenName; as e) {
+            <span class="err" role="alert" data-testid="err-screenName">{{ e }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="m-u">Menu URL <span class="req">*</span></label>
+          <input
+            id="m-u"
+            data-field="url"
+            class="p-inputtext p-component"
+            autocomplete="off"
+            [value]="draft().url"
+            (input)="set('url', $any($event.target).value)"
+          />
+          @if (errors().url; as e) {
+            <span class="err" role="alert">{{ e }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="m-d">Description</label>
+          <textarea
+            id="m-d"
+            data-field="description"
+            class="p-inputtext p-component"
+            rows="3"
+            [value]="draft().description"
+            (input)="set('description', $any($event.target).value)"
+          ></textarea>
+          @if (errors().description; as e) {
+            <span class="err" role="alert">{{ e }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <span class="lbl" id="m-fn-lbl">Functions</span>
+          <div class="fn" role="group" aria-labelledby="m-fn-lbl">
+            @for (f of functionOptions(); track f) {
+              <button
+                type="button"
+                class="p-button p-component"
+                [class.p-highlight]="has(f)"
+                [attr.data-fn]="f"
+                [attr.aria-pressed]="has(f)"
+                (click)="toggle(f)"
+              >
+                <span class="p-button-label">{{ f }}</span>
+              </button>
+            }
+          </div>
+          <span class="hint">
+            {{ functionOptions().length }} functions from the database. Roles can only give the ones you pick here.
+          </span>
+        </div>
+
+        <div class="field">
+          <span class="lbl" id="m-icon-lbl">Menu icon <span class="req">*</span></span>
+          <div class="icongrid" role="radiogroup" aria-labelledby="m-icon-lbl" data-field="imageId" tabindex="-1">
+            @for (i of iconOptions(); track i.id) {
+              <button
+                type="button"
+                class="ic-opt"
+                role="radio"
+                [class.on]="draft().imageId === i.id"
+                [attr.aria-checked]="draft().imageId === i.id"
+                [attr.aria-label]="i.name"
+                [title]="i.name"
+                (click)="set('imageId', i.id)"
+              >
+                <img [src]="i.src" alt="" width="22" height="22" />
+              </button>
+            }
+          </div>
+          @if (errors().imageId; as e) {
+            <span class="err" role="alert">{{ e }}</span>
+          }
+        </div>
+
+        @if (mode() === 'edit') {
+          <u-switch-row
+            label="Active"
+            hint="An inactive item can’t be used by roles or users."
+            [(checked)]="active"
+          />
+        }
+      </form>
+    }
+  </div>
+
+  <div uDrawerFooter>
+    @if (mode() === 'view') {
+      <button type="button" class="p-button p-component p-button-secondary" data-testid="drawer-close" (click)="closed.emit()">
+        <span class="p-button-label">Close</span>
+      </button>
+      @if (record()) {
+        <button type="button" class="p-button p-component" data-testid="drawer-edit" (click)="editRequested.emit()">
+          <i class="pi pi-pencil" aria-hidden="true"></i><span class="p-button-label">Edit</span>
+        </button>
+      }
+    } @else if (showForm()) {
+      <button type="button" class="p-button p-component p-button-secondary" data-testid="drawer-cancel" (click)="closed.emit()">
+        <span class="p-button-label">Cancel</span>
+      </button>
+      <button type="button" class="p-button p-component" data-testid="drawer-save" [disabled]="saving()" (click)="save()">
+        <span class="p-button-label">Save</span>
+      </button>
+    } @else {
+      <button type="button" class="p-button p-component p-button-secondary" data-testid="drawer-close" (click)="closed.emit()">
+        <span class="p-button-label">Close</span>
+      </button>
+    }
+  </div>
+</u-drawer>
