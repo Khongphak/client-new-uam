@@ -3,7 +3,10 @@ import {
   countChanges,
   EditorState,
   fromUserRecord,
-  invalidRows,
+  errorSummary,
+  isProfileComplete,
+  rowErrors,
+  validationItems,
   previewRows,
   toFormValue,
 } from './user-editor-model';
@@ -69,13 +72,59 @@ describe('user editor model', () => {
     expect(countChanges(base, cur)).toBe(6);
   });
 
-  it('flags incomplete rows and duplicate systems', () => {
+  it('flags a missing system, a missing role and a repeated system per row (TC-USR-010, TC-USR-011)', () => {
     const rows = [
       ...base.rows,
       { key: 50, userSystemId: null, systemId: null, roleId: null },
       { key: 51, userSystemId: null, systemId: 's1', roleId: 6 },
+      { key: 52, userSystemId: null, systemId: 's9', roleId: null },
     ];
-    expect(invalidRows(rows)).toEqual(new Set([50, 51]));
+    const errors = rowErrors(rows);
+    expect(errors.has(base.rows[0].key)).toBe(false);
+    expect(errors.get(50)).toEqual({ noSystem: true, noRole: true, duplicate: false });
+    // the second use of a system is the one flagged
+    expect(errors.get(51)).toEqual({ noSystem: false, noRole: false, duplicate: true });
+    expect(errors.get(52)).toEqual({ noSystem: false, noRole: true, duplicate: false });
+  });
+
+  it('has no errors for complete rows with different systems', () => {
+    expect(rowErrors(base.rows).size).toBe(0);
+    expect(errorSummary(base.rows, rowErrors(base.rows))).toBeNull();
+  });
+
+  it('summarises row errors with row numbers; "required" title wins over "invalid"', () => {
+    const dup = [
+      { key: 1, userSystemId: null, systemId: 's1', roleId: 5 },
+      { key: 2, userSystemId: null, systemId: 's1', roleId: 6 },
+    ];
+    expect(errorSummary(dup, rowErrors(dup))).toEqual({
+      title: 'Invalid input',
+      items: ['Row 2: Duplicate system detected. Please check and select a different system.'],
+    });
+    const mixed = [...dup, { key: 3, userSystemId: null, systemId: null, roleId: null }];
+    expect(errorSummary(mixed, rowErrors(mixed))).toEqual({
+      title: 'Some required information is missing, please correct and try again.',
+      items: [
+        'Row 2: Duplicate system detected. Please check and select a different system.',
+        'Row 3: select a system',
+        'Row 3: select a role',
+      ],
+    });
+  });
+
+  it('knows when the AD profile is missing something required (phone is optional)', () => {
+    expect(isProfileComplete({ ...base.profile, phoneNo: null })).toBe(true);
+    expect(isProfileComplete({ ...base.profile, email: '' })).toBe(false);
+    expect(isProfileComplete({ ...base.profile, firstname: '  ' })).toBe(false);
+    expect(isProfileComplete({ ...base.profile, username: '' })).toBe(false);
+  });
+
+  it('lists every 422 ModelState message', () => {
+    expect(validationItems({ 'user.email': 'Email is invalid', username: 'Username is taken' })).toEqual([
+      'Email is invalid',
+      'Username is taken',
+    ]);
+    expect(validationItems({})).toEqual([]);
   });
 
   it('builds the update body fields from the state (ids kept, names from the role list)', () => {

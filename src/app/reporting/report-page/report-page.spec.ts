@@ -1,7 +1,12 @@
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { ErrorHandler, inject } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { routes } from '../../app.routes';
+import { errorDialogInterceptor } from '../../core/api/http-error-dialog';
+import { HttpErrorDialogs } from '../../core/api/http-error-dialogs';
 import { SystemApi } from '../../system-catalog/api/system-api';
 import {
   AuthorizationMatrixReportRequest,
@@ -144,5 +149,43 @@ describe('ReportPage', () => {
     await click('reset-btn');
     expect(q<HTMLSelectElement>('system-select')!.value).toBe('');
     expect(q<HTMLButtonElement>('export-btn')!.disabled).toBe(true);
+  });
+});
+
+describe('ReportPage when the systems request fails (UAM-ERR-09)', () => {
+  it('opens the error dialog by itself, without throwing while rendering', async () => {
+    const errors: unknown[] = [];
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(withInterceptors([errorDialogInterceptor])),
+        provideHttpClientTesting(),
+        { provide: ErrorHandler, useValue: { handleError: (e: unknown) => errors.push(e) } },
+        {
+          provide: SystemApi,
+          useFactory: () => {
+            const http = inject(HttpClient);
+            return { getAll: () => http.get<SystemRecord[]>('/systems') };
+          },
+        },
+        { provide: ReportApi, useValue: {} },
+      ],
+    });
+    const page = TestBed.createComponent(ReportPage);
+    page.detectChanges();
+    // Created last: TestBed keeps only the newest root element attached to the document.
+    const dialogs = TestBed.createComponent(HttpErrorDialogs);
+    TestBed.inject(HttpTestingController)
+      .expectOne('/systems')
+      .error(new ProgressEvent('error'), { status: 0 });
+    await page.whenStable();
+    await dialogs.whenStable();
+
+    expect(errors).toEqual([]);
+    await vi.waitFor(() =>
+      expect(
+        document.body.querySelector('[data-testid="u-dialog-heading"]')?.textContent,
+      ).toContain('Can’t reach the server'),
+    );
+    dialogs.destroy();
   });
 });

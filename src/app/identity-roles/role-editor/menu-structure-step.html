@@ -1,0 +1,231 @@
+@if (openKey()) {
+  <button type="button" class="scrim" aria-label="Close menu" tabindex="-1" (click)="closeMenu()"></button>
+}
+<p class="sr" role="status" aria-live="polite">{{ announcement() }}</p>
+<div class="mwrap">
+  <section class="card tree" aria-label="Menu structure" data-testid="tree">
+    <div class="tree-h">
+      <span class="tree-t">
+        <h2 >Menu structure</h2>
+        <span class="hint">
+          How the menu looks to people with this role.
+          <span class="only-desk">Drag rows to reorder them.</span>
+        </span>
+      </span>
+      <button type="button" pButton severity="secondary" size="small" data-testid="add-group" (click)="newGroup(root)">
+        <span class="p-button-label">Add group</span>
+      </button>
+    </div>
+    <div class="tree-body">
+      @if (rows().length === 0) {
+        <p class="empty" data-testid="tree-empty">No menus yet. Use “Add to…” on a menu in the list to place it here.</p>
+      }
+      @for (r of rows(); track r.row.kind + r.row.key) {
+        @if (r.row.kind === 'item') {
+          <div
+            class="tr"
+            [class.grp]="r.row.isGroup"
+            [class.into]="into(r.row.key)"
+            [style.padding-left]="r.pad"
+            [style.box-shadow]="ring(r.row.key)"
+            [attr.data-testid]="'row-' + r.row.key"
+            draggable="true"
+            (dragstart)="dragStart(r.row.key, $event)"
+            (dragend)="dragEnd()"
+            (dragover)="dragOver($event, r.row)"
+            (dragleave)="dragLeave(r.row.key)"
+            (drop)="drop($event, r.row)"
+          >
+            <span class="grip only-desk" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="9" cy="6" r="1.6" /><circle cx="15" cy="6" r="1.6" />
+                <circle cx="9" cy="12" r="1.6" /><circle cx="15" cy="12" r="1.6" />
+                <circle cx="9" cy="18" r="1.6" /><circle cx="15" cy="18" r="1.6" />
+              </svg>
+            </span>
+            @if (r.row.isGroup) {
+              @if (r.iconSrc) {
+                <img class="gicon" [src]="r.iconSrc" alt="" width="20" height="20" />
+              } @else {
+                <i class="pi pi-folder gicon" aria-hidden="true"></i>
+              }
+            }
+            <span class="tr-name">{{ r.name }}</span>
+            @if (r.row.isGroup) {
+              <u-count [value]="r.count" title="Menus in this group" />
+            }
+            <span class="more" (keydown.escape)="closeMenu()">
+              <button
+                type="button"
+                class="more-btn"
+                [attr.aria-label]="'Options for ' + r.name"
+                aria-haspopup="true"
+                [attr.aria-expanded]="openKey() === r.row.key"
+                [attr.data-testid]="'opts-' + r.row.key"
+                (click)="toggleMenu(r.row.key)"
+              >
+                <i class="pi pi-ellipsis-h" aria-hidden="true"></i>
+              </button>
+              @if (openKey() === r.row.key) {
+                <div class="pop" role="group" [attr.aria-label]="'Options for ' + r.name">
+                  @if (r.row.isGroup) {
+                    <button type="button" class="pop-i" (click)="toggleEdit(r.row.key)">Rename or change icon</button>
+                  }
+                  @if (r.canSub) {
+                    <button type="button" class="pop-i" data-testid="add-sub" (click)="newGroup(r.row.key)">Add sub group</button>
+                  }
+                  <button type="button" class="pop-i" data-testid="move-up" [disabled]="r.row.index === 0" (click)="up(r.row.key)">Move up</button>
+                  <button type="button" class="pop-i" data-testid="move-down" [disabled]="r.row.index === r.row.siblings - 1" (click)="down(r.row.key)">Move down</button>
+                  @if (r.dests.length) {
+                    <p class="pop-h">Move to</p>
+                    @for (d of r.dests; track d.key) {
+                      <button type="button" class="pop-i" data-testid="move-to" (click)="moveTo(r.row.key, d.key)">{{ d.label }}</button>
+                    }
+                  }
+                  @if (r.row.isGroup) {
+                    <button type="button" class="pop-i danger" (click)="askDelete(r.row.key)">Delete group</button>
+                  } @else {
+                    <button type="button" class="pop-i danger" data-testid="remove" (click)="remove(r.row.key)">Remove from role</button>
+                  }
+                </div>
+              }
+            </span>
+          </div>
+          @if (r.group && editKey() === r.row.key) {
+            <div class="tr-edit" [style.margin-left]="r.pad" data-testid="group-edit">
+              <div class="field">
+                <label [for]="'gn-' + r.row.key">Group name</label>
+                <input
+                  pInputText
+                  [id]="'gn-' + r.row.key"
+                  [value]="r.group.name"
+                  (input)="rename(r.row.key, $event)"
+                />
+              </div>
+              <div class="icongrid" role="radiogroup" aria-label="Group icon">
+                @for (i of editingIcons(); track i.id) {
+                  <button
+                    type="button"
+                    class="ic-opt"
+                    role="radio"
+                    [class.on]="r.group.imageGroupId === i.id"
+                    [attr.aria-checked]="r.group.imageGroupId === i.id"
+                    [attr.aria-label]="i.name"
+                    [title]="i.name"
+                    (click)="pickIcon(r.row.key, i.id)"
+                  >
+                    <img [src]="i.src" alt="" width="22" height="22" />
+                  </button>
+                }
+              </div>
+              <div>
+                <button type="button" pButton size="small" (click)="toggleEdit(r.row.key)">
+                  <span class="p-button-label">Done</span>
+                </button>
+              </div>
+            </div>
+          }
+          @if (r.row.isGroup && deleteKey() === r.row.key) {
+            <div class="tr-del" role="alert" [style.margin-left]="r.pad" data-testid="group-delete">
+              <span>Delete “{{ r.name }}”? Its {{ r.count }} menus go back to the list. Sub groups are deleted too.</span>
+              <span class="del-actions">
+                <button type="button" pButton severity="secondary" size="small" (click)="cancelDelete()">
+                  <span class="p-button-label">Keep</span>
+                </button>
+                <button type="button" pButton severity="danger" size="small" data-testid="confirm-delete" (click)="doDelete(r.row.key)">
+                  <span class="p-button-label">Delete group</span>
+                </button>
+              </span>
+            </div>
+          }
+        } @else {
+          <div
+            class="tr hole"
+            [class.into]="into(r.row.key)"
+            [style.padding-left]="r.pad"
+            (dragover)="dragOver($event, r.row)"
+            (dragleave)="dragLeave(r.row.key)"
+            (drop)="drop($event, r.row)"
+          >
+            No menus yet. Add one from the list.
+          </div>
+        }
+      }
+      <div
+        class="tr endzone only-desk"
+        [class.into]="into('end')"
+        data-testid="end-zone"
+        (dragover)="dragOver($event, 'end')"
+        (dragleave)="dragLeave('end')"
+        (drop)="drop($event, 'end')"
+      >
+        Drop here to put a menu at the top level
+      </div>
+    </div>
+  </section>
+
+  <aside class="card pool" aria-label="Menus to add" data-testid="pool">
+    <div class="tree-h pool-h">
+      <span class="tree-t">
+        <h2 >Menus to add</h2>
+        <span class="hint" data-testid="pool-text">{{ poolText() }}</span>
+      </span>
+    </div>
+    <label class="search">
+      <i class="pi pi-search" aria-hidden="true"></i>
+      <span class="sr">Search menus</span>
+      <input
+        pInputText
+        pSize="small"
+        type="search"
+        placeholder="Search menus"
+        data-testid="pool-search"
+        [value]="query()"
+        (input)="search($event)"
+      />
+    </label>
+    <div class="pool-list">
+      @for (m of pool(); track m.menuId) {
+        <div class="pitem" draggable="true" (dragstart)="dragStart('m' + m.menuId, $event)" (dragend)="dragEnd()" [attr.data-testid]="'pool-' + m.menuId">
+          <span class="grip only-desk" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="9" cy="6" r="1.6" /><circle cx="15" cy="6" r="1.6" />
+              <circle cx="9" cy="12" r="1.6" /><circle cx="15" cy="12" r="1.6" />
+              <circle cx="9" cy="18" r="1.6" /><circle cx="15" cy="18" r="1.6" />
+            </svg>
+          </span>
+          <span class="tr-name">{{ m.screenName }}</span>
+          <select
+            pInputText
+            pSize="small"
+            class="addsel"
+            [attr.aria-label]="'Add ' + m.screenName + ' to'"
+            data-testid="add-to"
+            (change)="addFromPool(m.menuId, $event)"
+          >
+            <option value="">Add to…</option>
+            @for (p of places(); track p.key) {
+              <option [value]="p.key">{{ p.label }}</option>
+            }
+          </select>
+        </div>
+      }
+      @if (menus.isLoading()) {
+        <p class="empty">Loading menus…</p>
+      } @else if (menus.error()) {
+        <p class="empty" role="alert" data-testid="menus-error">Couldn’t load the menus of this system.</p>
+      } @else if (poolAll().length === 0) {
+        <p class="empty" data-testid="pool-none">
+          @if (menus.hasValue() && menus.value().length) {
+            All {{ menus.value().length }} menus are placed. Remove one from the structure to use it again.
+          } @else {
+            This system has no menus yet.
+          }
+        </p>
+      } @else if (pool().length === 0) {
+        <p class="empty">No menu matches “{{ query() }}”.</p>
+      }
+    </div>
+  </aside>
+</div>
+<p class="summary only-desk hint" data-testid="summary">{{ summary() }}</p>

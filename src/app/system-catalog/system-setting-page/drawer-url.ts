@@ -1,17 +1,17 @@
 import { ParamMap } from '@angular/router';
 
-export type DrawerKind = 'system' | 's2s';
+export type DrawerKind = 'system' | 'menu' | 's2s';
 export type DrawerMode = 'view' | 'edit' | 'add';
 
-/** Drawer state kept in the URL: `?drawer=system&mode=view&id=SYS-001` (the tab stays in the `#fragment`). */
+/** Drawer state kept in the URL: `?drawer=system&mode=view&id=SYS-001` `?drawer=menu&mode=edit&id=12` or `?drawer=s2s&mode=view&id=20` (the tab stays in the `#fragment`). */
 export interface DrawerState {
   readonly kind: DrawerKind;
   readonly mode: DrawerMode;
-  /** `systemId` (the code shown in the table) for `system`, the row id for `s2s`; null for `add`. */
+  /** `systemId` (system), the menu's numeric `id` (menu) or the row id (s2s); null for `add`. */
   readonly id: string | null;
 }
 
-const KINDS: readonly string[] = ['system', 's2s'];
+const KINDS: readonly string[] = ['system', 'menu', 's2s'];
 const MODES: readonly string[] = ['view', 'edit', 'add'];
 
 /** Anything that is not a complete, known drawer URL means "closed" (a bad link just shows the table). */

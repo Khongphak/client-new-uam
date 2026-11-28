@@ -8,15 +8,16 @@ import { map } from 'rxjs';
 import { UBack } from '../../shared/ui';
 import { USwitchRow } from '../../shared/ui/switch-row';
 import { SystemApi } from '../../system-catalog/api/system-api';
+import { MenuStructureStep } from './menu-structure-step';
 import { ROLE_DESCRIPTION_MAX, ROLE_STEPS, RoleEditorStore } from './role-editor-store';
 
 /**
  * Add role: 3 steps (Role info, Menus & groups, Permissions) — progress bar on a phone.
- * This page owns the frame and the Role info step; the other two steps arrive with UAM-ROL-02 / UAM-ROL-03.
+ * This page owns the frame and the Role info step; Menus & groups is its own component (UAM-ROL-02); Permissions arrives with UAM-ROL-03.
  */
 @Component({
   selector: 'app-role-editor-page',
-  imports: [ButtonDirective, RouterLink, Steps, UBack, USwitchRow],
+  imports: [ButtonDirective, MenuStructureStep, RouterLink, Steps, UBack, USwitchRow],
   providers: [RoleEditorStore],
   templateUrl: './role-editor-page.html',
   styleUrl: './role-editor-page.scss',

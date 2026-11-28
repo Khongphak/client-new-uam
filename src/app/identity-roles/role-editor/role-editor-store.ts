@@ -1,5 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
 
+import { emptyStructure, MenuStructure } from './menu-structure';
+
 export const ROLE_STEPS = ['Role info', 'Menus & groups', 'Permissions'] as const;
 /** The Role info textarea allows 250 characters (artboard RoleEditor). */
 export const ROLE_DESCRIPTION_MAX = 250;
@@ -29,13 +31,24 @@ export class RoleEditorStore {
   readonly step = signal(0);
   readonly info = signal<RoleInfo>({ systemId: '', roleName: '', description: '', active: true });
 
+  /** The single menu structure of step 2. Menus belong to the chosen system, so it restarts when the system changes. */
+  readonly structure = signal<MenuStructure>(emptyStructure());
+
   /** Errors stay hidden until the user first tries to move on. */
   readonly #attempted = signal(false);
   readonly errors = computed(() => validateRoleInfo(this.info()));
   readonly shownErrors = computed<RoleInfoErrors>(() => (this.#attempted() ? this.errors() : {}));
 
   patchInfo(patch: Partial<RoleInfo>): void {
+    if (patch.systemId !== undefined && patch.systemId !== this.info().systemId) {
+      this.structure.set(emptyStructure());
+    }
     this.info.update((info) => ({ ...info, ...patch }));
+  }
+
+  /** Apply one pure edit from `menu-structure`. */
+  editStructure(edit: (s: MenuStructure) => MenuStructure): void {
+    this.structure.update(edit);
   }
 
   /** Next step; false (and errors shown) when Role info is not valid yet, or already on the last step. */

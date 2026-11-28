@@ -21,20 +21,24 @@ import {
   EditorRow,
   EditorState,
   fromUserRecord,
-  invalidRows,
+  errorSummary,
+  isProfileComplete,
+  rowErrors,
+  validationItems,
   menuRows,
   previewRows,
   toFormValue,
 } from './user-editor-model';
+import { USER_EDITOR_MESSAGES } from './user-editor-messages';
 
 export type EditorTab = 'profile' | 'systems' | 'preview';
-type AdLookup = 'idle' | 'busy' | 'found' | 'not-found' | 'failed';
+type AdLookup = 'idle' | 'busy' | 'found' | 'not-found' | 'incomplete' | 'failed';
 
 /**
  * Edit user in three tabs (Profile & access / Systems & roles / Permission preview). Profile fields come from
  * Active Directory and are read-only; only the username is typed. "Save changes" is enabled while the state differs
- * from what was loaded, and the bar says how many changes are unsaved. Field-level errors and the discard prompt
- * belong to UAM-USR-05.
+ * from what was loaded, and the bar says how many changes are unsaved. Row errors (missing system/role, repeated
+ * system) and 422 messages show in a list above the tabs; Save stays closed while any remains.
  */
 @Component({
   selector: 'app-user-editor-page',
@@ -74,6 +78,9 @@ export class UserEditorPage {
   ];
   protected readonly adState = signal<AdLookup>('idle');
   protected readonly saving = signal(false);
+  protected readonly text = USER_EDITOR_MESSAGES;
+  /** Messages of the last 422; cleared by the next edit. */
+  protected readonly serverErrors = signal<readonly string[]>([]);
   protected readonly openRows = signal<ReadonlySet<number>>(new Set());
   readonly #menus = signal<Readonly<Record<number, readonly MenuTreeNode[]>>>({});
   protected readonly menusFailed = signal(false);
@@ -96,12 +103,27 @@ export class UserEditorPage {
     const cur = this.state();
     return base && cur ? countChanges(base, cur) : 0;
   });
-  protected readonly invalid = computed(() => invalidRows(this.state()?.rows ?? []));
+  protected readonly rowErrs = computed(() => rowErrors(this.state()?.rows ?? []));
+  protected readonly summary = computed(() => {
+    const rows = this.rowErrs().size > 0 ? errorSummary(this.state()?.rows ?? [], this.rowErrs()) : null;
+    if (rows) return rows;
+    const items = this.serverErrors();
+    return items.length > 0 ? { title: USER_EDITOR_MESSAGES.invalidTitle, items } : null;
+  });
+  protected readonly profileComplete = computed(() => {
+    const s = this.state();
+    return s ? isProfileComplete(s.profile) : false;
+  });
   protected readonly canSave = computed(
-    () => this.changes() > 0 && this.invalid().size === 0 && !this.saving() && this.adState() !== 'busy',
+    () =>
+      this.changes() > 0 &&
+      this.rowErrs().size === 0 &&
+      this.profileComplete() &&
+      !this.saving() &&
+      this.adState() !== 'busy',
   );
   protected readonly barText = computed(() => {
-    if (this.invalid().size > 0) return 'Complete or remove every system row to save.';
+    if (this.rowErrs().size > 0) return 'Complete or remove every system row to save.';
     const n = this.changes();
     return n === 0 ? 'No changes yet' : `${n} unsaved change${n > 1 ? 's' : ''}`;
   });
@@ -158,8 +180,13 @@ export class UserEditorPage {
     this.#userApi.searchActiveDirectory(username).subscribe({
       next: (hits) => {
         const hit = hits[0];
-        if (!hit) return this.adState.set('not-found');
-        this.#update((s) => ({ ...s, profile: this.#fromAd(hit) }));
+        // MSG_INVALID_USER_AD: nothing usable from AD, so the filled fields are cleared (only the username stays).
+        const profile = hit ? this.#fromAd(hit) : this.#cleared();
+        if (!hit || !isProfileComplete(profile)) {
+          this.#update((s) => ({ ...s, profile: this.#cleared() }));
+          return this.adState.set(hit ? 'incomplete' : 'not-found');
+        }
+        this.#update((s) => ({ ...s, profile }));
         this.adState.set('found');
       },
       error: () => this.adState.set('failed'),
@@ -214,6 +241,10 @@ export class UserEditorPage {
       },
       error: (e: unknown) => {
         this.saving.set(false);
+        if (e instanceof ApiException && e.error.kind === 'validation') {
+          this.serverErrors.set(validationItems(e.error.fields));
+          return;
+        }
         const detail = e instanceof ApiException && e.error.kind === 'network'
           ? 'The server didn’t answer. Try again.'
           : 'Please try again. If it keeps happening, contact IT Support.';
@@ -241,8 +272,23 @@ export class UserEditorPage {
     };
   }
 
+  #cleared(): EditorState['profile'] {
+    return {
+      username: this.state()!.profile.username,
+      firstname: '',
+      lastname: '',
+      fullName: '',
+      email: '',
+      department: '',
+      position: '',
+      phoneNo: null,
+      managers: [],
+    };
+  }
+
   #update(fn: (s: EditorState) => EditorState): void {
     const cur = this.state();
+    this.serverErrors.set([]);
     if (cur) this.#edited.set(fn(cur));
   }
 
