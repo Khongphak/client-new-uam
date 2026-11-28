@@ -1,3 +1,4 @@
+import { menuKey, place, ROOT } from './menu-structure';
 import { RoleEditorStore, ROLE_DESCRIPTION_MAX, validateRoleInfo } from './role-editor-store';
 
 describe('validateRoleInfo (UAM-ROL-01)', () => {
@@ -81,5 +82,19 @@ describe('RoleEditorStore', () => {
     s.patchInfo({ roleName: 'A' });
     expect(s.shownErrors().roleName).toBeUndefined();
     expect(s.shownErrors().systemId).toBeTruthy();
+  });
+});
+
+describe('RoleEditorStore menu structure (UAM-ROL-02)', () => {
+  it('keeps the structure when other info changes, drops it when the system changes', () => {
+    const s = new RoleEditorStore();
+    s.patchInfo({ systemId: 's1' });
+    s.editStructure((st) => place(st, menuKey(1), ROOT, 0));
+    s.patchInfo({ roleName: 'A' });
+    expect(s.structure().items[ROOT]).toEqual([menuKey(1)]);
+    s.patchInfo({ systemId: 's1' });
+    expect(s.structure().items[ROOT]).toEqual([menuKey(1)]);
+    s.patchInfo({ systemId: 's2' });
+    expect(s.structure().items[ROOT]).toEqual([]);
   });
 });
