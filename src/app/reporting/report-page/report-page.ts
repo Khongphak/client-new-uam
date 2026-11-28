@@ -86,7 +86,13 @@ export class ReportPage {
         : EMPTY,
     defaultValue: [],
   });
-  protected readonly departments = computed(() => departmentOptions(this.departmentList.value()));
+  // `value()` throws while a resource is in error state; the error dialog (UAM-ERR-03) reports that failure.
+  protected readonly departments = computed(() =>
+    departmentOptions(this.departmentList.hasValue() ? this.departmentList.value() : []),
+  );
+  protected readonly systemList = computed(() =>
+    this.systems.hasValue() ? this.systems.value() : [],
+  );
 
   protected readonly canExport = computed(
     () => !!this.systemId() && (this.type() === 'matrix' || (!!this.from() && !!this.to())),

@@ -35,7 +35,7 @@
           (change)="selectSystem($any($event.target).value)"
         >
           <option value="">Select a system</option>
-          @for (s of systems.value(); track s.systemId) {
+          @for (s of systemList(); track s.systemId) {
             <option [value]="s.systemId" [selected]="s.systemId === systemId()">
               {{ s.systemName.trim() }}
             </option>

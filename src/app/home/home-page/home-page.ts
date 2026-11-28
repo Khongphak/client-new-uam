@@ -27,8 +27,11 @@ export class HomePage {
     defaultValue: [],
   });
 
+  /** `value()` throws while the resource is in error state; the error dialog (UAM-ERR-03) reports that failure. */
+  protected readonly items = computed(() => (this.systems.hasValue() ? this.systems.value() : []));
+
   protected readonly summary = computed(() => {
-    const n = this.systems.value().length;
+    const n = this.items().length;
     return n === 0 ? '' : `${n} ${n === 1 ? 'system' : 'systems'} you can open`;
   });
 }
